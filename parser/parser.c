@@ -1,54 +1,7 @@
 
-#include "../global.h"
+#include "./parser.h"
 #define GRN "\033[1;32m"
 #define WHITE "\033[0m"
-
-/*##############################################################################
-#	Help Functions
-############################################################################*/
-
-int	until_space(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && ft_isnotspace(str[i]))
-		i++;
-	return (i);
-}
-
-void	move_to_next_char(t_command *cmd)
-{
-	while (cmd->str[0] && ft_isspace(cmd->str[0]))
-		cmd->str++;
-}
-
-char	ft_isquote(char ch)
-{
-	if (ch == '\'' || ch == '"')
-		return (ch);
-	return ('\0');
-}
-
-void	ft_fill_n_iarray(int *arr, int val, int n)
-{
-	while (--n >= 0)
-		arr[n] = val;
-}
-
-char	ft_isredirection(char ch)
-{
-	if (ch == '>' || ch == '<')
-		return (ch);
-	return ('\0');
-}
-
-int	to_next_quote(char *str, int i, char quote)
-{
-	while (str[i] && str[i] != quote)
-		i++;
-	return (i);
-}
 
 /*##############################################################################
 #	Set command name TO FIX for redirections add them if they're behind
@@ -320,7 +273,7 @@ int	split_string(t_command *cmd)
 	init = cmd->str;
 	move_to_next_char(cmd);
 	red_n = red_in_string(cmd, cmd->str, 0);
-	ft_fill_n_iarray(cmd->red_type, EMPTY, red_n);
+	ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
 	items = items_in_string(cmd->str);
 	cmd->tokens = (char **) malloc(sizeof(char *) * items + 1);
 	if (!(cmd->tokens))

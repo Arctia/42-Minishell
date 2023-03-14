@@ -40,7 +40,8 @@ ft_printf/printers/print_t.c ft_printf/printers/print_u.c \
 ft_printf/printers/print_x.c ft_printf/printers/print_y.c \
 ft_printf/printers/printers.c get_next_line/get_next_line.c \
 get_next_line/get_next_line_utils.c \
-ft_pow.c ft_sqrt.c ft_module.c ft_isspace.c ft_isnotspace.c
+ft_pow.c ft_sqrt.c ft_module.c ft_isspace.c ft_isnotspace.c \
+ft_isquote.c ft_filliarrayto_n.c ft_isredirection.c
 
 ################################################################################
 # - Rules
