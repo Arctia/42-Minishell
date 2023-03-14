@@ -36,7 +36,7 @@ void	free_shell(t_hellmini *shell)
 {
 	if (shell->input)
 		free(shell->input);
-	free_commands(shell);
 	ft_free_cmatrix(shell->env);
+	free_commands(shell);
 	free(shell);
 }
