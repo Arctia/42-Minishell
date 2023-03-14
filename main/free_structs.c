@@ -3,31 +3,13 @@
 
 static void	free_things_inside_command(t_command *cmd)
 {
-	int	i;
-
-	//pfn("%3t free str");
-	if (cmd->str != NULL)
-		free(cmd->str);
-	//pfn("%3t free command %p	%s", cmd->command, cmd->command);
-	if (cmd->command != NULL)
-		free(cmd->command);
-	i = 0;
-	//pfn("%3t free tokens");
-	if (cmd->tokens != NULL)
-	{
-		while (cmd->tokens[i])
-			free(cmd->tokens[i++]);
-		free(cmd->tokens);
-	}
-	i = 0;
-	//pfn("%3t free arguments");
-	if (cmd->arguments != NULL)
-	{
-		while (cmd->arguments[i])
-				free(cmd->arguments[i++]);
-		free(cmd->arguments);
-	}
-	//pfn("%3t free self");
+	ft_free_cmatrix(cmd->arguments);
+	ft_free_cmatrix(cmd->tokens);
+	ft_free_ptr(cmd->red_type);
+	ft_free_ptr(cmd->command);
+	ft_free_cmatrix(cmd->red);
+	ft_free_ptr(cmd->red);
+	ft_free_ptr(cmd->str);
 	free(cmd);
 }
 

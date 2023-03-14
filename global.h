@@ -1,8 +1,8 @@
 #ifndef GLOBAL_H
 # define GLOBAL_H
 
-// e libft?
 # include "./libft/libft.h"
+
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>

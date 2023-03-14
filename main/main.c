@@ -41,7 +41,7 @@ int	prompt_loop(t_hellmini *shell)
 				}
 			}
 		}
-		pfn("\n%3t try to free commands stack");
+		pfn("\n%3t try to free command stack");
 		free_commands(shell);
 		//free_shell(shell);
 		//exit(0);
