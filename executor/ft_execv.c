@@ -45,7 +45,9 @@ char	*ft_append(char *path, t_hellmini *shell)
 {
 	char	*ret;
 	char	*retaux;
+	char	*tmp;
 
+	tmp = shell->current_cmd->command;
 	ret = malloc(sizeof(char ) * (ft_strlen(path)
 				+ ft_strlen(shell->current_cmd->command)) + 2);
 	if (!ret)
@@ -57,6 +59,7 @@ char	*ft_append(char *path, t_hellmini *shell)
 	while (*shell->current_cmd->command)
 		*ret++ = *shell->current_cmd->command++;
 	*ret++ = '\0';
+	shell->current_cmd->command = tmp;
 	return (retaux);
 }
 
@@ -111,7 +114,7 @@ char	**ft_getpath(t_hellmini *shell, int i)
 	facile per essere a norma e non avere leak
 */
 
-char	*ft_findpath(t_hellmini *shell, int i)
+/*char	*ft_findpath(t_hellmini *shell, int i)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -128,8 +131,10 @@ i=0;
 			ft_fixcommand(shell);
 	while (path[i])
 	{
+
 		dir = opendir(path[i]);
 		entry = readdir(dir);
+
 		while (entry)
 		{
 	ft_printf("path[%d]:%s\n",i,path[i]);
@@ -144,7 +149,45 @@ i=0;
 				return (temp);
 			}
 				entry = readdir(dir);
+
 		}
+
+		closedir(dir);
+		i++;
+	}
+	return (NULL);
+}*/
+
+char	*ft_findpath(t_hellmini *shell, int i)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	char			**path;
+	char			*temp;
+
+	path = ft_getpath(shell, 0);
+	ft_fixcommand(shell);
+	while (path[i])
+	{
+
+		dir = opendir(path[i]);
+		entry = readdir(dir);
+
+		while (entry)
+		{
+			if (ft_strcmp(entry->d_name, shell->current_cmd->command))
+			{
+
+				closedir(dir);
+
+				temp = ft_append(path[i], shell);
+				ft_free_cmatrix(path);
+				return (temp);
+			}
+				entry = readdir(dir);
+
+		}
+
 		closedir(dir);
 		i++;
 	}
@@ -185,4 +228,3 @@ char	**ft_addlinetomatrix(char **arr, char *line)
 	rtn[i] = NULL;
 	return (rtn);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 16:02:29 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/10 21:57:33 by mbardett         ###   ########.fr       */
+/*   Updated: 2023/03/14 08:54:25 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,8 @@ int		ft_module(int n);
 int		ft_sqrt(long num);
 int		ft_isspace(int c);
 int		ft_isnotspace(int c);
+char	ft_isquote(char ch);
+char	ft_isredirection(char ch);
+void	ft_filliarrayto_n(int *arr, int val, int n);
 
 #endif

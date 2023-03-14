@@ -5,7 +5,7 @@ CC=gcc
 
 FLAGS= -g -Wall -Werror -Wextra -fno-stack-protector
 
-INCS = ./global.h ./executor/executor.h
+INCS = ./global.h ./executor/executor.h ./parser/parser.h
 
 SRCS=	./main/signals2_0.c \
 		./main/signals.c \
@@ -18,6 +18,7 @@ SRCS=	./main/signals2_0.c \
 		./lexer/lexer.c \
 		./lexer/lexer_splitter.c \
 		./parser/parser.c \
+		./parser/ps_utils.c \
 		./executor/executor.c \
 		./executor/ft_execv.c \
 		./executor/pipe.c \

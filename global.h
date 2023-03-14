@@ -38,6 +38,7 @@
 # define REDAPP 6
 # define HERDOC 7
 # define CASH 8
+# define EMPTY -1
 
 # define PROMPT "\033[1;31mminisHELL$:\033[0m "
 

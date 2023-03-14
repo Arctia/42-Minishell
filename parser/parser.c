@@ -1,44 +1,10 @@
 
-#include "../global.h"
+#include "./parser.h"
 #define GRN "\033[1;32m"
 #define WHITE "\033[0m"
 
 /*##############################################################################
-#	Help Functions
-############################################################################*/
-
-int	until_space(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && ft_isnotspace(str[i]))
-		i++;
-	return (i);
-}
-
-void	move_to_next_char(t_command *cmd)
-{
-	while (cmd->str[0] && ft_isspace(cmd->str[0]))
-		cmd->str++;
-}
-
-char	ft_isquote(char ch)
-{
-	if (ch == '\'' || ch == '"')
-		return (ch);
-	return ('\0');
-}
-
-int	to_next_quote(char *str, int i, char quote)
-{
-	while (str[i] && str[i] != quote)
-		i++;
-	return (i);
-}
-
-/*##############################################################################
-#	Set command name
+#	Set command name TO FIX for redirections add them if they're behind
 ############################################################################*/
 static void	set_command_name(t_command *cmd)
 {
@@ -52,9 +18,8 @@ static void	set_command_name(t_command *cmd)
 	cmd->command[i - 1] = '\0';
 }
 
-static void	set_arguments(t_command *cmd, int args)
+static void	set_arguments(t_command *cmd, int args, int i)
 {
-	int	i;
 	int	j;
 
 	cmd->arguments = (char **) malloc(sizeof(char *) * args + 1);
@@ -63,8 +28,10 @@ static void	set_arguments(t_command *cmd, int args)
 	i = 1;
 	while (i < args)
 	{
-		cmd->arguments[i - 1] = (char *) malloc(sizeof(char)
-				* ft_strlen(cmd->tokens[i]) + 1);
+		if (cmd->tokens[i] != NULL && 0[cmd->tokens[i]] == '|')
+			break ;
+		cmd->arguments[i - 1] = ft_calloc(sizeof(char),
+				ft_strlen(cmd->tokens[i]) + 1);
 		if (!cmd->arguments[i - 1])
 		{
 			free(cmd->arguments);
@@ -73,7 +40,6 @@ static void	set_arguments(t_command *cmd, int args)
 		j = 0;
 		while (cmd->tokens[i][j++])
 			cmd->arguments[i - 1][j - 1] = cmd->tokens[i][j - 1];
-		cmd->arguments[i - 1][j - 1] = '\0';
 		i++;
 	}
 	cmd->arguments[i - 1] = NULL;
@@ -192,6 +158,106 @@ void	write_word(char *cnt, t_command *cmd)
 	cnt[i] = '\0';
 }
 
+void	write_redirection(t_command *cmd, char c1, char c2)
+{
+	int	red_n;
+
+	red_n = 0;
+	while (cmd->red_type[red_n] && cmd->red_type[red_n] != -1)
+		red_n++;
+	if (c2 && c2 == '<')
+		cmd->red_type[red_n] = HERDOC;
+	else if (c2 && c2 == '>')
+		cmd->red_type[red_n] = REDAPP;
+	else if (c1 == '<')
+		cmd->red_type[red_n] = REDIN;
+	else if (c1 == '>')
+		cmd->red_type[red_n] = REDOUT;
+	move_to_next_char(cmd);
+	cmd->red[red_n] = ft_calloc(sizeof(char), ft_strlen(cmd->str) + 1);
+	write_word(cmd->red[red_n], cmd);
+}
+
+void	fill_token(t_command *cmd, int *argc)
+{
+	cmd->tokens[*argc] = ft_calloc(sizeof(char), ft_strlen(cmd->str) + 1);
+	if (!(cmd->tokens[*argc]))
+		return ;
+	write_word(cmd->tokens[*argc], cmd);
+	if (cmd->tokens[*argc] != NULL && cmd->tokens[*argc][0] == '|')
+	{
+		cmd->shell->mc_pipes += 1;
+		//cmd->tokens[*argc][0] = '\0';
+	}
+	*argc = *argc + 1;
+}
+
+void	before_write_word(t_command *cmd, int *argc, int *items)
+{
+	char	c;
+
+	c = ft_isredirection(cmd->str[0]);
+	if (c)
+	{
+		cmd->str++;
+		if (ft_isredirection(cmd->str[0]) == c)
+		{
+			cmd->str++;
+			write_redirection(cmd, c, c);
+		}
+		else
+			write_redirection(cmd, c, 0);
+		*items = *items - 2;
+	}
+	else
+	{
+		fill_token(cmd, argc);
+	}
+	move_to_next_char(cmd);
+}
+
+int	exit_quotes_if_it_is_one(char *str, int i)
+{
+	char	c;
+
+	c = ft_isquote(str[i]);
+	if (!c)
+		return (i);
+	i++;
+	while (!(ft_isquote(str[i]) == c))
+		i++;
+	return (i);
+}
+
+int	red_in_string(t_command *cmd, char *str, int red_n)
+{
+	char c;
+	int i;
+
+	i = 0;
+	c = 0;
+	while (str[i])
+	{
+		i = exit_quotes_if_it_is_one(str, i);
+		c = ft_isredirection(str[i]);
+		if (c && str[i + 1] && ft_isredirection(str[i + 1]))
+		{
+			red_n += 1;
+			i += 2;
+		}
+		else if (c)
+		{
+			red_n++;
+			i += 1;
+		}
+		else
+			i += 1;
+	}
+	cmd->red_type = ft_calloc(sizeof(int), red_n + 1);
+	cmd->red = (char **) malloc(sizeof(char *) * red_n + 1);
+	return (red_n);
+}
+
 /* __ split string ______________________?______________________________________
 		. Count items to be store and allocate them
 		. Allocate every single item
@@ -201,12 +267,18 @@ int	split_string(t_command *cmd)
 {
 	char	*init;
 	int		items;
+	int		red_n;
 	int		c;
 
 	init = cmd->str;
 	write(1, "ciaonez\n", 9);
 	move_to_next_char(cmd);
+
 	write(1, "le chars\n", 10);
+
+	red_n = red_in_string(cmd, cmd->str, 0);
+	ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
+
 	items = items_in_string(cmd->str);
 	write(1, "le items\n", 10);
 	cmd->tokens = (char **) malloc(sizeof(char *) * items + 1);
@@ -216,13 +288,8 @@ int	split_string(t_command *cmd)
 	c = 0;
 	while (cmd->str[0] != 0)
 	{
-		cmd->tokens[c] = (char *) malloc(sizeof(char)
-				* ft_strlen(cmd->str) + 1);
-		if (!(cmd->tokens[c]))
-			return (0);
-		write_word(cmd->tokens[c], cmd);
-		move_to_next_char(cmd);
-		c++;
+		//write_from_quote_to_quote(cmd->tokens[c])
+		before_write_word(cmd, &c, &items);
 	}
 	cmd->tokens[c] = NULL;
 	cmd->str = init;
@@ -326,6 +393,11 @@ void	print_arguments_and_flags(t_command *cmd)
 		i++;
 	}
 	pfn("%t -----------------------");
+	i = -1;
+	while (cmd->red_type[++i] != 0)
+		pfn("%t %d. %s -> %s", i, ar[cmd->red_type[i]], cmd->red[i]);
+	pfn("%t -----------------------");
+	pfn("%t shell pipes: %d", cmd->shell->mc_pipes);
 }
 
 int	parser(t_hellmini *sh)
@@ -333,6 +405,7 @@ int	parser(t_hellmini *sh)
 	t_command	*cmd;
 	int			args;
 
+	sh->mc_pipes = 0;
 	cmd = sh->current_cmd;
 	while (cmd && cmd != NULL)
 	{
@@ -340,9 +413,9 @@ int	parser(t_hellmini *sh)
 		if (!args)
 			return (FAIL);
 		set_command_name(cmd);
-		set_arguments(cmd, args);
 		init_flags(cmd);
 		set_cmd_flags(cmd, 0);
+		set_arguments(cmd, args, 1);
 		print_arguments_and_flags(cmd);
 		if (cmd->next)
 			cmd = cmd->next;
