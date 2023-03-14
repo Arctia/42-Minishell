@@ -11,12 +11,12 @@ static int	cd_prev_folder(t_hellmini *shell, char *arg, int *pfc)
 {
 	char	*old_path;
 
-	old_path = exp_tkn("", shell->env);
+	old_path = exp_tkn("OLDPWD", shell->env);
 	if (arg[0] == '-' && arg[1] == '\0')
 	{
 		if (old_path == NULL)
 		{
-			pfn("cd: OLDPWD not set");
+			pfn("bash: cd: OLDPWD not set");
 			*pfc = -1;
 		}
 		else
@@ -57,7 +57,7 @@ static int	cd_execute(t_command *cmd)
 	if (error)
 	{
 		//pfn("cd: no such file or directory: %s\n", cmd->args[1]);
-		perror("cd: ");
+		pfn("bash: cd: %s: Not a directory");
 		return (1);
 	}
 	pfn("CWD: %s", getcwd(NULL, 0));
