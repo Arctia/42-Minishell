@@ -112,5 +112,6 @@ int	main(int argc, char **argv, char **env)
 	shell.env = env;
 	init_shell_env(shell.env, shell);
 	init_shell(&shell);
+	alpha_sort(shell.env);
 	prompt_loop(&shell);
 }

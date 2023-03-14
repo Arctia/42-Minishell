@@ -10,6 +10,7 @@ INCS = ./global.h ./executor/executor.h ./parser/parser.h
 SRCS=	./main/signals2_0.c \
 		./main/signals.c \
 		./main/tokenizer.c \
+		./expander/export.c \
 		./expander/expander_utils.c \
 		./main/expander.c \
 		./main/env_handlers.c \
@@ -22,7 +23,7 @@ SRCS=	./main/signals2_0.c \
 		./executor/executor.c \
 		./executor/ft_execv.c \
 		./executor/pipe.c \
-		./executor/redir.c
+		./executor/redir.c 
 
 READLINE_DIR = $(shell brew --prefix readline)
 
@@ -41,7 +42,7 @@ LIBFT=./libft/libft.a
 # 				-I$(HOME)/.brew/opt/readline/include
 
 $(NAME): $(OBJS) $(LIBFT)
-		$(CC) $(FLAGS) $(SRCS) $(LIBFT) $(READLINE_LIB) -o $(NAME) 
+		$(CC) $(FLAGS) $(SRCS) $(LIBFT) $(READLINE_LIB) -o $(NAME)
 #$(READLINE)
 
 $(LIBFT):

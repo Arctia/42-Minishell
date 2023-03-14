@@ -127,5 +127,11 @@ void					sigquit_handler(int sig);
 void					sigquit_macro(int sig, t_hellmini *shell);
 void					*ft_handler(int sig);
 void					ft_sigs_handler(int sig);
+//export.c
+char 					**exp_(t_hellmini shell);
+void					alpha_sort(char **mtrx);
 
+//main.c
+int						prompt_loop(t_hellmini *shell);
+void					init_shell(t_hellmini *shell);
 #endif
