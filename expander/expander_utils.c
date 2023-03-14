@@ -63,28 +63,27 @@ char	*exp_tkn(char *str, char **env)
 	return (new_token);
 }
 
-char	**ft_arrdup(char **arr)
+char	**ft_arrdup(char **ar)
 {
-	char	**rtn;
-	size_t	i;
+	char	**ret;
+	int		i;
 
 	i = 0;
-	while (arr[i] != NULL)
+	while (ar[i])
 		i++;
-	rtn = ft_calloc(sizeof(char *), i + 1);
-	if (!rtn)
+	ret = ft_calloc(sizeof(char *), i + 1);
+	if (!ret)
 		return (NULL);
 	i = 0;
-	while (arr[i] != NULL)
+	while (ar[i])
 	{
-		rtn[i] = ft_strdup(arr[i]);
-		if (rtn[i] == NULL)
+		ret[i] = ft_strdup(ar[i]);
+		if (!ret[i])
 		{
-			free_arr(rtn);
-			return (rtn);
+			ft_free_cmatrix(ret);
+			return (NULL);
 		}
 		i++;
 	}
-	rtn[i] = NULL;
-	return (rtn);
+	return (ret);
 }

@@ -138,9 +138,11 @@ void	ft_executor(t_hellmini *shell)
 	pid = 111;
 	while (cmd)
 	{
-		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] || cmd->spc[CASH])
+		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] 
+				|| cmd->spc[CASH])
 			expander(cmd);
-		pfn("\n%t running command: %s", cmd->str);
+		pfn("%3t -----------------------------------------------------------");
+		pfn("%t running command: %s", cmd->str);
 		if (cmd->next == NULL)	//simple command?
 		{
 			// if (ft_strcmp(cmd->command, builtin[i]))

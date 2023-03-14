@@ -13,7 +13,7 @@
 //tokenizing the input. And it's quite some badass music.
 //If you don't agree, feel free to go and f##k off :)
 
-int	prompt_loop(t_hellmini *shell)
+static int	prompt_loop(t_hellmini *shell)
 {
 	while(1)
 	{
@@ -41,10 +41,8 @@ int	prompt_loop(t_hellmini *shell)
 				}
 			}
 		}
-		pfn("\n%3t try to free command stack");
+		//pfn("\n%3t try to free command stack");
 		free_commands(shell);
-		//free_shell(shell);
-		//exit(0);
 		//rl_on_new_line();
 		//free(shell->input);
 	}
@@ -92,25 +90,58 @@ int	prompt_loop(t_hellmini *shell)
 // 	return (0);
 // }
 
-void	init_shell(t_hellmini *shell)
+static void	init_shell_env(char **or_env, t_hellmini *shell)
 {
-	init_shell_env(shell->env, *shell);
-	shell->exit_status = 0;
+	char	*sh_lvl;
+	char	*itoa;
+	int		i;
+
+	shell->env = ft_arrdup(or_env);
+	if (!shell->env)
+	{
+		write(1, "Error!Not enough memory to set env\n", 36);
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	while (or_env[i])
+	{
+		if (!ft_strncmp(or_env[i], "SHLVL=", 6))
+		{
+			sh_lvl = ft_strtrim(or_env[i], "SHLVL=");
+			itoa = ft_itoa(ft_atoi(sh_lvl) + 1);
+			free(shell->env[i]);
+			shell->env[i] = ft_strjoin("SHLVL=", itoa);
+			break ;
+		}
+		i++;
+	}
+	free(itoa);
+	free(sh_lvl);
+}
+
+static void	init_shell(t_hellmini *shell, char **env)
+{
+	shell->env = NULL;
 	shell->input = NULL;
 	shell->mc_pipes = 0;
 	shell->mc_quotes = 0;
 	shell->mc_wquotes = 0;
+	shell->exit_status = 0;
 	shell->current_cmd = NULL;
+	init_shell_env(env, shell);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_hellmini	shell;
+	t_hellmini	*shell;
 
 	(void)argc;
 	(void)argv;
-	shell.env = env;
-	init_shell_env(shell.env, shell);
-	init_shell(&shell);
-	prompt_loop(&shell);
+
+	shell = (t_hellmini *) malloc(sizeof(t_hellmini));
+	if (!shell)
+		return (EXIT_FAILURE);
+	init_shell(shell, env);
+	prompt_loop(shell);
+	return (0);
 }
