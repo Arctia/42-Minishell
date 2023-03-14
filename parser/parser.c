@@ -240,21 +240,21 @@ int	red_in_string(t_command *cmd, char *str, int red_n)
 	{
 		i = exit_quotes_if_it_is_one(str, i);
 		c = ft_isredirection(str[i]);
-		if (c && str[i + 1] && ft_isredirection(str[i + 1]))
-		{
-			red_n += 1;
+		if (c && str[i + 1] && ft_isredirection(str[i + 1]) && red_n++ >= 0)
 			i += 2;
-		}
-		else if (c)
-		{
+		else if (c && red_n++ >= 0)
 			red_n++;
 			i += 1;
-		}
 		else
 			i += 1;
 	}
-	cmd->red_type = ft_calloc(sizeof(int), red_n + 1);
-	cmd->red = (char **) malloc(sizeof(char *) * red_n + 1);
+	if (red_n > 0)
+	{
+		cmd->red_type = ft_calloc(sizeof(int), red_n + 1);
+		cmd->red = (char **) malloc(sizeof(char *) * red_n + 1);
+		cmd->red_type[red_n + 1] = 0;
+		cmd->red[red_n + 1] = NULL;
+	}
 	return (red_n);
 }
 
