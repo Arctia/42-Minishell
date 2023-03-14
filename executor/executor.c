@@ -110,8 +110,8 @@ void	ft_execv(t_command *cmd, pid_t pid)
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
 	}
-	ft_free_cmatrix(arg);
-	free(path);
+	// ft_free_cmatrix(arg);
+	// free(path);
 	// exit(EXIT_FAILURE);
 }
 
