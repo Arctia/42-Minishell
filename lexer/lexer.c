@@ -16,9 +16,11 @@ t_command	*init_command(t_hellmini *shell)
 	cmd->command = NULL;
 	cmd->flags = NULL;
 	cmd->arguments = NULL;
-	cmd->ret = 0;
+	cmd->red_type = NULL;
+	cmd->red = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
+	cmd->ret = 0;
 	cmd->shell = shell;
 	return (cmd);
 }
