@@ -13,7 +13,7 @@ char	*ft_expander(char *str, char **env);
 int		(*ft_builtin(char *str))(t_command *cmd);
 void	ft_fixcommand(t_command *cmd);
 void	ft_execv(t_command *cmd, pid_t pid);
-void	ft_executor(t_hellmini *parser);
+void	ft_executor(t_command *parser);
 
 /*
 	***********************************************************
@@ -31,12 +31,12 @@ char    **ft_addlinetomatrix(char **arr, char *line);
 	***********************************************************
 */
 void	ft_pipe(t_command *cmd);
-void	ft_pipeline(t_command *cmd);
-void	ft_pipejunior(t_command *cmd,int *fd, int n_pipe);
+void	ft_pipeline(t_command *cmd, int std_cpy);
+void	ft_pipejunior(t_command *cmd, int *fd, int n_pipe, int std_cpy);
 
 // void	ft_pipejunior(t_command *cmd);
 void	ft_fixstinpipe(t_command *cmd, Pipe output);
-void	ft_execvepipe(t_command *cmd,int fd);
+void	ft_execvepipe(t_command *cmd);
 /*
 	***********************************************************
 					redir.c

@@ -409,7 +409,7 @@ int	parser(t_hellmini *sh)
 		init_flags(cmd);
 		set_cmd_flags(cmd, 0);
 		set_arguments(cmd, args, 1);
-		// print_arguments_and_flags(cmd);
+		print_arguments_and_flags(cmd);
 		if (cmd->next)
 			cmd = cmd->next;
 		else

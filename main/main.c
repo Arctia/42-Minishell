@@ -15,6 +15,9 @@
 
 static int	prompt_loop(t_hellmini *shell)
 {
+	// t_command *cmd;
+
+	// cmd = shell->current_cmd;
 	while(1)
 	{
 		signal(SIGINT, ft_sigs_handler);
@@ -37,7 +40,7 @@ static int	prompt_loop(t_hellmini *shell)
 				if (parser(shell) == SUCCESS)
 				{
 					pfn("\n%3t enter executor");
-					ft_executor(shell);
+					ft_executor(shell->current_cmd);
 				}
 			}
 		}
@@ -96,6 +99,8 @@ static void	init_shell_env(char **or_env, t_hellmini *shell)
 	char	*itoa;
 	int		i;
 
+	itoa = NULL;
+	sh_lvl = NULL;
 	shell->env = ft_arrdup(or_env);
 	if (!shell->env)
 	{
