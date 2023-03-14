@@ -7,7 +7,7 @@
 		 	else write an error
 		 ° store in *pfc the executed code status
 ############################################################################*/
-static int	cd_prev_folder(char *arg, int *pfc)
+static int	cd_prev_folder(t_hellmini *shell, char *arg, int *pfc)
 {
 	char	*old_path;
 
@@ -39,12 +39,14 @@ static int	cd_prev_folder(char *arg, int *pfc)
 		 ° if error print no directory at path
 									 - remove last printf after implementation
 ############################################################################*/
-static int	cd_execute(t_command *cmd, t_hellmini *shell)
+static int	cd_execute(t_command *cmd)
 {
+	int	error;
 	int	pfc;
 
 	pfc = 0;
-	if (cd_prev_folder(cmd->arguments[0], &pfc) == 1)
+	error = -1;
+	if (cd_prev_folder(cmd->shell, cmd->arguments[0], &pfc) == 1)
 	{
 		if (pfc == -1)
 			return (1);
@@ -90,19 +92,16 @@ static void	cd_replace_null(t_command *cmd, char *str)
 ############################################################################*/
 int	cd(t_command *cmd)
 {
-	char	argument[PATH_MAX];
 	char	*home;
-	int		i;
-
-	i = 0;
-	home = get_env_var("HOME");
+	
+	home = exp_tkn("HOME", cmd->shell->env);
 	if (cmd->arguments[0] && cmd->arguments[1])
 	{
-		pfn("cd: too many arguments");
+		pfn("bash: cd: too many arguments");
 		return (1);
 	}
 	else if (!(cmd->arguments[0]))
 		cd_replace_null(cmd, home);
 	ft_free_ptr(home);
-	return (execute_cd(cmd));
+	return (cd_execute(cmd));
 }
