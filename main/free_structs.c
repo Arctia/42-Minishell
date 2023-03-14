@@ -10,7 +10,7 @@ static void	free_things_inside_command(t_command *cmd)
 	ft_free_cmatrix(cmd->red);
 	ft_free_ptr(cmd->red);
 	ft_free_ptr(cmd->str);
-	free(cmd);
+	ft_free_ptr(cmd);
 }
 
 void	free_commands(t_hellmini *shell)
@@ -34,23 +34,9 @@ void	free_commands(t_hellmini *shell)
 	copy of it */
 void	free_shell(t_hellmini *shell)
 {
-	//pfn("%t entering shell free after execut fail");
 	if (shell->input)
 		free(shell->input);
-	//pfn("%t free commands");
 	free_commands(shell);
-
-	//pfn("%t env not freable...");
-	/*int i = 0;
-	{
-		while(shell->env[i])
-		{
-			//pfn("li %i %s", i, shell->env[i]);
-			free(shell->env[i]);
-			i++;
-		}
-	}
-	free(shell->env);*/
-	//pfn("%t free shell, wrong size, env to blame");
+	ft_free_cmatrix(shell->env);
 	free(shell);
 }

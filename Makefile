@@ -7,11 +7,8 @@ FLAGS= -g -Wall -Werror -Wextra
 
 INCS = ./global.h ./executor/executor.h ./parser/parser.h
 
-SRCS=	./main/signals2_0.c \
+SRCS =	./main/signals2_0.c \
 		./main/signals.c \
-		./main/tokenizer.c \
-		./main/expander.c \
-		./main/env_handlers.c \
 		./main/main.c \
 		./main/free_structs.c \
 		./lexer/lexer.c \
@@ -23,7 +20,7 @@ SRCS=	./main/signals2_0.c \
 		./executor/pipe.c \
 		./executor/redir.c \
 		./expander/expander.c \
-		./expander/expander_utils.c 
+		./expander/expander_utils.c
 
 READLINE_DIR = $(shell brew --prefix readline)
 
