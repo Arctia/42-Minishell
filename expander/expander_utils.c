@@ -1,7 +1,7 @@
 #include "../global.h"
 
 
-///receives cmd, 
+///receives cmd,
 // void    handle_quotes(t_command cmd)
 // {
 //     int         i;
@@ -56,7 +56,7 @@ int mini_mini_sort(int a, int b, int c)
 //norm-proof version, fetches min nbr out of three
 int mini_sort(char *str)
 {
-    char set[2];
+    char set[3];
     int min;
     int qi;
     int wi;
@@ -94,7 +94,7 @@ int    expansion_explosion(char *str,char tmp[4095], int *index, char **env)
 write(1, "YOYOYO\n", 7);
     i = *index;
     j = 0;
-    while (str[++i] != '\''|| str[i] != '"' 
+    while (str[++i] != '\''|| str[i] != '"'
         || str[i] != '$' || str[i] != '\0' || !ft_isspace(str[i]))
     {
         buff[j++] = str[i];
@@ -114,7 +114,7 @@ write(1, "YOYOYO\n", 7);
 //     int f;
 //     int c;
 //     char tmp[4095];
-    
+
 //     f = mini_sort(str);
 //     c = str[f];
 //     while (++k < f && (str[k] != c && (c == '"' || c == '\'') || str[k]))
@@ -126,7 +126,7 @@ write(1, "YOYOYO\n", 7);
 //     return (tmp);
 // }
 
-// char    *new_tkn(char *ol_tkn, t_command cmd) 
+// char    *new_tkn(char *ol_tkn, t_command cmd)
 // {
 //     int     i;
 //     int     f;
@@ -144,7 +144,7 @@ write(1, "YOYOYO\n", 7);
 //             // f = mini_sort(ol_tkn);
 //             // c = ol_tkn[f];
 //             // while (++k < f)
-//             // {   
+//             // {
 //             //     if (ol_tkn[k] == '$')
 //             //         i += expansion_explosion(ol_tkn,tmp, &k, &cmd.shell->env);
 //             //     tmp[i] = ol_tkn[k];
