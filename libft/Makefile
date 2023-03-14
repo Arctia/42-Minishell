@@ -6,7 +6,7 @@ NAME 		= libft.a
 BUFFER 		= 42
 BSIZE 		= -D BUFFER_SIZE=$(BUFFER)
 CC 			= gcc
-FLAGS 		= #-Wall -Wextra -Werror
+FLAGS 		= -Wall -Wextra -Werror
 
 ################################################################################
 # - Taking all *.c and *.h that are needed to compile actual source (not libs)
