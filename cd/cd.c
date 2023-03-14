@@ -6,7 +6,7 @@
 		 ° if '-' is the argument try to go to previous folder if stored
 		 	else write an error
 		 ° store in *pfc the executed code status
-##############################################################################*/
+############################################################################*/
 static int	cd_prev_folder(char *arg, int *pfc)
 {
 	char	*old_path;
@@ -38,7 +38,7 @@ static int	cd_prev_folder(char *arg, int *pfc)
 		 ° if '-' is the argument go to previous fd stored in static pf
 		 ° if error print no directory at path
 									 - remove last printf after implementation
-##############################################################################*/
+############################################################################*/
 static int	cd_execute(t_command *cmd, t_hellmini *shell)
 {
 	int	pfc;
@@ -66,7 +66,7 @@ static int	cd_execute(t_command *cmd, t_hellmini *shell)
 ####	Replace empty arguments: 
 		 ° allocate arguments
 		 ° store home path in first argument
-##############################################################################*/
+############################################################################*/
 static void	cd_replace_null(t_command *cmd, char *str)
 {
 	int	i;
@@ -87,7 +87,7 @@ static void	cd_replace_null(t_command *cmd, char *str)
 ####	Main CD function: 
 		 ° return error if more than 1 argument
 		 ° replace no argument with HOME path
-##############################################################################*/
+############################################################################*/
 int	cd(t_command *cmd)
 {
 	char	argument[PATH_MAX];
