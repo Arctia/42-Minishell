@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:56:48 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/14 14:57:24 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:04:21 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,6 @@ void	expander(t_command *cmd)
 		pfn("%t expanded command: (null)");
 
 	i = 0;
-	pfn("%t (nothing)");
 	while (cmd->arguments && cmd->arguments[i] && cmd->arguments[i][0])
 	{
 		cmd->arguments[i] = replace_token(cmd, &(cmd->arguments[i]));
@@ -180,13 +179,10 @@ void	expander(t_command *cmd)
 		i++;
 	}
 	i = 0;
-	pfn("%t (nothing)");
 	/*while (cmd->red && cmd->red[i] && cmd->red[i][0])
 	{
-		pfn("%t (nothing) %c", cmd->red[i][0]);
 		cmd->red[i] = replace_token(cmd, &(cmd->red[i]));
 		pfn("%t expanded red[%d]: %s", i,cmd->red[i]);
 		i++;
 	}*/
-	pfn("%t (nothing)");
 }
