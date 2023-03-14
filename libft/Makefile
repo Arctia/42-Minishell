@@ -14,7 +14,7 @@ FLAGS 		= -Wall -Wextra -Werror
 SUBDIRS 	= ft_printf ft_printf/printers get_next_line
 DIR_OBJ 	= ./obj
 OBJS 		= $(SRCS:.c=.o)
-INC_DIRS 	= -I./ $(addprefix -I, $(SUBDIRS))	
+INC_DIRS 	= -I./ $(addprefix -I, $(SUBDIRS))
 
 INCS 		= libft.h ft_printf.h get_next_line.h
 
