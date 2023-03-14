@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:56:48 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/14 15:04:21 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:19:04 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,10 @@ void	expander(t_command *cmd)
 		i++;
 	}
 	i = 0;
-	/*while (cmd->red && cmd->red[i] && cmd->red[i][0])
+	while (cmd->red && cmd->red[i] && cmd->red[i][0])
 	{
 		cmd->red[i] = replace_token(cmd, &(cmd->red[i]));
 		pfn("%t expanded red[%d]: %s", i,cmd->red[i]);
 		i++;
-	}*/
+	}
 }
