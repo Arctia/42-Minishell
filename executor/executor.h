@@ -32,11 +32,11 @@ char    **ft_addlinetomatrix(char **arr, char *line);
 */
 void	ft_pipe(t_command *cmd);
 void	ft_pipeline(t_command *cmd);
-void	ft_pipejunior(int *fd);
+void	ft_pipejunior(t_command *cmd,int *fd, int n_pipe);
 
 // void	ft_pipejunior(t_command *cmd);
 void	ft_fixstinpipe(t_command *cmd, Pipe output);
-void	ft_execvepipe(t_command *cmd);
+void	ft_execvepipe(t_command *cmd,int fd);
 /*
 	***********************************************************
 					redir.c
