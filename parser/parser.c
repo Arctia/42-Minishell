@@ -372,7 +372,7 @@ void	print_arguments_and_flags(t_command *cmd)
 	char *co[] = {" ", GRN"TRUE"WHITE};
 	i = 0;
 	pfn("%2t command: '%s'", cmd->command);
-	while (cmd->arguments[i])
+	while (cmd->arguments && cmd->arguments[i])
 	{
 		pfn("%2t arg[%d]: '%s'", i, cmd->arguments[i]);
 		i++;
