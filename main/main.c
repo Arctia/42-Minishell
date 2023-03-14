@@ -36,8 +36,8 @@ int	prompt_loop(t_hellmini *shell)
 				pfn("\n%3t enter parser");
 				if (parser(shell) == SUCCESS)
 				{
-					//pfn("\n%3t enter executor");
-					//ft_executor(shell);
+					pfn("\n%3t enter executor");
+					ft_executor(shell);
 				}
 			}
 		}
