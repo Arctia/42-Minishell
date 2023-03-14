@@ -180,11 +180,13 @@ void	ft_executor(t_hellmini *shell)
 void	ft_fixcommand(t_hellmini *shell)
 {
 	char	*temp;
+	char	*tmp;
+
 	if (ft_strncmp("./", shell->current_cmd->command, 2) == 0)
 	{
+		tmp = shell->current_cmd->command;
 		temp = ft_strtrim(shell->current_cmd->command, "./");
-		free(shell->current_cmd->command);
-		shell->current_cmd->command = ft_strdup(temp);
-		free(temp);
+		shell->current_cmd->command = temp;
+		free(tmp);
 	}
 }

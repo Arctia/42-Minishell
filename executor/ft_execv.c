@@ -45,7 +45,9 @@ char	*ft_append(char *path, t_hellmini *shell)
 {
 	char	*ret;
 	char	*retaux;
+	char	*tmp;
 
+	tmp = shell->current_cmd->command;
 	ret = malloc(sizeof(char ) * (ft_strlen(path)
 				+ ft_strlen(shell->current_cmd->command)) + 2);
 	if (!ret)
@@ -57,6 +59,7 @@ char	*ft_append(char *path, t_hellmini *shell)
 	while (*shell->current_cmd->command)
 		*ret++ = *shell->current_cmd->command++;
 	*ret++ = '\0';
+	shell->current_cmd->command = tmp;
 	return (retaux);
 }
 
@@ -122,12 +125,15 @@ char	*ft_findpath(t_hellmini *shell, int i)
 	ft_fixcommand(shell);
 	while (path[i])
 	{
+
 		dir = opendir(path[i]);
 		entry = readdir(dir);
+
 		while (entry)
 		{
 			if (ft_strcmp(entry->d_name, shell->current_cmd->command))
 			{
+
 				closedir(dir);
 
 				temp = ft_append(path[i], shell);
@@ -135,7 +141,9 @@ char	*ft_findpath(t_hellmini *shell, int i)
 				return (temp);
 			}
 				entry = readdir(dir);
+
 		}
+
 		closedir(dir);
 		i++;
 	}
@@ -176,4 +184,3 @@ char	**ft_addlinetomatrix(char **arr, char *line)
 	rtn[i] = NULL;
 	return (rtn);
 }
-
