@@ -1,15 +1,5 @@
 #include "./../global.h"
 
-int	ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		str[i++];
-	return (i);
-}
-
 /*##############################################################################
 ####	replace string: 
 		 ° replace characters of a defined lenght string
@@ -25,7 +15,7 @@ void	replace_string(char *s1, const char *s2)
 	//s1[i] = 0;
 }
 
-int	too_many_arguments(char arg[2024])
+int	too_many_arguments(**char arg)
 {
 	if (arg[0] != 0)
 	{
@@ -47,7 +37,7 @@ int	cmd_cd_previous_folder(char cmd[2048][2048], char pf[PATH_MAX], int *pfc)
 	{
 		if (pf[0] == 0)
 		{
-			printf("cd: OLDPWD not set\n");
+			pfn("cd: OLDPWD not set");
 			*pfc = -1;
 		}
 		else
