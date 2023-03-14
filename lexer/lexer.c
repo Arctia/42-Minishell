@@ -10,7 +10,7 @@ t_command	*init_command(t_hellmini *shell)
 		return (NULL);
 	cmd->str = NULL;
 	i = 0;
-	while (i < 9)
+	while (i < 10)
 		cmd->spc[i++] = 0;
 	cmd->arguments = NULL;
 	cmd->red_type = NULL;

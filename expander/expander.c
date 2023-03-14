@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:56:48 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/14 15:50:32 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/14 19:41:40 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static char	*replace_token(t_command *cmd, char *(*str))
 	int		i;
 
 	i = 0;
+	expand_tilde(cmd->shell, buff, str, &i);
 	while (*str[0])
 	{
 		to_next_single_quote(str, buff, &i);

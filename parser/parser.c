@@ -316,6 +316,8 @@ void	set_operator_flags(t_command *cmd, char *s, int *m)
 		cmd->spc[REDIN] = 1;
 	else if (s[*m] == '>')
 		cmd->spc[REDOUT] = 1;
+	else if (s[*m] == '~')
+		cmd->spc[TILDE] = 1;
 }
 
 void	set_meta_flags(t_command *cmd,char c)

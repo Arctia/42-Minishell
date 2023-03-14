@@ -1,6 +1,25 @@
 
 #include "./expander.h"
 
+void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i)
+{
+	char	*home;
+	int		c;
+
+	home = NULL;
+	if (!((*str)[0] == '~' && ((*str)[1] == '/' || !((*str)[1]))))
+		return ;
+	home = exp_tkn("HOME", sh->env);
+	c = 0;
+	while (home[c])
+	{
+		buff[*i] = home[c++];
+		*i = *i + 1;
+	}
+	(*str)++;
+	ft_free_ptr(home);
+}
+
 void	to_next_single_quote(char *(*str), char buff[4095], int *i)
 {
 	if (*str[0] == '\'')
@@ -63,6 +82,7 @@ char	*exp_tkn(char *str, char **env)
 	return (new_token);
 }
 
+// to move in libft
 char	**ft_arrdup(char **ar)
 {
 	char	**ret;
