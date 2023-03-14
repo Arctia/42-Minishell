@@ -140,7 +140,7 @@ void	ft_executor(t_hellmini *shell)
 	{
 		if (cmd->spc[DQUOTE] || cmd->spc[CASH])
 			cmd->command
-				= ft_expander(cmd->command, shell->env);
+				= expander(cmd);
 		if (cmd->next == NULL)	//simple command?
 		{
 			// if (ft_strcmp(cmd->command, builtin[i]))

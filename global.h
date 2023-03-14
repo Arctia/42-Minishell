@@ -84,6 +84,12 @@ typedef struct s_command
 	t_hellmini 			*shell;
 }	t_command;
 
+// expander/expander.c
+void					expander(t_command *cmd);
+
+// exp / utils.c
+char    				**ft_arrdup(char **arr);
+
 // main/free_structs.c
 void					free_commands(t_hellmini *shell);
 void					free_shell(t_hellmini *shell);
@@ -107,7 +113,7 @@ char					**rip_and_tear(t_command *command, char *str);
 
 //expander.c
 void					free_arr(char **split_arr);
-char					**ft_arrdup(char **arr);
+//char					**ft_arrdup(char **arr);
 char					*exp_tkn(char *str, char **env);
 
 //env_handlers.c
