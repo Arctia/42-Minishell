@@ -110,8 +110,8 @@ void	ft_execv(t_command *cmd, pid_t pid)
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
 	}
-	//ft_free_cmatrix(arg);
-	free(path);
+	// ft_free_cmatrix(arg);
+	// free(path);
 	// exit(EXIT_FAILURE);
 }
 
@@ -138,9 +138,11 @@ void	ft_executor(t_hellmini *shell)
 	pid = 111;
 	while (cmd)
 	{
-		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] || cmd->spc[CASH])
+		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] 
+				|| cmd->spc[CASH])
 			expander(cmd);
-		pfn("\n%t running command: %s", cmd->str);
+		pfn("%3t -----------------------------------------------------------");
+		pfn("%t running command: %s", cmd->str);
 		if (cmd->next == NULL)	//simple command?
 		{
 			// if (ft_strcmp(cmd->command, builtin[i]))
@@ -165,7 +167,7 @@ void	ft_executor(t_hellmini *shell)
 		}
 		// ft_execv(shell, pid); //see function comment maybe every single exceptio call his own ft_sexecv
 		// if (cmd->next)
-			cmd = cmd->next;
+		cmd = cmd->next;
 	}
 }
 

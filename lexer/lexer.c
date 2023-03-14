@@ -9,19 +9,18 @@ t_command	*init_command(t_hellmini *shell)
 	if (!cmd)
 		return (NULL);
 	cmd->str = NULL;
-	cmd->tokens = NULL;
 	i = 0;
 	while (i < 9)
 		cmd->spc[i++] = 0;
-	cmd->command = NULL;
-	cmd->flags = NULL;
 	cmd->arguments = NULL;
 	cmd->red_type = NULL;
-	cmd->red = NULL;
+	cmd->command = NULL;
+	cmd->tokens = NULL;
+	cmd->shell = shell;
 	cmd->next = NULL;
 	cmd->prev = NULL;
+	cmd->red = NULL;
 	cmd->ret = 0;
-	cmd->shell = shell;
 	return (cmd);
 }
 
@@ -39,22 +38,6 @@ void	kalirio()
 		//printf("mio signore, il cammino fino a qui è assicurato, buona continuazione\n");
 	}
 }
-
-/*int	ft_strlen(char *str)
-{
-	int i = 0;
-
-	while(str[i])
-		str[i++];
-	return (i);
-}
-
-int	ft_isspace(int c)
-{
-	if (9 <= c && c <= 13 || c == 32)
-		return (1);
-	return (0);
-}*/
 
 //makes sure no quotes are not closed
 int check_closures(char *line, int i)
@@ -199,24 +182,3 @@ int lexer_init(t_hellmini *shell)
 	
 	return (0);
 }
-
-//testing main, remove after testing
-/*int main(int argc, char **argv)
-{
-	t_hellmini shell;
-	int	i;
-
-	i = 0;
-	shell.input = malloc(sizeof(char) * ft_strlen(argv[1]) + 1);
-	while (i < ft_strlen(argv[1]))
-	{
-		shell.input[i] = argv[1][i];
-		i++;
-	}
-	shell.input[i] = '\0';
-
-	kalirio();
-	lexer_init(&shell);
-	
-	return (0);
-}*/

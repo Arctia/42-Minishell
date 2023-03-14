@@ -1,8 +1,8 @@
 #ifndef GLOBAL_H
 # define GLOBAL_H
 
-// e libft?
 # include "./libft/libft.h"
+
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -23,7 +23,7 @@
 
 // Constant declarations
 //# define NAME_MAX 255
-// # define PATH_MAX 1024
+//# define PATH_MAX 1024
 # define SUCCESS 0
 # define FAIL 1
 
@@ -42,7 +42,7 @@
 
 # define PROMPT "\033[1;31mminisHELL$:\033[0m "
 
-//per far funzionare rl_replace_lline
+//per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
 
 // Struct declarations --> Every array/matrix should be null terminated
@@ -50,19 +50,16 @@ typedef struct s_hellmini
 {
 	char 				**env;
 
-	int					exit_status;
 	char				*input;
 	struct s_command 	*current_cmd;
+
+	int					exit_status;
 	int					mc_pipes;
 	int					mc_quotes;
 	int					mc_wquotes;
 
-//	pid_t				pid; // maybe
 }           t_hellmini;
 
-//words_operators e'la prima splittata(" ")dell'input, ergo la prima tokenizzazione;
-//potrebbe servirne una ulteriore per semplificare la lettura del codice(in generale ma
-//soprattutto in presenza di < > << >>)
 typedef struct s_command
 {
 	char				*str;
@@ -70,7 +67,6 @@ typedef struct s_command
 	int					spc[9];
 
 	char				*command;
-	char				**flags; // useless (?)
 	char				**arguments;
 
 	int					*red_type;
@@ -87,7 +83,7 @@ typedef struct s_command
 // expander/expander.c
 void					expander(t_command *cmd);
 
-// exp / utils.c
+// expander/expander_utils.c
 char    				**ft_arrdup(char **arr);
 
 // main/free_structs.c
@@ -97,27 +93,16 @@ void					free_shell(t_hellmini *shell);
 // parser.c
 int						parser(t_hellmini *sh);
 
-/*lexer.c
-			lexer.c			*/
+// lexer/lexer.c
 int     				lexer_init(t_hellmini *shell);
-/*			lexer_splitter.c  */
+// lexer/lexer_splitter.c
 void					lexer_error(char *message);
 char					*split_operator(char *line, int *ff, int not_new);
 char					*split_line(char *line);
 
-//tokenizer.c
-int						tkn_nbr(char *str);
-int						ft_strchr_len(char *str, char c);
-t_command				* count_pqwq(t_command *command, char *str);
-char					**rip_and_tear(t_command *command, char *str);
-
-//expander.c
-void					free_arr(char **split_arr);
-//char					**ft_arrdup(char **arr);
+// expander/expander_utils.c
 char					*exp_tkn(char *str, char **env);
 
-//env_handlers.c
-void					init_shell_env(char **pr_env, t_hellmini shell);
 
 //signals.c
 void					ft_suppress_output(void);
