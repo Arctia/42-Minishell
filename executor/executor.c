@@ -84,21 +84,21 @@ int	(*ft_builtin(char *str))(t_hellmini *shell)
 	we have to decide if do the fork in ft execve or in executor
 */
 
-void	ft_execv(t_hellmini *shell, pid_t pid)
+void	ft_execv(t_command *cmd, pid_t pid)
 {
 	char	*path;
 	char	**arg;
 	int		status;
 
-	path = ft_findpath(shell, 0);
-	arg = ft_listtomatrix(shell);
+	path = ft_findpath(cmd, 0);
+	arg = ft_listtomatrix(cmd);
 	pid = fork();
 	if (!pid)
 	{
-		if (execve(path, arg, shell->env) == -1)
+		if (execve(path, arg, cmd->shell->env) == -1)
 		{
 			perror("execv execution failed");
-			free_shell(shell);
+			free_shell(cmd->shell);
 			exit(1);
 		}
 	}
@@ -110,7 +110,7 @@ void	ft_execv(t_hellmini *shell, pid_t pid)
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
 	}
-	ft_free_cmatrix(arg);
+	//ft_free_cmatrix(arg);
 	free(path);
 	// exit(EXIT_FAILURE);
 }
@@ -138,28 +138,28 @@ void	ft_executor(t_hellmini *shell)
 	pid = 111;
 	while (cmd)
 	{
-		if (cmd->spc[DQUOTE] || cmd->spc[CASH])
-			cmd->command
-				= ft_expander(cmd->command, shell->env);
+		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] || cmd->spc[CASH])
+			expander(cmd);
+		pfn("\n%t running command: %s", cmd->str);
 		if (cmd->next == NULL)	//simple command?
 		{
 			// if (ft_strcmp(cmd->command, builtin[i]))
 			//if (ft_builtin(cmd->command))
 			//	;
 			//else
-			ft_execv(shell, pid);
+			ft_execv(cmd, pid);
 		}
 		else if (cmd->spc[REDIN])
-			ft_less(shell);
+			ft_less(cmd);
 		else if (cmd->spc[REDOUT])
-			ft_redir(shell);
+			ft_redir(cmd);
 		else if (cmd->spc[REDAPP])
-			ft_moremore(shell);
+			ft_moremore(cmd);
 		else if (cmd->spc[HERDOC])
-			ft_heredoc(shell);
+			ft_heredoc(cmd);
 		else if (cmd->spc[PIPE])
 		{
-			ft_pipe(shell);
+			ft_pipe(cmd);
 			// while (waitpid(0, &status ,0))
 			// 	;//? not sure if here or in ft_executor with a while loop
 		}
@@ -177,14 +177,16 @@ void	ft_executor(t_hellmini *shell)
 	maybe generalize it if necessary
 */
 
-void	ft_fixcommand(t_hellmini *shell)
+void	ft_fixcommand(t_command *cmd)
 {
 	char	*temp;
-	if (ft_strncmp("./", shell->current_cmd->command, 2) == 0)
+	char	*tmp;
+
+	if (ft_strncmp("./", cmd->command, 2) == 0)
 	{
-		temp = ft_strtrim(shell->current_cmd->command, "./");
-		free(shell->current_cmd->command);
-		shell->current_cmd->command = ft_strdup(temp);
-		free(temp);
+		tmp = cmd->command;
+		temp = ft_strtrim(cmd->command, "./");
+		cmd->command = temp;
+		free(tmp);
 	}
 }

@@ -36,12 +36,15 @@ int	prompt_loop(t_hellmini *shell)
 				pfn("\n%3t enter parser");
 				if (parser(shell) == SUCCESS)
 				{
-					//pfn("\n%3t enter executor");
-					//ft_executor(shell);
+					pfn("\n%3t enter executor");
+					ft_executor(shell);
 				}
 			}
 		}
+		pfn("\n%3t try to free commands stack");
 		free_commands(shell);
+		//free_shell(shell);
+		//exit(0);
 		//rl_on_new_line();
 		//free(shell->input);
 	}

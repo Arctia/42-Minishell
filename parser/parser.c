@@ -243,7 +243,6 @@ int	red_in_string(t_command *cmd, char *str, int red_n)
 		if (c && str[i + 1] && ft_isredirection(str[i + 1]) && red_n++ >= 0)
 			i += 2;
 		else if (c && red_n++ >= 0)
-			red_n++;
 			i += 1;
 		else
 			i += 1;
@@ -273,7 +272,8 @@ int	split_string(t_command *cmd)
 	init = cmd->str;
 	move_to_next_char(cmd);
 	red_n = red_in_string(cmd, cmd->str, 0);
-	ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
+	if (red_n > 0)
+		ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
 	items = items_in_string(cmd->str);
 	cmd->tokens = (char **) malloc(sizeof(char *) * items + 1);
 	if (!(cmd->tokens))
@@ -372,7 +372,7 @@ void	print_arguments_and_flags(t_command *cmd)
 	char *co[] = {" ", GRN"TRUE"WHITE};
 	i = 0;
 	pfn("%2t command: '%s'", cmd->command);
-	while (cmd->arguments[i])
+	while (cmd->arguments && cmd->arguments[i])
 	{
 		pfn("%2t arg[%d]: '%s'", i, cmd->arguments[i]);
 		i++;
@@ -387,7 +387,7 @@ void	print_arguments_and_flags(t_command *cmd)
 	}
 	pfn("%t -----------------------");
 	i = -1;
-	while (cmd->red_type[++i] != 0)
+	while (cmd->red && cmd->red_type[++i] != 0)
 		pfn("%t %d. %s -> %s", i, ar[cmd->red_type[i]], cmd->red[i]);
 	pfn("%t -----------------------");
 	pfn("%t shell pipes: %d", cmd->shell->mc_pipes);
