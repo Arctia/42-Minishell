@@ -27,7 +27,6 @@
 # define SUCCESS 0
 # define FAIL 1
 
-
 // Operator presence
 # define PIPE 0
 # define SQUOTE 1
@@ -79,6 +78,9 @@ typedef struct s_command
 
 	t_hellmini 			*shell;
 }	t_command;
+
+// cd/cd.c
+int						cd(t_command *cmd);
 
 // expander/expander.c
 void					expander(t_command *cmd);
