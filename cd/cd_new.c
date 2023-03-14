@@ -1,4 +1,9 @@
 
+void	replace_null(t_command *cmd, char *str)
+{
+	
+}
+
 
 int	cd(t_command *cmd)
 {
