@@ -9,14 +9,14 @@
 	different ft_execv without fork i don't know if needed
 */
 
-void	ft_execvepipe(t_hellmini *shell)
+void	ft_execvepipe(t_command *cmd)
 {
 	char	*path;
 	char	**arg;
 
-	arg = ft_listtomatrix(shell);
-	path = ft_findpath(shell, 0);
-	if (execve(path, arg, shell->env) == -1)
+	arg = ft_listtomatrix(cmd);
+	path = ft_findpath(cmd, 0);
+	if (execve(path, arg, cmd->shell->env) == -1)
 		perror("execution failed");
 	ft_free_cmatrix(arg);
 	free(path);
@@ -31,14 +31,14 @@ void	ft_execvepipe(t_hellmini *shell)
 	for eventually other pipe 
 */
 
-void	ft_fixstinpipe(t_hellmini *shell, Pipe output)
+void	ft_fixstinpipe(t_command *cmd, Pipe output)
 {
 	dup2(output[1], 1);
 	close(output[0]);
 	close(output[1]);
-	if (shell->current_cmd->next->spc[PIPE] == 0)
+	if (cmd->next->spc[PIPE] == 0)
 		return ;
-	ft_pipejunior(shell);
+	ft_pipejunior(cmd);
 }
 
 /*
@@ -49,12 +49,12 @@ void	ft_fixstinpipe(t_hellmini *shell, Pipe output)
 	maybe ft_execpipe must be bring here
 */
 
-void	ft_pipejunior(t_hellmini *shell)
+void	ft_pipejunior(t_command *cmd)
 {
 	pid_t	pid;
 	Pipe	input;
 
-	if (shell->current_cmd->spc[PIPE])
+	if (cmd->spc[PIPE])
 	{
 		if (pipe(input) != 0)
 			perror("failed to create pipe");
@@ -62,13 +62,13 @@ void	ft_pipejunior(t_hellmini *shell)
 		if ((pid < 0))
 			perror("failed to fork");
 		if (!pid)
-			ft_fixstinpipe(shell, input);
+			ft_fixstinpipe(cmd, input);
 		dup2(input[0], 0);
 		close(input[0]);
 		close(input[1]);
 	}
 	// waitpid(0, &status ,0);	//? not sure if here or in ft_executor with a while loop or in ft pipe
-	ft_execvepipe(shell);
+	ft_execvepipe(cmd);
 }
 
 /*
@@ -80,22 +80,22 @@ void	ft_pipejunior(t_hellmini *shell)
 	i've to study the  if else state to break the while 
 */
 
-void	ft_pipe(t_hellmini *shell)
+void	ft_pipe(t_command *cmd)
 {
 	pid_t	pid;
 	int		status;
 
-	while (shell->current_cmd->spc[PIPE] 
-		&& shell->current_cmd->next->spc[PIPE])	// check it
+	while (cmd->spc[PIPE] 
+		&& cmd->next->spc[PIPE])	// check it
 	{
 		pid = fork();
 		if (pid < 0)
 			perror("failed to fork");
 		if (pid != 0)
 			return ;	//  wait??
-		ft_pipejunior(shell);
-		if (shell->current_cmd->spc[PIPE])
-			shell->current_cmd = shell->current_cmd->next;
+		ft_pipejunior(cmd);
+		if (cmd->spc[PIPE])
+			cmd = cmd->next;
 		waitpid(0, &status, 0);		//? not sure if here or in ft_executor with a while loop
 	}
 }

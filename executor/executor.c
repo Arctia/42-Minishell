@@ -84,21 +84,21 @@ int	(*ft_builtin(char *str))(t_hellmini *shell)
 	we have to decide if do the fork in ft execve or in executor
 */
 
-void	ft_execv(t_hellmini *shell, pid_t pid)
+void	ft_execv(t_command *cmd, pid_t pid)
 {
 	char	*path;
 	char	**arg;
 	int		status;
 
-	path = ft_findpath(shell, 0);
-	arg = ft_listtomatrix(shell);
+	path = ft_findpath(cmd, 0);
+	arg = ft_listtomatrix(cmd);
 	pid = fork();
 	if (!pid)
 	{
-		if (execve(path, arg, shell->env) == -1)
+		if (execve(path, arg, cmd->shell->env) == -1)
 		{
 			perror("execv execution failed");
-			free_shell(shell);
+			free_shell(cmd->shell);
 			exit(1);
 		}
 	}
@@ -147,19 +147,19 @@ void	ft_executor(t_hellmini *shell)
 			//if (ft_builtin(cmd->command))
 			//	;
 			//else
-			ft_execv(shell, pid);
+			ft_execv(cmd, pid);
 		}
 		else if (cmd->spc[REDIN])
-			ft_less(shell);
+			ft_less(cmd);
 		else if (cmd->spc[REDOUT])
-			ft_redir(shell);
+			ft_redir(cmd);
 		else if (cmd->spc[REDAPP])
-			ft_moremore(shell);
+			ft_moremore(cmd);
 		else if (cmd->spc[HERDOC])
-			ft_heredoc(shell);
+			ft_heredoc(cmd);
 		else if (cmd->spc[PIPE])
 		{
-			ft_pipe(shell);
+			ft_pipe(cmd);
 			// while (waitpid(0, &status ,0))
 			// 	;//? not sure if here or in ft_executor with a while loop
 		}
@@ -177,16 +177,16 @@ void	ft_executor(t_hellmini *shell)
 	maybe generalize it if necessary
 */
 
-void	ft_fixcommand(t_hellmini *shell)
+void	ft_fixcommand(t_command *cmd)
 {
 	char	*temp;
 	char	*tmp;
 
-	if (ft_strncmp("./", shell->current_cmd->command, 2) == 0)
+	if (ft_strncmp("./", cmd->command, 2) == 0)
 	{
-		tmp = shell->current_cmd->command;
-		temp = ft_strtrim(shell->current_cmd->command, "./");
-		shell->current_cmd->command = temp;
+		tmp = cmd->command;
+		temp = ft_strtrim(cmd->command, "./");
+		cmd->command = temp;
 		free(tmp);
 	}
 }
