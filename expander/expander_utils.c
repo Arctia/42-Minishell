@@ -1,4 +1,6 @@
 
+#include "../global.h"
+
 char    **ft_arrdup(char **arr)
 {
     char    **rtn;
