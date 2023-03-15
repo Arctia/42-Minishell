@@ -92,6 +92,8 @@ void	ft_execv(t_command *cmd, pid_t pid)
 
 	path = ft_findpath(cmd, 0);
 	arg = ft_listtomatrix(cmd);
+	if (!arg)
+		return ;
 	pid = fork();
 	if (!pid)
 	{

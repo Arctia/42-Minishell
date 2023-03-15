@@ -278,6 +278,7 @@ int	split_string(t_command *cmd)
 	cmd->tokens = (char **) malloc(sizeof(char *) * items + 1);
 	if (!(cmd->tokens))
 		return (0);
+	cmd->tokens[0] = NULL;
 	c = 0;
 	while (cmd->str[0] != 0)
 	{

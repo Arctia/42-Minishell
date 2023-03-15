@@ -29,9 +29,6 @@ void	free_commands(t_hellmini *shell)
 	shell->current_cmd = NULL;
 }
 
-/* env may need to be modified, 
-	to do so we need to do an allocated
-	copy of it */
 void	free_shell(t_hellmini *shell)
 {
 	if (shell->input)
