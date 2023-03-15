@@ -170,7 +170,7 @@ void	ft_execvepipe(t_command *cmd)
 		{
 			perror("execv execution failed");
 			// free_shell(cmd->shell);
-			exit(1);
+			// exit(1);
 		}
 	}
 	else
@@ -180,6 +180,7 @@ void	ft_execvepipe(t_command *cmd)
 			waitpid(pid, &status, WUNTRACED);
 	}
 }
+
 void	ft_pipe(t_command *cmd)
 {
 	int		status;
@@ -187,25 +188,42 @@ void	ft_pipe(t_command *cmd)
 	int		fd[2];
 	int		pid;
 
-	std_cpy[0] = dup(0);
-	std_cpy[1] = dup(1);
-	if (cmd->shell->mc_pipes == 1)
+	std_cpy[0] = dup(0);	// input
+	std_cpy[1] = dup(1);	//	output
+	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
-		pipe(fd);
-		if((pid=fork())==0)
-		{
+		// if (cmd->shell->mc_pipes == 1)
+		// {
+			pipe(fd);
+			if((pid=fork())==0)
+			{
+				close(fd[0]);
+				if (cmd->spc[PIPE])
+					dup2(fd[1], STDOUT_FILENO);
+				else
+					dup2(std_cpy[1], STDOUT_FILENO);
+
+
+
+				close(fd[1]);
+				// close(fd[0]);
+				ft_execvepipe(cmd);
+				exit(1);
+			}
+			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
-			// ft_printf("singlelast pipe print sti on stdout");
-			dup2(fd[1], STDOUT_FILENO);
-			ft_execvepipe(cmd);
-		}
-		close(fd[1]);
-		ft_execvepipe(cmd->next);
-		exit(0);
+			close(fd[1]);
+		// }
+		// while ((waitpid(-1, &status, WUNTRACED)))
+		// 		;
+		waitpid(pid, &status, WUNTRACED);
+		// if (cmd->shell->mc_pipes > 1)
+		// 	ft_pipeline(cmd);
+		cmd = cmd->next;
 	}
-	waitpid(pid,&status,0);
-	if (cmd->shell->mc_pipes>1)
-		ft_pipeline(cmd);
+	dup2(std_cpy[0], STDIN_FILENO);
+	close(std_cpy[0]);
+	close(std_cpy[1]);
 }
 
 void	ft_pipeline(t_command *cmd)
@@ -217,29 +235,30 @@ void	ft_pipeline(t_command *cmd)
 	int		n_pipe = cmd->shell->mc_pipes;
 	int		i=0;
 
-	std_cpy[0] = dup(0);
-	std_cpy[1] = dup(1);
+	std_cpy[0] = dup(0);	// input
+	std_cpy[1] = dup(1);	//	output
 	pid = malloc(sizeof(int) * n_pipe);
-	while (i < n_pipe)
+	// while (i < n_pipe)
+	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
 		pipe(fd);
 		if((pid[i]=fork())==0)
 		{
 			close(fd[0]);
-			if (i == cmd->shell->mc_pipes - 1)
+			if (i == cmd->shell->mc_pipes -1)
 			{
-				ft_printf("last pipe print sti on stdout");
+				// ft_printf("last pipe print sti on stdout");
 				dup2(std_cpy[1], STDOUT_FILENO);
 			}
 			else
 			{
-				ft_printf("last pipe print sti on stdout");
+				// ft_printf("last pipe print sti on stdout");
 				dup2(fd[1], STDOUT_FILENO);
 
 			}
 			close(fd[1]);
 			ft_execvepipe(cmd);
-			exit(0);
+			// exit(0);
 			// ft_executor(cmd->next);
 		}
 		else
@@ -252,10 +271,11 @@ void	ft_pipeline(t_command *cmd)
 
 		}
 		i++;	
+		cmd = cmd->next;
 	}
-	// dup2(std_cpy[0], STDIN_FILENO);
-	// close(std_cpy[0]);
-	// close(std_cpy[1]);
+	dup2(std_cpy[0], STDIN_FILENO);
+	close(std_cpy[0]);
+	close(std_cpy[1]);
 	i = -1;
 	while (++i < n_pipe)
 		waitpid(pid[i],&status,0);
