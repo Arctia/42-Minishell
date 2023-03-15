@@ -99,8 +99,6 @@ static void	init_shell_env(char **or_env, t_hellmini *shell)
 	char	*itoa;
 	int		i;
 
-	itoa = NULL;
-	sh_lvl = NULL;
 	shell->env = ft_arrdup(or_env);
 	if (!shell->env)
 	{
@@ -116,12 +114,12 @@ static void	init_shell_env(char **or_env, t_hellmini *shell)
 			itoa = ft_itoa(ft_atoi(sh_lvl) + 1);
 			free(shell->env[i]);
 			shell->env[i] = ft_strjoin("SHLVL=", itoa);
+			free(itoa);
+			free(sh_lvl);
 			break ;
 		}
 		i++;
 	}
-	free(itoa);
-	free(sh_lvl);
 }
 
 static void	init_shell(t_hellmini *shell, char **env)
