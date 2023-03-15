@@ -91,7 +91,8 @@ void	ft_execv(t_command *cmd, pid_t pid)
 	int		status;
 
 	path = ft_findpath(cmd, 0);
-	arg = ft_listtomatrix(cmd);
+	arg = cmd->arguments;
+	pfn("path: %s\narg[0]: %s");
 	if (!arg)
 		return ;
 	pid = fork();
@@ -193,11 +194,12 @@ void	ft_fixcommand(t_command *cmd)
 	char	*temp;
 	char	*tmp;
 
-	if (ft_strncmp("./", cmd->command, 2) == 0)
+	if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
 	{
-		tmp = cmd->command;
-		temp = ft_strtrim(cmd->command, "./");
-		cmd->command = temp;
+		tmp = cmd->arguments[0];
+		temp = ft_strtrim(cmd->arguments[0], "./");
+		cmd->arguments[0] = temp;
+		pfn("cmd->arg[0]: %s", cmd->arguments[0]);
 		free(tmp);
 	}
 }

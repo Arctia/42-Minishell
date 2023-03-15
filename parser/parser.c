@@ -18,32 +18,41 @@ static void	set_command_name(t_command *cmd)
 	cmd->command[i - 1] = '\0';
 }
 
+static void	set_command_name2(t_command *cmd)
+{
+	int	i;
+
+	i = 0;
+	cmd->command = (char *) malloc(sizeof(char)
+			* (ft_strlen(cmd->arguments[0]) + 1));
+	while (cmd->arguments[0][i++])
+		cmd->command[i - 1] = cmd->arguments[0][i - 1];
+	cmd->command[i - 1] = '\0';
+}
+
 static void	set_arguments(t_command *cmd, int args, int i)
 {
 	int	j;
 
-	cmd->arguments = (char **) malloc(sizeof(char *) * args + 1);
+	cmd->arguments = (char **) malloc(sizeof(char *) * (args + 1));
 	if (!(cmd->arguments))
 		return ;
-	i = 1;
+	i = 0;
 	while (i < args)
 	{
 		if (cmd->tokens[i] != NULL && 0[cmd->tokens[i]] == '|')
 			break ;
-		cmd->arguments[i - 1] = ft_calloc(sizeof(char),
+		cmd->arguments[i] = ft_calloc(sizeof(char),
 				ft_strlen(cmd->tokens[i]) + 1);
-		if (!cmd->arguments[i - 1])
-		{
-			free(cmd->arguments);
-			return ;
-		}
+		if (!cmd->arguments[i])
+			return (free(cmd->arguments));
 		j = 0;
 		while (cmd->tokens[i][j++])
-			cmd->arguments[i - 1][j - 1] = cmd->tokens[i][j - 1];
+			cmd->arguments[i][j - 1] = cmd->tokens[i][j - 1];
 		i++;
 	}
-	cmd->arguments[i - 1] = NULL;
-	if (i == 1)
+	cmd->arguments[i] = NULL;
+	if (i == 0)
 		cmd->arguments[0] = NULL;
 }
 
@@ -210,9 +219,7 @@ void	before_write_word(t_command *cmd, int *argc, int *items)
 		*items = *items - 2;
 	}
 	else
-	{
 		fill_token(cmd, argc);
-	}
 	move_to_next_char(cmd);
 }
 
@@ -251,7 +258,6 @@ int	red_in_string(t_command *cmd, char *str, int red_n)
 	{
 		cmd->red_type = ft_calloc(sizeof(int), red_n + 1);
 		cmd->red = (char **) malloc(sizeof(char *) * red_n + 1);
-		cmd->red_type[red_n + 1] = 0;
 		cmd->red[red_n + 1] = NULL;
 	}
 	return (red_n);
@@ -275,10 +281,10 @@ int	split_string(t_command *cmd)
 	if (red_n > 0)
 		ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
 	items = items_in_string(cmd->str);
-	cmd->tokens = (char **) malloc(sizeof(char *) * items + 1);
+	cmd->tokens = NULL;
+	cmd->tokens = (char **) malloc(sizeof(char *) * (items + 1));
 	if (!(cmd->tokens))
 		return (0);
-	cmd->tokens[0] = NULL;
 	c = 0;
 	while (cmd->str[0] != 0)
 	{
@@ -286,6 +292,7 @@ int	split_string(t_command *cmd)
 		before_write_word(cmd, &c, &items);
 	}
 	cmd->tokens[c] = NULL;
+	pfn("%t test 2");
 	cmd->str = init;
 	return (items);
 }
@@ -408,10 +415,10 @@ int	parser(t_hellmini *sh)
 		args = split_string(cmd);
 		if (!args)
 			return (FAIL);
-		set_command_name(cmd);
 		init_flags(cmd);
 		set_cmd_flags(cmd, 0);
 		set_arguments(cmd, args, 1);
+		set_command_name2(cmd);
 		print_arguments_and_flags(cmd);
 		if (cmd->next)
 			cmd = cmd->next;

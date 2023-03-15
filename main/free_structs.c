@@ -3,15 +3,15 @@
 
 static void	free_things_inside_command(t_command *cmd)
 {
-	//pfn("here i am 2");
 	ft_free_cmatrix(cmd->arguments);
 	ft_free_cmatrix(cmd->tokens);
 	ft_free_ptr(cmd->red_type);
-	//pfn("here i am 5");
 	ft_free_ptr(cmd->command);
+	pfn("here i am 2");
 	ft_free_cmatrix(cmd->red);
-	//pfn("here i am 7");
+	pfn("here i am 5");
 	ft_free_ptr(cmd->str);
+	pfn("here i am 7");
 	ft_free_ptr(cmd);
 }
 

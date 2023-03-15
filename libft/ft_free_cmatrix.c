@@ -19,7 +19,7 @@ void	ft_free_cmatrix(char **mtx)
 	i = -1;
 	if (mtx)
 	{
-		while (mtx[++i])
+		while (mtx[++i] && mtx[i][0])
 		{
 			//pfn("freeing mtx[%d] : p->%p s->%s", i, mtx[i], mtx[i]);
 			free(mtx[i]);
