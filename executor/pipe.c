@@ -161,7 +161,9 @@ void	ft_execvepipe(t_command *cmd)
 
 	path = ft_findpath(cmd, 0);
 	arg = ft_listtomatrix(cmd);
-	pid = fork();
+	
+	if ((pid = fork()) < 0)
+		perror("execv fork failed");
 	if (!pid)
 	{
 		if (execve(path, arg, cmd->shell->env) == -1)
@@ -171,8 +173,6 @@ void	ft_execvepipe(t_command *cmd)
 			exit(1);
 		}
 	}
-	else if (pid < 0)
-		perror("execv fork failed");
 	else
 	{
 		waitpid(pid, &status, WUNTRACED);
@@ -180,9 +180,35 @@ void	ft_execvepipe(t_command *cmd)
 			waitpid(pid, &status, WUNTRACED);
 	}
 }
-
-
 void	ft_pipe(t_command *cmd)
+{
+	int		status;
+	int		std_cpy[2];
+	int		fd[2];
+	int		pid;
+
+	std_cpy[0] = dup(0);
+	std_cpy[1] = dup(1);
+	if (cmd->shell->mc_pipes == 1)
+	{
+		pipe(fd);
+		if((pid=fork())==0)
+		{
+			close(fd[0]);
+			// ft_printf("singlelast pipe print sti on stdout");
+			dup2(fd[1], STDOUT_FILENO);
+			ft_execvepipe(cmd);
+		}
+		close(fd[1]);
+		ft_execvepipe(cmd->next);
+		exit(0);
+	}
+	waitpid(pid,&status,0);
+	if (cmd->shell->mc_pipes>1)
+		ft_pipeline(cmd);
+}
+
+void	ft_pipeline(t_command *cmd)
 {
 	int		status;
 	int		std_cpy[2];
@@ -201,9 +227,16 @@ void	ft_pipe(t_command *cmd)
 		{
 			close(fd[0]);
 			if (i == cmd->shell->mc_pipes - 1)
+			{
+				ft_printf("last pipe print sti on stdout");
 				dup2(std_cpy[1], STDOUT_FILENO);
+			}
 			else
+			{
+				ft_printf("last pipe print sti on stdout");
 				dup2(fd[1], STDOUT_FILENO);
+
+			}
 			close(fd[1]);
 			ft_execvepipe(cmd);
 			exit(0);
