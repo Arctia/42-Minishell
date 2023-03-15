@@ -103,6 +103,7 @@ static void	init_shell_env(char **or_env, t_hellmini *shell)
 	if (!shell->env)
 	{
 		write(1, "Error!Not enough memory to set env\n", 36);
+		free(shell);
 		exit(EXIT_FAILURE);
 	}
 	i = 0;
@@ -116,7 +117,6 @@ static void	init_shell_env(char **or_env, t_hellmini *shell)
 			shell->env[i] = ft_strjoin("SHLVL=", itoa);
 			free(itoa);
 			free(sh_lvl);
-			break ;
 		}
 		i++;
 	}
