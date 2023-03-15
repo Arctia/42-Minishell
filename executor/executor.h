@@ -21,7 +21,7 @@ void	ft_executor(t_command *parser);
 	***********************************************************
 */
 char	*ft_append(char *path, t_command *cmd);
-char	**ft_getpath(t_command *cmd, int i);
+//char	**ft_getpath(t_command *cmd, int i);
 char	*ft_findpath(t_command *cmd, int i);
 char	**ft_listtomatrix(t_command *cmd);
 char    **ft_addlinetomatrix(char **arr, char *line);

@@ -149,19 +149,24 @@ char	**add_current_path(char **paths, char *cwd, t_command *cmd)
 {
 	char	*tmp;
 	int		i;
+
+	pfn("%1t inside");
 	// if ./ or ../ add cwd to path and mantain the part behind (?)
 	if (cmd->arguments[0][0] == '.' && cmd->arguments[0][1] == '/')
 	{
+		pfn("%1t inside cwd > %s", cwd);
 		paths = ft_addlinetomatrix(paths, cwd);
 		tmp = cmd->arguments[0];
 		cmd->arguments[0] = ft_strtrim(cmd->arguments[0], "./");
 		free(tmp);
+		pfn("%1t inside %s", cmd->arguments[0]);
 	}
 	//else if (cmd->arguments[0][0] == '.' && cmd->arguments[0][1] == '.' 
 	//	&& cmd->arguments[0][2] == '/')
 	//	path = remove_double_points(path, cmd);
 	if (cmd->arguments[0][0] == '/')
 		paths = absolute_path(paths, cmd);
+	//free(cwd);
 	return (paths);
 
 }
@@ -178,12 +183,12 @@ char	**ft_getpath(t_command *cmd)
 		perror("getcwd() error");
 
 	temp = NULL;
-	pfn("%s", exp_tkn("PATH", cmd->shell->env));
+	//pfn("%s", exp_tkn("PATH", cmd->shell->env));
 	temp = exp_tkn("PATH", cmd->shell->env);
-	//path = ft_split(temp, ':');
-	//pfn("%t testing path[%d]", 0);
-	//free(temp);
-	//add_current_path(path, cwd, cmd);
+	path = ft_split(temp, ':');
+	pfn("%t testing path[%d] %s", 0, path[0]);
+	free(temp);
+	add_current_path(path, cwd, cmd);
 	return (path);
 }
 
@@ -203,7 +208,7 @@ char	*ft_findpath(t_command *cmd, int i)
 	char			**path;
 	char			*temp;
 
-	path = ft_getpath(cmd, 0);
+	path = ft_getpath(cmd);
 	ft_fixcommand(cmd);
 	while (path[i])
 	{
