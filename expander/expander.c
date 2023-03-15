@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:56:48 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/14 19:41:40 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/15 07:26:06 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	expand_dollar(t_hellmini *s, char buff[4095], char *(*str), int *i)
 	char	*var_val;
 	int		c;
 
+	if (expand_question(s, buff, str, i) == TRUE)
+		return ;
 	var_name = get_string_to_expand(str);
 	if (!var_name)
 		return ;
