@@ -1,6 +1,46 @@
 
 #include "./expander.h"
 
+void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i)
+{
+	char	*home;
+	int		c;
+
+	home = NULL;
+	if (!((*str)[0] == '~' && ((*str)[1] == '/' || !((*str)[1]))))
+		return ;
+	home = exp_tkn("HOME", sh->env);
+	c = 0;
+	while (home[c])
+	{
+		buff[*i] = home[c++];
+		*i = *i + 1;
+	}
+	(*str)++;
+	ft_free_ptr(home);
+}
+
+int	expand_question(t_hellmini *sh, char buff[4095], char *(*str), int *i)
+{
+	char	*value;
+	int		c;
+
+	value = NULL;
+	if ((*str)[1] != '?')
+		return (FALSE);
+	value = ft_itoa(sh->exit_status);
+	c = 0;
+	while (value[c])
+	{
+		buff[*i] = value[c++];
+		*i = *i + 1;
+	}
+	(*str)++;
+	(*str)++;
+	ft_free_ptr(value);
+	return (TRUE);
+}
+
 void	to_next_single_quote(char *(*str), char buff[4095], int *i)
 {
 	if (*str[0] == '\'')
@@ -22,12 +62,12 @@ char	*get_string_to_expand(char *(*str))
 	int		i;
 
 	i = 1;
-	while ((*str)[i] && (ft_isalnum((*str)[i])))
+	while ((*str)[i] && ((ft_isalnum((*str)[i])) || (*str)[i] == '_'))
 		i++;
 	str_e = ft_calloc(sizeof(char), i);
 	i = 0;
 	(*str)++;
-	while ((*str)[0] && (ft_isalnum((*str)[0])))
+	while ((*str)[0] && ((ft_isalnum((*str)[0])) || (*str)[0] == '_'))
 	{
 		str_e[i] = ((*str)++)[0];
 		i++;
@@ -61,29 +101,4 @@ char	*exp_tkn(char *str, char **env)
 		new_token[k++] = env[i][j++];
 	new_token[k] = '\0';
 	return (new_token);
-}
-
-char	**ft_arrdup(char **ar)
-{
-	char	**ret;
-	int		i;
-
-	i = 0;
-	while (ar[i])
-		i++;
-	ret = ft_calloc(sizeof(char *), i + 1);
-	if (!ret)
-		return (NULL);
-	i = 0;
-	while (ar[i])
-	{
-		ret[i] = ft_strdup(ar[i]);
-		if (!ret[i])
-		{
-			ft_free_cmatrix(ret);
-			return (NULL);
-		}
-		i++;
-	}
-	return (ret);
 }

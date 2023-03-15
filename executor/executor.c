@@ -140,7 +140,7 @@ void	ft_executor(t_command *cmd)
 	while (cmd)
 	{
 		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] 
-				|| cmd->spc[CASH])
+				|| cmd->spc[CASH] || cmd->spc[TILDE])
 			expander(cmd);
 		pfn("%3t -----------------------------------------------------------");
 		pfn("%t running command: %s", cmd->str);
