@@ -150,11 +150,12 @@
 
 
 
-void	ft_execvepipe(t_command *cmd, pid_t pid)
+void	ft_execvepipe(t_command *cmd)
 {
 	char	*path;
 	char	**arg;
 	int		status;
+	pid_t	pid;
 
 	// (void) pid;
 
@@ -163,12 +164,10 @@ void	ft_execvepipe(t_command *cmd, pid_t pid)
 	pid = fork();
 	if (!pid)
 	{
-		// dup2(tmp_fd, STDIN_FILENO);
-		// close(tmp_fd);
 		if (execve(path, arg, cmd->shell->env) == -1)
 		{
 			perror("execv execution failed");
-			free_shell(cmd->shell);
+			// free_shell(cmd->shell);
 			exit(1);
 		}
 	}
@@ -183,52 +182,49 @@ void	ft_execvepipe(t_command *cmd, pid_t pid)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 void	ft_pipe(t_command *cmd)
 {
 	int		status;
 	int		std_cpy[2];
 	int		fd[2];
-	pid_t	pid;
+	pid_t	*pid;
 	int		n_pipe = cmd->shell->mc_pipes;
 	int		i=0;
 
 	std_cpy[0] = dup(0);
 	std_cpy[1] = dup(1);
+	pid = malloc(sizeof(int) * n_pipe);
 	while (i < n_pipe)
 	{
 		pipe(fd);
-		if((pid=fork())==0)
+		if((pid[i]=fork())==0)
 		{
 			close(fd[0]);
-			if (n_pipe++ == cmd->shell->mc_pipes)
-				dup2(std_cpy[1], 1);
+			if (i == cmd->shell->mc_pipes - 1)
+				dup2(std_cpy[1], STDOUT_FILENO);
 			else
-				dup2(fd[1], 1);
+				dup2(fd[1], STDOUT_FILENO);
 			close(fd[1]);
-			ft_execvepipe(cmd,pid);
+			ft_execvepipe(cmd);
+			exit(0);
 			// ft_executor(cmd->next);
 		}
 		else
 		{
-			dup2(fd[0],0);
+			dup2(fd[0],STDIN_FILENO);
 			close(fd[0]);
 			close(fd[1]);
+			// free_shell(cmd->shell);
+
 
 		}
 		i++;	
 	}
-		waitpid(pid,&status,0);
+	// dup2(std_cpy[0], STDIN_FILENO);
+	// close(std_cpy[0]);
+	// close(std_cpy[1]);
+	i = -1;
+	while (++i < n_pipe)
+		waitpid(pid[i],&status,0);
+	free(pid);
 }

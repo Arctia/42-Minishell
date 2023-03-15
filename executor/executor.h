@@ -36,7 +36,7 @@ void	ft_pipejunior(t_command *cmd, int *fd, int n_pipe, int std_cpy);
 
 // void	ft_pipejunior(t_command *cmd);
 void	ft_fixstinpipe(t_command *cmd, Pipe output);
-void	ft_execvepipe(t_command *cmd, pid_t pid);
+void	ft_execvepipe(t_command *cmd);
 /*
 	***********************************************************
 					redir.c

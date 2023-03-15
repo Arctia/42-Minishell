@@ -132,7 +132,7 @@ void	ft_execv(t_command *cmd, pid_t pid)
 void	ft_executor(t_command *cmd)
 {
 	pid_t	pid;
-	// int		status;
+	int		status;
 	// t_command *cmd;
 
 	// cmd = shell->current_cmd;
@@ -163,6 +163,8 @@ void	ft_executor(t_command *cmd)
 		else if (cmd->spc[PIPE])
 		{
 			ft_pipe(cmd);
+			while ((waitpid(-1, &status, 0)))
+				;
 			// cmd = cmd->next;
 
 			// while ((waitpid(-1, &status, 0)))
