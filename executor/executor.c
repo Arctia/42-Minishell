@@ -92,6 +92,8 @@ void	ft_execv(t_command *cmd, pid_t pid)
 
 	path = ft_findpath(cmd, 0);
 	arg = ft_listtomatrix(cmd);
+	if (!arg)
+		return ;
 	pid = fork();
 	if (!pid)
 	{
@@ -129,17 +131,18 @@ void	ft_execv(t_command *cmd, pid_t pid)
 	fd between pipe or maybe not
 
 */
-void	ft_executor(t_hellmini *shell)
+void	ft_executor(t_command *cmd)
 {
 	pid_t	pid;
-	t_command *cmd;
+	int		status;
+	// t_command *cmd;
 
-	cmd = shell->current_cmd;
+	// cmd = shell->current_cmd;
 	pid = 111;
 	while (cmd)
 	{
 		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] 
-				|| cmd->spc[CASH])
+				|| cmd->spc[CASH] || cmd->spc[TILDE])
 			expander(cmd);
 		pfn("%3t -----------------------------------------------------------");
 		pfn("%t running command: %s", cmd->str);
@@ -162,6 +165,12 @@ void	ft_executor(t_hellmini *shell)
 		else if (cmd->spc[PIPE])
 		{
 			ft_pipe(cmd);
+			while ((waitpid(-1, &status, 0)))
+				;
+			// cmd = cmd->next;
+
+			// while ((waitpid(-1, &status, 0)))
+			// 	;
 			// while (waitpid(0, &status ,0))
 			// 	;//? not sure if here or in ft_executor with a while loop
 		}

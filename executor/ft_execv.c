@@ -22,8 +22,9 @@ char	**ft_listtomatrix(t_command *cmd)
 	if (cmd->arguments)
 		while (cmd->arguments[j++])
 			i++;
-	j = 0;
-	arg = ft_calloc(sizeof(char *), i);
+	arg = ft_calloc(sizeof(char *), i + 1);
+	if (!arg)
+		return (NULL);
 	arg[0] = ft_strdup(cmd->command);
 	i = 1;
 	j = -1;

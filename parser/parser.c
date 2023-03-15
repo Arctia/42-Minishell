@@ -278,6 +278,7 @@ int	split_string(t_command *cmd)
 	cmd->tokens = (char **) malloc(sizeof(char *) * items + 1);
 	if (!(cmd->tokens))
 		return (0);
+	cmd->tokens[0] = NULL;
 	c = 0;
 	while (cmd->str[0] != 0)
 	{
@@ -316,6 +317,8 @@ void	set_operator_flags(t_command *cmd, char *s, int *m)
 		cmd->spc[REDIN] = 1;
 	else if (s[*m] == '>')
 		cmd->spc[REDOUT] = 1;
+	else if (s[*m] == '~')
+		cmd->spc[TILDE] = 1;
 }
 
 void	set_meta_flags(t_command *cmd,char c)
@@ -409,7 +412,7 @@ int	parser(t_hellmini *sh)
 		init_flags(cmd);
 		set_cmd_flags(cmd, 0);
 		set_arguments(cmd, args, 1);
-		// print_arguments_and_flags(cmd);
+		print_arguments_and_flags(cmd);
 		if (cmd->next)
 			cmd = cmd->next;
 		else

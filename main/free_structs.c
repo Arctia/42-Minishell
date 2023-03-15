@@ -3,12 +3,14 @@
 
 static void	free_things_inside_command(t_command *cmd)
 {
+	//pfn("here i am 2");
 	ft_free_cmatrix(cmd->arguments);
 	ft_free_cmatrix(cmd->tokens);
 	ft_free_ptr(cmd->red_type);
+	//pfn("here i am 5");
 	ft_free_ptr(cmd->command);
 	ft_free_cmatrix(cmd->red);
-	ft_free_ptr(cmd->red);
+	//pfn("here i am 7");
 	ft_free_ptr(cmd->str);
 	ft_free_ptr(cmd);
 }
@@ -29,9 +31,6 @@ void	free_commands(t_hellmini *shell)
 	shell->current_cmd = NULL;
 }
 
-/* env may need to be modified, 
-	to do so we need to do an allocated
-	copy of it */
 void	free_shell(t_hellmini *shell)
 {
 	if (shell->input)

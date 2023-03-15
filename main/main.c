@@ -15,6 +15,9 @@
 
 static int	prompt_loop(t_hellmini *shell)
 {
+	// t_command *cmd;
+
+	// cmd = shell->current_cmd;
 	while(1)
 	{
 		signal(SIGINT, ft_sigs_handler);
@@ -37,7 +40,7 @@ static int	prompt_loop(t_hellmini *shell)
 				if (parser(shell) == SUCCESS)
 				{
 					pfn("\n%3t enter executor");
-					ft_executor(shell);
+					ft_executor(shell->current_cmd);
 				}
 			}
 		}
@@ -100,6 +103,7 @@ static void	init_shell_env(char **or_env, t_hellmini *shell)
 	if (!shell->env)
 	{
 		write(1, "Error!Not enough memory to set env\n", 36);
+		free(shell);
 		exit(EXIT_FAILURE);
 	}
 	i = 0;
@@ -111,12 +115,11 @@ static void	init_shell_env(char **or_env, t_hellmini *shell)
 			itoa = ft_itoa(ft_atoi(sh_lvl) + 1);
 			free(shell->env[i]);
 			shell->env[i] = ft_strjoin("SHLVL=", itoa);
-			break ;
+			free(itoa);
+			free(sh_lvl);
 		}
 		i++;
 	}
-	free(itoa);
-	free(sh_lvl);
 }
 
 static void	init_shell(t_hellmini *shell, char **env)

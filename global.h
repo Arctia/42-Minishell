@@ -27,7 +27,6 @@
 # define SUCCESS 0
 # define FAIL 1
 
-
 // Operator presence
 # define PIPE 0
 # define SQUOTE 1
@@ -38,6 +37,7 @@
 # define REDAPP 6
 # define HERDOC 7
 # define CASH 8
+# define TILDE 9
 # define EMPTY -1
 
 # define PROMPT "\033[1;31mminisHELL$:\033[0m "
@@ -64,7 +64,7 @@ typedef struct s_command
 {
 	char				*str;
 	char				**tokens;
-	int					spc[9];
+	int					spc[10];
 
 	char				*command;
 	char				**arguments;
@@ -80,8 +80,14 @@ typedef struct s_command
 	t_hellmini 			*shell;
 }	t_command;
 
+// cd/cd.c
+int						cd(t_command *cmd);
+
 // expander/expander.c
 void					expander(t_command *cmd);
+
+// expander/expander_utils.c
+char					*exp_tkn(char *str, char **env);
 
 // expander/expander_utils.c
 char    				**ft_arrdup(char **arr);
@@ -100,8 +106,7 @@ void					lexer_error(char *message);
 char					*split_operator(char *line, int *ff, int not_new);
 char					*split_line(char *line);
 
-// expander/expander_utils.c
-char					*exp_tkn(char *str, char **env);
+
 
 
 //signals.c
