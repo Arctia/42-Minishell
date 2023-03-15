@@ -19,6 +19,13 @@ processes will be redirected to errfile
 remember is better make a pointer to the head of the list and loop on it instead of loop on the list and change the position
 
 
+REDIDR:
+
+ft_checkredir		simili ft_pipe
+redirect fd with dup2 end call right redir until the execve
+
+
+
 
 /*
 	***********************************************************

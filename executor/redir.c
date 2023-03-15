@@ -17,37 +17,68 @@ char	*ft_name(void)
 
 void	ft_less(t_command *cmd)												//	<
 {
-	int	fd;
+	int	file;
 
-	fd = open(cmd->next->command, O_RDONLY);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	file = open(cmd->next->command, O_RDONLY);
+	if (file < 0)
+	{
+		ft_putstr_fd("minishell: infile: No such file or directory\n",
+			STDERR_FILENO);
+		// (EXIT_FAILURE);
+	}
+	if (file > 0 && dup2(file, STDIN_FILENO) < 0)
+	{
+		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
+		// (EXIT_FAILURE);
+	}
+	if (file > 0)
+		close(file);
 }
 
 void	ft_redir(t_command *cmd)										//	>
 {
-	int	fd;
+	int	file;
 
-	fd = open(cmd->next->command,
+	file = open(cmd->next->command,
 			O_CREAT | O_RDWR | O_TRUNC, 0644);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	if (file < 0)
+	{
+		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
+		//  (EXIT_FAILURE);
+	}
+	if (file > 0 && dup2(file, STDOUT_FILENO) < 0)
+	{
+		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
+		//  (EXIT_FAILURE);
+	}		
+	if (file > 0)
+		close(file);
 }
 
 void	ft_moremore(t_command *cmd) // lo so è sbajato ma fa piu' ride		//	>>
 {
-	int	fd;
+	int	file;
 
-	fd = open(cmd->next->command,
+	file = open(cmd->next->command,
 			O_CREAT | O_RDWR | O_APPEND, 0644);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	if (file < 0)
+	{
+		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
+		//  (EXIT_FAILURE);
+	}
+	if (file > 0 && dup2(file, STDOUT_FILENO) < 0)
+	{
+		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
+		//  (EXIT_FAILURE);
+	}		
+	if (file > 0)
+		close(file);
 }
 
 void	ft_heredoc(t_command *cmd)											//	<<
 {
 	char	*line;
-	char	*delimiter;		//if you need mor var delete it
+	char	*delimiter;		//if you need more var delete it
 	int		fd;
 	char	*filename;
 
