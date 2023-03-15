@@ -12,27 +12,17 @@ int	split_operator_line(char *line, int i)
 {
 	char	quote;
 
-	while (line[i] != 0)
+	while (line[i])
 	{
-		//pfn("augusto miagola: %c\n", line[i]);
-		if (line[i] == '\"' || line[i] == '\'')
+		quote = line[i];
+		if (ft_isquote(quote))
 		{
-			quote = line[i];
 			i++;
-			//pfn("augusto miagola ancora: %c\n", quote);
-			while (line[i] != quote && line[i] != 0)
+			while (line[i] && line[i] != quote)
 				i++;
 		}
-		if (line[i] == '|')
-			break ;
-		//else if (line[i] == '<' || line[i] == '>')
-		//{
-		//	operator = line[i];
-		//	if (line[i + 1] == operator)
-		//		i++;
-			//printf("splitto %s su %c\n", line, line[i]);
-		//	break;
-		//}
+		if (line[i] && line[i] == '|')
+			return (i + 1);
 		i++;
 	}
 	return (i);
@@ -50,8 +40,10 @@ char	*split_operator(char *line, int *ff, int not_new)
 		r = 0;
 	j = 0;
 	i = split_operator_line(line, *ff);
-	ret = (char *) malloc(sizeof(char) * (i) + 1);
-	while ((j + r) <= i)
+	ret = ft_calloc(sizeof(char), (i + 1));
+	if (!ret)
+		return ('\0');
+	while ((j + r) < i)
 	{
 		ret[j] = line[j + r];
 		j++;

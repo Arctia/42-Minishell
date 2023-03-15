@@ -48,19 +48,19 @@ char	*ft_append(char *path, t_command *cmd)
 	char	*retaux;
 	char	*tmp;
 
-	tmp = cmd->command;
+	tmp = cmd->arguments[0];
 	ret = malloc(sizeof(char ) * (ft_strlen(path)
-				+ ft_strlen(cmd->command)) + 2);
+				+ ft_strlen(cmd->arguments[0])) + 2);
 	if (!ret)
 		return (NULL);
 	retaux = ret;
 	while (*path)
 		*ret++ = *path++;
 	*ret++ = '/';
-	while (*cmd->command)
-		*ret++ = *cmd->command++;
+	while (*cmd->arguments[0])
+		*ret++ = *cmd->arguments[0]++;
 	*ret++ = '\0';
-	cmd->command = tmp;
+	cmd->arguments[0] = tmp;
 	return (retaux);
 }
 
@@ -109,12 +109,14 @@ char	**ft_getpath_old(t_command *cmd, int i)
 int	and_slash(char *str)
 {
 	str++;
+	pfn("%t *str:%s", str);
 	while (str[0])
 	{
 		if (str[0] == '/')
 			return (1);
 		str++;
 	}
+	pfn("%1t end *str:%s", str);
 	return (0);
 }
 
@@ -122,6 +124,25 @@ int	and_slash(char *str)
 //{
 	
 //}
+
+char	**shift_down_paths(char **paths)
+{
+	char	*swap;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (paths[i])
+		i++;
+	swap = paths[0];
+	while (--i)
+	{
+		tmp = paths[i - 1];
+		paths[i - 1] = paths[i];
+		paths[i] = tmp;
+	}
+	return (paths);
+}
 
 char	**absolute_path(char **paths, t_command *cmd)
 {
@@ -139,6 +160,7 @@ char	**absolute_path(char **paths, t_command *cmd)
 		i++;
 	}
 	paths = ft_addlinetomatrix(paths, new_path);
+	ft_print_matrix(paths);
 	temp = cmd->arguments[0];
 	cmd->arguments[0] = ft_strtrim(cmd->arguments[0], new_path);
 	free(temp);
@@ -148,47 +170,44 @@ char	**absolute_path(char **paths, t_command *cmd)
 char	**add_current_path(char **paths, char *cwd, t_command *cmd)
 {
 	char	*tmp;
-	int		i;
+	size_t	i;
 
-	pfn("%1t inside");
+	i = 1;
 	// if ./ or ../ add cwd to path and mantain the part behind (?)
-	if (cmd->arguments[0][0] == '.' && cmd->arguments[0][1] == '/')
+	if (cmd->arguments[0][0] == '.' && cmd->arguments[0][1] == '/' && i++)
 	{
-		pfn("%1t inside cwd > %s", cwd);
 		paths = ft_addlinetomatrix(paths, cwd);
 		tmp = cmd->arguments[0];
 		cmd->arguments[0] = ft_strtrim(cmd->arguments[0], "./");
 		free(tmp);
-		pfn("%1t inside %s", cmd->arguments[0]);
 	}
 	//else if (cmd->arguments[0][0] == '.' && cmd->arguments[0][1] == '.' 
 	//	&& cmd->arguments[0][2] == '/')
 	//	path = remove_double_points(path, cmd);
-	if (cmd->arguments[0][0] == '/')
+	if (cmd->arguments[0][0] == '/' && cmd->arguments[0][1] && i++)
 		paths = absolute_path(paths, cmd);
+	else if (cmd->arguments[0][0] && i++)
+		paths = ft_addlinetomatrix(paths, ft_strdup("/"));
 	//free(cwd);
+	if (i > 1)
+		paths = shift_down_paths(paths);
 	return (paths);
-
 }
 
 char	**ft_getpath(t_command *cmd)
 {
 	char	**path;
-	
 	char	*temp;
-
 	char	cwd[MAXPATHLEN];
 
-	if (!(getcwd(cwd, sizeof(cwd))))
-		perror("getcwd() error");
-
 	temp = NULL;
-	//pfn("%s", exp_tkn("PATH", cmd->shell->env));
+	path = NULL;
 	temp = exp_tkn("PATH", cmd->shell->env);
 	path = ft_split(temp, ':');
-	pfn("%t testing path[%d] %s", 0, path[0]);
 	free(temp);
-	add_current_path(path, cwd, cmd);
+	if (!(getcwd(cwd, sizeof(cwd))))
+		perror("getcwd() error");
+	path = add_current_path(path, cwd, cmd);
 	return (path);
 }
 
@@ -206,33 +225,29 @@ char	*ft_findpath(t_command *cmd, int i)
 	DIR				*dir;
 	struct dirent	*entry;
 	char			**path;
-	char			*temp;
+	char			*path_to_use;
 
 	path = ft_getpath(cmd);
+	pfn("%t -----------------------------");
+	ft_print_matrix(path);
 	ft_fixcommand(cmd);
-	while (path[i])
+	while (path[i++])
 	{
-
-		dir = opendir(path[i]);
+		dir = opendir(path[i - 1]);
 		entry = readdir(dir);
-
 		while (entry)
 		{
-			if (ft_strcmp(entry->d_name, cmd->command))
+			if (ft_strcmp(entry->d_name, cmd->arguments[0]))
 			{
-
 				closedir(dir);
-
-				temp = ft_append(path[i], cmd);
+				path_to_use = ft_append(path[i - 1], cmd);
 				ft_free_cmatrix(path);
-				return (temp);
+				pfn("%1t %s", path_to_use);
+				return (path_to_use);
 			}
 				entry = readdir(dir);
-
 		}
-
 		closedir(dir);
-		i++;
 	}
 	return (NULL);
 }
@@ -269,5 +284,6 @@ char	**ft_addlinetomatrix(char **arr, char *line)
 	rtn[i] = ft_strdup(line);
 	i++;
 	rtn[i] = NULL;
+	ft_free_cmatrix(arr);
 	return (rtn);
 }

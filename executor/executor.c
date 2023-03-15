@@ -91,10 +91,15 @@ void	ft_execv(t_command *cmd, pid_t pid)
 	int		status;
 
 	path = ft_findpath(cmd, 0);
+	if (!path)
+	{
+		pfn("void path\nexit");
+		return ;
+	}
 	arg = cmd->arguments;
-	pfn("path: %s\narg[0]: %s");
 	if (!arg)
 		return ;
+	pfn("path: %s\narg[0]: %s", path, cmd->arguments[0]);
 	pid = fork();
 	if (!pid)
 	{
@@ -199,7 +204,7 @@ void	ft_fixcommand(t_command *cmd)
 		tmp = cmd->arguments[0];
 		temp = ft_strtrim(cmd->arguments[0], "./");
 		cmd->arguments[0] = temp;
-		pfn("cmd->arg[0]: %s", cmd->arguments[0]);
+		pfn("asdzxc cmd->arg[0]: %s", cmd->arguments[0]);
 		free(tmp);
 	}
 }
