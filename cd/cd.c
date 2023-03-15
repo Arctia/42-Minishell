@@ -56,7 +56,6 @@ static int	cd_execute(t_command *cmd)
 		error = chdir(cmd->arguments[0]);
 	if (error)
 	{
-		//pfn("cd: no such file or directory: %s\n", cmd->args[1]);
 		pfn("bash: cd: %s: Not a directory");
 		return (1);
 	}
@@ -93,7 +92,7 @@ static void	cd_replace_null(t_command *cmd, char *str)
 int	cd(t_command *cmd)
 {
 	char	*home;
-	
+
 	home = exp_tkn("HOME", cmd->shell->env);
 	if (cmd->arguments[0] && cmd->arguments[1])
 	{
