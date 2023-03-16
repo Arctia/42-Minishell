@@ -85,42 +85,41 @@ typedef struct s_command
 }	t_command;
 
 // builtins
-int						redirector(t_command *cmd);
-int						unset(t_command *cmd);
-int						cd(t_command *cmd);
+int		redirector(t_command *cmd);
+int		unset(t_command *cmd);
+int		cd(t_command *cmd);
+int 	pwd(t_command *cmd);
+int		echo(t_command *cmd);
 
 // expander/expander.c
-void					expander(t_command *cmd);
+void	expander(t_command *cmd);
 
 // expander/expander_utils.c
-char					*exp_tkn(char *str, char **env);
+char	*exp_tkn(char *str, char **env);
 
 // expander/expander_utils.c
-char    				**ft_arrdup(char **arr);
+char	**ft_arrdup(char **arr);
 
 // main/free_structs.c
-void					free_commands(t_hellmini *shell);
-void					free_shell(t_hellmini *shell);
+void	free_commands(t_hellmini *shell);
+void	free_shell(t_hellmini *shell);
 
 // parser.c
-int						parser(t_hellmini *sh);
+int		parser(t_hellmini *sh);
 
 // lexer/lexer.c
-int     				lexer_init(t_hellmini *shell);
+int		lexer_init(t_hellmini *shell);
 // lexer/lexer_splitter.c
-void					lexer_error(char *message);
-char					*split_operator(char *line, int *ff, int not_new);
-char					*split_line(char *line);
-
-
-
+void	lexer_error(char *message);
+char	*split_operator(char *line, int *ff, int not_new);
+char	*split_line(char *line);
 
 //signals.c
-void					ft_suppress_output(void);
-void					sigint_handler(int sig);
-void					sigquit_handler(int sig);
-void					sigquit_macro(int sig, t_hellmini *shell);
-void					*ft_handler(int sig);
-void					ft_sigs_handler(int sig);
+void	ft_suppress_output(void);
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
+void	sigquit_macro(int sig, t_hellmini *shell);
+void	*ft_handler(int sig);
+void	ft_sigs_handler(int sig);
 
 #endif
