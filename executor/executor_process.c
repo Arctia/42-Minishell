@@ -1,7 +1,7 @@
 
 #include "executor.h"
 
-static void print_free_close(char *str, int fd, DIR *dir)
+static void	print_free_close(char *str, int fd, DIR *dir)
 {
 	ft_printf("%s\n", str);
 	close(fd);
@@ -10,20 +10,24 @@ static void print_free_close(char *str, int fd, DIR *dir)
 	free(str);
 }
 
-static char *advanced_join(char *str, char *path)
+static char	*advanced_join(char *str, char *path, char *cmd_name)
 {
 	if (!path)
+	{
+		if (cmd_name)
+			return (ft_strjoin_free(str, cmd_name, 1, 0));
 		return (str);
+	}
 	return (ft_strjoin_free(str, path, 1, 0));
 }
 
-// maybe we need to store the string in fd, that way when using pipes
+/* maybe we need to store the string in fd, that way when using pipes
 // it can print in recursive since errors are printed in an abdnormal
-// way.
-static int	error_print(char *path)
+// way. */
+static int	error_print(char *path, char *cmd_name)
 {
-	char 	*str;
-	DIR 	*dir;
+	char	*str;
+	DIR		*dir;
 	int		err;
 	int		fd;
 
@@ -32,7 +36,7 @@ static int	error_print(char *path)
 	dir = NULL;
 	if (path)
 		dir = opendir(path);
-	str = advanced_join(str, path);
+	str = advanced_join(str, path, cmd_name);
 	if (path == NULL || ft_strchr(path, '/') == NULL)
 		str = ft_strjoin_free(str, ": command not found", 1, 0);
 	else if (fd == -1 && dir == NULL)
@@ -56,7 +60,7 @@ void	execute_process(t_hellmini *shell, char *path, char **args)
 	errno = 0;
 	if (path && ft_strchr(path, '/'))
 		execve(path, args, shell->env);
-	errno = error_print(path);
+	errno = error_print(path, args[0]);
 	free_shell(shell);
 	free(path);
 	exit(errno);

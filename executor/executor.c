@@ -156,9 +156,9 @@ void	ft_executor(t_command *cmd)
 		else if (cmd->spc[HERDOC])
 			ft_heredoc(cmd);
 		else if (cmd->spc[PIPE])
-		{
+		{ 
 			ft_pipe(cmd);
-			// while ((waitpid(-1, &status, 0)))
+			// while ((waitpid(-1, 0, 0)<0))
 			// 	;
 			break ;
 			// cmd = cmd->next;
