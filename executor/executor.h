@@ -12,8 +12,15 @@ typedef int	Pipe[2];
 char	*ft_expander(char *str, char **env);
 int		(*ft_builtin(char *str))(t_command *cmd);
 void	ft_fixcommand(t_command *cmd);
-void	ft_execv(t_command *cmd, pid_t pid);
+void	ft_execv(t_command *cmd, pid_t pid, int *status);
 void	ft_executor(t_command *parser);
+
+/*
+	***********************************************************
+					execute_process.c
+	***********************************************************
+*/
+void	execute_process(t_hellmini *shell, char *path, char **args);
 
 /*
 	***********************************************************
