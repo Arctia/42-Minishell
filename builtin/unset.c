@@ -14,13 +14,13 @@ static char	*envcpy_line(char *line)
 	int		i;
 
 	i = 0;
-	while(line[i] != 0)
+	while (line[i] != 0)
 		i++;
 	new_line = ft_calloc(sizeof(char), i + 1);
 	if (!(new_line))
 		return (NULL);
 	i = 0;
-	while(line[i] != 0)
+	while (line[i] != 0)
 	{
 		(new_line)[i] = line[i];
 		i++;

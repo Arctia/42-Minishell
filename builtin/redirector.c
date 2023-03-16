@@ -1,8 +1,8 @@
 #include "./../global.h"
 
-int redirector(t_command *com)
+int	redirector(t_command *com)
 {
-	char *command;
+	char	*command;
 
 	command = com->command;
 	if (ft_strcmp(command, "unset"))
