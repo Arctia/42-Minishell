@@ -107,8 +107,9 @@ void	*ft_handler(int sig)
 		(void)sig;
 		readline(ft_strjoin_free(PROMPT, "exit", 0, 0));
 		rl_redisplay();
+		rl_clear_history();
 		exit(3);
 	}
-	exit(1);
+	//exit(1);
 }
 //QUALCUNO PENSI AI BAMBINI!!!!(cit.)
