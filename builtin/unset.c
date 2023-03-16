@@ -1,20 +1,6 @@
 #include "../global.h"
 
-int	ms_expcmp(const char *s1, const char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] != 0)
-	{
-		if (s2[i] && s1[i] != s2[i] && s1[i + 1] && s1[i + 1] != '=')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-char	**envcpy_len(int len, char **new_env)
+static char	**envcpy_len(int len, char **new_env)
 {
 	new_env = ft_calloc(sizeof(char *), len + 1);
 	if (!new_env)
@@ -22,7 +8,7 @@ char	**envcpy_len(int len, char **new_env)
 	return (new_env);
 }
 
-char	*envcpy_line(char *line)
+static char	*envcpy_line(char *line)
 {
 	char	*new_line;
 	int		i;
@@ -42,15 +28,8 @@ char	*envcpy_line(char *line)
 	return (new_line);
 }
 
-char *get_next_arg(char *arg)
+static int	cmp_arguments(char *env_string, char **args)
 {
-	arg = ft_strjoin_free(arg, "=", 1, 0);
-	return (arg);
-}
-
-int	cmp_arguments(char *env_string, char **args)
-{
-	char	*arg;
 	int		i;
 	int		j;
 
@@ -58,14 +37,9 @@ int	cmp_arguments(char *env_string, char **args)
 	i = 1;
 	while (args[i])
 	{
-		arg = ft_strjoin(args[i++], "=");
-		if (!ft_strncmp(arg, env_string, ft_strlen(arg)))
-		{
-			pfn("found");
-			free(arg);
+		if (!ft_strncmp(args[i], env_string, ft_strlen(args[i])))
 			return (1);
-		}
-		free(arg);
+		i++;
 	}
 	return (0);
 }
