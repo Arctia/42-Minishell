@@ -93,7 +93,7 @@ char	*exp_tkn(char *str, char **env)
 	while (env[i][j] != '=')
 		j++;
 	j++;
-	new_token = ft_calloc(sizeof(char), ft_strlen(env[i] + 2 - j));
+	new_token = ft_calloc(sizeof(char), ft_strlen(env[i]) + 1);
 	if (!new_token)
 		return (NULL);
 	k = 0;

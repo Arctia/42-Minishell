@@ -84,37 +84,28 @@ int	(*ft_builtin(char *str))(t_hellmini *shell)
 	we have to decide if do the fork in ft execve or in executor
 */
 
-void	ft_execv(t_command *cmd, pid_t pid)
+void	ft_execv(t_command *cmd, pid_t pid, int *status)
 {
 	char	*path;
 	char	**arg;
-	int		status;
 
-	path = ft_findpath(cmd, 0);
-	arg = ft_listtomatrix(cmd);
-	if (!arg)
-		return ;
+	if (ft_strchr(cmd->command, '/'))
+		path = ft_strdup(cmd->command);
+	else
+		path = ft_findpath(cmd, 0);
+	arg = cmd->arguments;
 	pid = fork();
 	if (!pid)
-	{
-		if (execve(path, arg, cmd->shell->env) == -1)
-		{
-			perror("execv execution failed");
-			free_shell(cmd->shell);
-			exit(1);
-		}
-	}
+		execute_process(cmd->shell, path, arg);
 	else if (pid < 0)
 		perror("execv fork failed");
 	else
 	{
-		waitpid(pid, &status, WUNTRACED);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
-			waitpid(pid, &status, WUNTRACED);
+		waitpid(pid, status, WUNTRACED);
+		while (!WIFEXITED(*status) && !WIFSIGNALED(*status))
+			waitpid(pid, status, WUNTRACED);
 	}
-	// ft_free_cmatrix(arg);
-	// free(path);
-	// exit(EXIT_FAILURE);
+	free(path);
 }
 
 /*
@@ -152,7 +143,7 @@ void	ft_executor(t_command *cmd)
 			//if (ft_builtin(cmd->command))
 			//	;
 			//else
-			ft_execv(cmd, pid);
+			ft_execv(cmd, pid, &(cmd->shell->exit_status));
 		}
 		else if (cmd->spc[REDIN])
 			ft_less(cmd);
@@ -194,11 +185,11 @@ void	ft_fixcommand(t_command *cmd)
 	char	*temp;
 	char	*tmp;
 
-	if (ft_strncmp("./", cmd->command, 2) == 0)
+	if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
 	{
-		tmp = cmd->command;
-		temp = ft_strtrim(cmd->command, "./");
-		cmd->command = temp;
+		tmp = cmd->arguments[0];
+		temp = ft_strtrim(cmd->arguments[0], "./");
+		cmd->arguments[0] = temp;
 		free(tmp);
 	}
 }

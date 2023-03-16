@@ -40,6 +40,10 @@
 # define TILDE 9
 # define EMPTY -1
 
+// Errors
+# define ERR_DIR 126
+# define ERR_UNK 127
+
 # define PROMPT "\033[1;31mminisHELL$:\033[0m "
 
 //per far funzionare rl_replace_line

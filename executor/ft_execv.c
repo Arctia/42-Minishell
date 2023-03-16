@@ -48,19 +48,19 @@ char	*ft_append(char *path, t_command *cmd)
 	char	*retaux;
 	char	*tmp;
 
-	tmp = cmd->command;
+	tmp = cmd->arguments[0];
 	ret = malloc(sizeof(char ) * (ft_strlen(path)
-				+ ft_strlen(cmd->command)) + 2);
+				+ ft_strlen(cmd->arguments[0])) + 2);
 	if (!ret)
 		return (NULL);
 	retaux = ret;
 	while (*path)
 		*ret++ = *path++;
 	*ret++ = '/';
-	while (*cmd->command)
-		*ret++ = *cmd->command++;
+	while (*cmd->arguments[0])
+		*ret++ = *cmd->arguments[0]++;
 	*ret++ = '\0';
-	cmd->command = tmp;
+	cmd->arguments[0] = tmp;
 	return (retaux);
 }
 
@@ -72,7 +72,7 @@ char	*ft_append(char *path, t_command *cmd)
 	path da freeare
 */
 
-char	**ft_getpath(t_command *cmd, int i)
+char	**ft_getpath_old(t_command *cmd, int i)
 {
 	char	**ritemp;
 	char	**path;
@@ -89,7 +89,7 @@ char	**ft_getpath(t_command *cmd, int i)
 		if (ft_strncmp("PATH", cmd->shell->env[i], 4) == 0)
 		{
 			temp = ft_strtrim(cmd->shell->env[i], "PATH=");
-			if (ft_strncmp("./", cmd->command, 2) == 0)
+			if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
 				ritemp = ft_split(temp, ':');
 			else
 				path = ft_split(temp, ':');
@@ -106,6 +106,19 @@ char	**ft_getpath(t_command *cmd, int i)
 	return (path);
 }
 
+char	**ft_getpath(t_command *cmd)
+{
+	char	**paths;
+	char	*temp;
+
+	temp = NULL;
+	paths = NULL;
+	temp = exp_tkn("PATH", cmd->shell->env);
+	paths = ft_split(temp, ':');
+	free(temp);
+	return (paths);
+}
+
 /*
 	***********************************************************
 					FT_FINDPATH
@@ -115,38 +128,44 @@ char	**ft_getpath(t_command *cmd, int i)
 	facile per essere a norma e non avere leak
 */
 
+size_t	ft_matrix_size(char	**mtx)
+{
+	size_t	i;
+
+	i = 0;
+	if (mtx)
+	{
+		while (mtx[i])
+			i++;
+	}
+	return (i);
+}
+
 char	*ft_findpath(t_command *cmd, int i)
 {
 	DIR				*dir;
 	struct dirent	*entry;
-	char			**path;
-	char			*temp;
+	char			**paths;
+	char			*path_to_use;
 
-	path = ft_getpath(cmd, 0);
+	paths = ft_getpath_old(cmd, 0);
 	ft_fixcommand(cmd);
-	while (path[i])
+	while (paths[i++])
 	{
-
-		dir = opendir(path[i]);
+		dir = opendir(paths[i - 1]);
 		entry = readdir(dir);
-
 		while (entry)
 		{
-			if (ft_strcmp(entry->d_name, cmd->command))
+			if (ft_strcmp(entry->d_name, cmd->arguments[0]))
 			{
-
 				closedir(dir);
-
-				temp = ft_append(path[i], cmd);
-				ft_free_cmatrix(path);
-				return (temp);
+				path_to_use = ft_append(paths[i - 1], cmd);
+				ft_free_cmatrix(paths);
+				return (path_to_use);
 			}
 				entry = readdir(dir);
-
 		}
-
 		closedir(dir);
-		i++;
 	}
 	return (NULL);
 }
@@ -183,5 +202,6 @@ char	**ft_addlinetomatrix(char **arr, char *line)
 	rtn[i] = ft_strdup(line);
 	i++;
 	rtn[i] = NULL;
+	ft_free_cmatrix(arr);
 	return (rtn);
 }
