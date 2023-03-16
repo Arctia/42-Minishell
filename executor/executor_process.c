@@ -1,7 +1,7 @@
 
 #include "executor.h"
 
-static void print_free_close(char *str, int fd, DIR *dir)
+static void	print_free_close(char *str, int fd, DIR *dir)
 {
 	ft_printf("%s\n", str);
 	close(fd);
@@ -10,7 +10,7 @@ static void print_free_close(char *str, int fd, DIR *dir)
 	free(str);
 }
 
-static char *advanced_join(char *str, char *path, char *cmd_name)
+static char	*advanced_join(char *str, char *path, char *cmd_name)
 {
 	if (!path)
 	{
@@ -21,13 +21,13 @@ static char *advanced_join(char *str, char *path, char *cmd_name)
 	return (ft_strjoin_free(str, path, 1, 0));
 }
 
-// maybe we need to store the string in fd, that way when using pipes
+/* maybe we need to store the string in fd, that way when using pipes
 // it can print in recursive since errors are printed in an abdnormal
-// way.
+// way. */
 static int	error_print(char *path, char *cmd_name)
 {
-	char 	*str;
-	DIR 	*dir;
+	char	*str;
+	DIR		*dir;
 	int		err;
 	int		fd;
 
