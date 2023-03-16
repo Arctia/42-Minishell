@@ -2,76 +2,51 @@
 
 /*
 	***********************************************************
-					ft_execvepipe
-	***********************************************************
-*/
-void	ft_execvepipe(t_command *cmd)
-{
-	char	*path;
-	char	**arg;
-	int		status;
-	pid_t	pid;
-
-	path = ft_findpath(cmd, 0);
-	arg = ft_listtomatrix(cmd);
-	if ((pid = fork()) < 0)
-		perror("execv fork failed");
-	if (!pid)
-	{
-		if (execve(path, arg, cmd->shell->env) == -1)
-		{
-			perror("execv execution failed");
-			free_shell(cmd->shell);
-			exit(1);
-		}
-	}
-	else
-	{
-		waitpid(pid, &status, WUNTRACED);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
-			waitpid(pid, &status, WUNTRACED);
-	}
-}
-/*
-	***********************************************************
 					ft_pipe
 	***********************************************************
 	no pid array
-	mancano ft_expander, ft_redir(ancora da scrivere)
-	cat | ls non funziona come bash
+	mancano ft_expander, ft_redir(ancora da scrivere) ft_builtin
+	cat | ls singolo funzionaaaaaaa zi puo'fareeeeeeeeeeeeeee
+	cat | cat | ls quasi funzione devi premere due volte invio 
+	ma non printa i due \n ma uno solo 
 
 */
 
 void	ft_pipe(t_command *cmd)
 {
-	int		status;
 	int		std_cpy[2];
 	int		fd[2];
-	int		pid;
+	pid_t		pid;
 
 	std_cpy[0] = dup(0);	// input
 	std_cpy[1] = dup(1);	//	output
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
 		pipe(fd);
-		if((pid=fork())==0)
+		pid = fork();
+		if(!pid)
 		{
 			close(fd[0]);
 			if (cmd->spc[PIPE])
+			{
 				dup2(fd[1], STDOUT_FILENO);
+				close(fd[1]);
+			}
 			else
+			{
 				dup2(std_cpy[1], STDOUT_FILENO);
-			close(std_cpy[1]);
-			close(fd[1]);
-			ft_execvepipe(cmd);
+				close(std_cpy[1]);
+			}
+			ft_execv(cmd, pid, &cmd->shell->exit_status);
 			exit(1);
+			waitpid(pid, 0, 0);
 		}
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		waitpid(pid, &status, WUNTRACED);
 		cmd = cmd->next;
 	}
+	// waitpid(pid, 0, WUNTRACED);
 	dup2(std_cpy[0], STDIN_FILENO);
 	close(std_cpy[0]);
 	close(std_cpy[1]);
@@ -109,7 +84,7 @@ void	ft_pipeline(t_command *cmd)
 			else
 				dup2(std_cpy[1], STDOUT_FILENO);
 			close(fd[1]);
-			ft_execvepipe(cmd);
+			ft_execv(cmd,pid[i],&status);
 		}
 		else
 		{
