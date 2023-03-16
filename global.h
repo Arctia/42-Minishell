@@ -62,7 +62,7 @@ typedef struct s_hellmini
 	int					mc_quotes;
 	int					mc_wquotes;
 
-}           t_hellmini;
+}				t_hellmini;
 
 typedef struct s_command
 {
