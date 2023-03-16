@@ -3,7 +3,6 @@
 
 static void	free_things_inside_command(t_command *cmd)
 {
-	return;
 	ft_free_cmatrix(cmd->arguments);
 	ft_free_cmatrix(cmd->tokens);
 	ft_free_ptr(cmd->red_type);

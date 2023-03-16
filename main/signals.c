@@ -109,6 +109,6 @@ void	*ft_handler(int sig)
 		rl_redisplay();
 		exit(3);
 	}
-	exit(1);
+	//exit(1);
 }
 //QUALCUNO PENSI AI BAMBINI!!!!(cit.)

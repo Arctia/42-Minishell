@@ -153,11 +153,10 @@ char	*ft_findpath(t_command *cmd, int i)
 		{
 			if (ft_strcmp(entry->d_name, cmd->arguments[0]))
 			{
-				free(entry);
 				closedir(dir);
 				return (path_to_use(paths, cmd, i));
 			}
-				entry = readdir(dir);
+			entry = readdir(dir);
 		}
 		closedir(dir);
 	}
