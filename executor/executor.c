@@ -89,6 +89,8 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	char	*path;
 	char	**arg;
 
+	if (redirector(cmd) != -1)
+		return ;
 	if (ft_strchr(cmd->command, '/'))
 		path = ft_strdup(cmd->command);
 	else

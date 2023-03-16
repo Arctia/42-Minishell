@@ -85,6 +85,7 @@ typedef struct s_command
 }	t_command;
 
 // builtins
+int						redirector(t_command *cmd);
 int						unset(t_command *cmd);
 int						cd(t_command *cmd);
 
