@@ -38,15 +38,18 @@ void	ft_pipe(t_command *cmd)
 				close(std_cpy[1]);
 			}
 			ft_execv(cmd, pid, &cmd->shell->exit_status);
+			waitpid(pid,0,0);
 			exit(1);
-			waitpid(pid, 0, 0);
+			// if(cmd->next = NULL)
+				// while(waitpid(pid, 0, 0))
+					// ;
 		}
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
 		cmd = cmd->next;
 	}
-	// waitpid(pid, 0, WUNTRACED);
+	// waitpid(pid, 0, 0);
 	dup2(std_cpy[0], STDIN_FILENO);
 	close(std_cpy[0]);
 	close(std_cpy[1]);
@@ -72,7 +75,7 @@ void	ft_pipeline(t_command *cmd)
 
 	std_cpy[0] = dup(0);	// input
 	std_cpy[1] = dup(1);	//	output
-	pid = malloc(sizeof(int) * n_pipe);
+	pid = malloc(sizeof(int) * n_pipe + 1);
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
 		pipe(fd);
@@ -80,10 +83,16 @@ void	ft_pipeline(t_command *cmd)
 		{
 			close(fd[0]);
 			if (cmd->spc[PIPE])
+			{
 				dup2(fd[1], STDOUT_FILENO);
+				close(fd[1]);
+			}
 			else
+			{
 				dup2(std_cpy[1], STDOUT_FILENO);
-			close(fd[1]);
+				close(std_cpy[1]);
+			}
+			// break;
 			ft_execv(cmd,pid[i],&status);
 		}
 		else
@@ -96,11 +105,16 @@ void	ft_pipeline(t_command *cmd)
 		i++;	
 		cmd = cmd->next;
 	}
-	dup2(std_cpy[0], STDIN_FILENO);
-	close(std_cpy[0]);
-	close(std_cpy[1]);
-	i = -1;
-	while (++i < n_pipe)
-		waitpid(pid[i],&status,0);
-	free(pid);
+	// if(pid==0)
+	// 	ft_execv(cmd,pid[i],&status);
+	// else
+	// {
+		dup2(std_cpy[0], STDIN_FILENO);
+		close(std_cpy[0]);
+		close(std_cpy[1]);
+		i = -1;
+		while (++i < n_pipe)
+			waitpid(pid[i],&status,0);
+		free(pid);
+	// }
 }

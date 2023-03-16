@@ -137,7 +137,12 @@ void	ft_executor(t_command *cmd)
 			expander(cmd);
 		pfn("%3t -----------------------------------------------------------");
 		pfn("%t running command: %s", cmd->str);
-		if (cmd->next == NULL)	//simple command?
+		if (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP])
+		{
+			ft_redir(cmd);
+			break;
+		}
+		else if (cmd->next == NULL)	//simple command?
 		{
 			// if (ft_strcmp(cmd->command, builtin[i]))
 			//if (ft_builtin(cmd->command))
@@ -146,29 +151,21 @@ void	ft_executor(t_command *cmd)
 			ft_execv(cmd, pid, &(cmd->shell->exit_status));
 		}
 		else if (cmd->spc[REDIN])
-			ft_less(cmd);
+			ft_redin(cmd);
 		else if (cmd->spc[REDOUT])
-			ft_redir(cmd);
+			ft_redout(cmd);
 		else if (cmd->spc[REDAPP])
-			ft_moremore(cmd);
+			ft_redappend(cmd);
 		else if (cmd->spc[HERDOC])
 			ft_heredoc(cmd);
 		else if (cmd->spc[PIPE])
 		{ 
 			ft_pipe(cmd);
-			// while ((waitpid(-1, 0, 0)<0))
-			// 	;
 			break ;
-			// cmd = cmd->next;
-
-			// while ((waitpid(-1, &status, 0)))
-			// 	;
-			// while (waitpid(0, &status ,0))
-			// 	;//? not sure if here or in ft_executor with a while loop
 		}
 		// ft_execv(shell, pid); //see function comment maybe every single exceptio call his own ft_sexecv
 		// if (cmd->next)
-		cmd = cmd->next;
+			cmd = cmd->next;
 	}
 }
 
