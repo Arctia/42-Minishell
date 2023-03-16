@@ -13,10 +13,10 @@ int	redirector(t_command *com)
 		return (echo(com));
 	else if (ft_strcmp(command, "pwd"))
 		return (pwd(com));
-	/*else if (ft_strcmp(command, "export"))
-		return (export(com));
 	else if (ft_strcmp(command, "env"))
 		return (env(com));
+	/*else if (ft_strcmp(command, "export"))
+		return (export(com));
 	else if (ft_strcmp(command, "exit"))
 		return (exit(com));*/
 	return (-1);

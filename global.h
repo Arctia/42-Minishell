@@ -90,6 +90,7 @@ int		unset(t_command *cmd);
 int		cd(t_command *cmd);
 int 	pwd(t_command *cmd);
 int		echo(t_command *cmd);
+int		env(t_command *cmd);
 
 // expander/expander.c
 void	expander(t_command *cmd);
