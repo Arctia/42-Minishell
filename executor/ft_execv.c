@@ -128,17 +128,13 @@ char	**ft_getpath(t_command *cmd)
 	facile per essere a norma e non avere leak
 */
 
-size_t	ft_matrix_size(char	**mtx)
+static char	*path_to_use(char **paths, t_command *cmd, int id)
 {
-	size_t	i;
+	char	*path;
 
-	i = 0;
-	if (mtx)
-	{
-		while (mtx[i])
-			i++;
-	}
-	return (i);
+	path = ft_append(paths[id - 1], cmd);
+	ft_free_cmatrix(paths);
+	return (path);
 }
 
 char	*ft_findpath(t_command *cmd, int i)
@@ -146,11 +142,10 @@ char	*ft_findpath(t_command *cmd, int i)
 	DIR				*dir;
 	struct dirent	*entry;
 	char			**paths;
-	char			*path_to_use;
 
-	paths = ft_getpath_old(cmd, 0);
+	paths = ft_getpath(cmd);
 	ft_fixcommand(cmd);
-	while (paths[i++])
+	while (paths && paths[i++])
 	{
 		dir = opendir(paths[i - 1]);
 		entry = readdir(dir);
@@ -158,15 +153,16 @@ char	*ft_findpath(t_command *cmd, int i)
 		{
 			if (ft_strcmp(entry->d_name, cmd->arguments[0]))
 			{
+				free(entry);
 				closedir(dir);
-				path_to_use = ft_append(paths[i - 1], cmd);
-				ft_free_cmatrix(paths);
-				return (path_to_use);
+				return (path_to_use(paths, cmd, i));
 			}
 				entry = readdir(dir);
 		}
 		closedir(dir);
 	}
+	if (paths)
+		ft_free_cmatrix(paths);
 	return (NULL);
 }
 
