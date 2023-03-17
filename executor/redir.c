@@ -61,105 +61,103 @@ char	*ft_name(void)
 
 void	ft_redin(t_command *cmd)												//	<
 {
-	int	file;
+	int	fd;
 
-	file = open(*cmd->red, O_RDONLY);
-	if (file < 0)
+	fd = open(*cmd->red, O_RDONLY);
+	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: infile: No such file or directory\n",
+		ft_putstr_fd("minishell: infile: No such fiale or directory\n",
 			STDERR_FILENO);
 		// exit(0);
 		// (EXIT_FAILURE);
 	}
-	if (file > 0 && dup2(file, STDIN_FILENO) < 0)
+	if (fd > 0 && dup2(fd, STDIN_FILENO) < 0)
 	{
 		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
 		// exit(0);
 		// (EXIT_FAILURE);
 	}
-	if (file > 0)
-		close(file);
+	if (fd > 0)
+		close(fd);
 }
 
 void	ft_redout(t_command *cmd)										//	>
 {
-	int	file;
-	// ft_printf("red: %s",*cmd->red);
-	// ft_printf("red[0]: %s",cmd->red[0]);
-	file = open(*cmd->red,
-			O_CREAT | O_RDWR | O_TRUNC, 0777);
-	if (file < 0)
+	int	fd;
+
+	fd = open(*cmd->red,
+			O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
 		exit(0);
 		//  (EXIT_FAILURE);
 	}
-	if (file > 0 && dup2(file, STDOUT_FILENO) < 0)
+	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
 	{
 		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
 		exit(0);  
 		//  (EXIT_FAILURE);
 	}		
-	if (file > 0)
-		close(file);
+	if (fd > 0)
+		close(fd);
 }
 
 void	ft_redappend(t_command *cmd) // lo so è sbajato ma fa piu' ride		//	>>
 {
-	int	file;
+	int	fd;
 
-	file = open(*cmd->red,
+	fd = open(*cmd->red,
 			O_CREAT | O_RDWR | O_APPEND, 0644);
-	if (file < 0)
+	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
 		//  (EXIT_FAILURE);
 	}
-	if (file > 0 && dup2(file, STDOUT_FILENO) < 0)
+	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
 	{
 		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
 		//  (EXIT_FAILURE);
 	}		
-	if (file > 0)
-		close(file);
+	if (fd > 0)
+		close(fd);
 }
 
 void	ft_heredoc(t_command *cmd)											//	<<
 {
 	char	*line;
 	char	*delimiter;		//if you need more var delete it
-	int		fd;
+	int		fda;
 	char	*filename;
 
 	filename = ft_name();
-	ft_printf("*cmd->red:%s",*cmd->red);
 	delimiter = *cmd->red;
-	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	fda = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline(HEREDOC_MSG);
 	while (line && !ft_strcmp(delimiter, line))
 	{
 		// if(ar[QUOTE] || ar[DQUOTE])
 		// 	ft_expander();				// i think we need it but maybe not
-		write(fd, &line, ft_strlen(line));
-		write(fd, "\n", 1);
+		write(fda, &line, ft_strlen(line));
+		write(fda, "\n", 1);
 		free(line);
-		line = readline(HEREDOC_MSG);
 	}
-	// dup2(fd, STDOUT_FILENO);
+	// dup2(fda, STDOUT_FILENO);
 	if (cmd->red[1])
 	{
-		if (fd < 0)
+		// ft_printf("i'm here");
+		if (fda < 0)
 		{
 			ft_putstr_fd("minishell: heredoc: Error\n", STDERR_FILENO);
 			//  (EXIT_FAILURE);
 		}
-		if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
+		if (fda > 0 && dup2(fda, STDIN_FILENO) < 0)
 		{
 			ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
 			//  (EXIT_FAILURE);
 		}		
-		if (fd > 0)
-			close(fd);
+		if (fda > 0)
+			close(fda);
 	}
 	if (filename)
 		free(filename);

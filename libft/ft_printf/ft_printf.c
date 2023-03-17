@@ -6,7 +6,7 @@
 /*   By: mmariani <mmariani@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 14:09:10 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/17 18:21:05 by mmariani         ###   ########.fr       */
+/*   Updated: 2023/03/17 18:31:58 by mmariani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_printf(const char *str, ...)
 
 int	pfn(const char *str, ...)
 {
-	// return 0;
+	return 0;
 	char		*start;
 	char		*seg;
 	va_list		valist;

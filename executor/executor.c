@@ -141,7 +141,7 @@ void	ft_executor(t_command *cmd)
 			expander(cmd);
 		pfn("%3t -----------------------------------------------------------");
 		pfn("%t running command: %s", cmd->str);
-		if (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP])
+		if (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP] || cmd->spc[HERDOC])
 		{
 			ft_redir(cmd);
 			break;
