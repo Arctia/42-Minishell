@@ -11,9 +11,9 @@ int	env(t_command *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd->minishell->env[i])
+	while (cmd->shell->env[i])
 	{
-		ft_putendl_fd(cmd->minishell->env[i], 1);
+		ft_putendl_fd(cmd->shell->env[i], 1);
 		i++;
 	}
 	return (0);
