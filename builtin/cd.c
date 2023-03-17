@@ -70,10 +70,11 @@ static int	cd_execute(t_command *cmd)
 ############################################################################*/
 static void	cd_replace_null(t_command *cmd, char *str)
 {
-	int	i;
+	int		i;
 
 	ft_free_cmatrix(cmd->arguments);
-	cmd->arguments = malloc(sizeof(char *) * 2);
+	cmd->arguments = ft_calloc(sizeof(char *), 3);
+	cmd->arguments[0] = ft_strdup(cmd->command);
 	cmd->arguments[1] = ft_calloc(sizeof(char), ft_strlen(str) + 1);
 	i = 0;
 	while (str[i])

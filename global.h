@@ -38,6 +38,7 @@
 # define HERDOC 7
 # define CASH 8
 # define TILDE 9
+# define NOCMD 10
 # define EMPTY -1
 
 // Errors
@@ -68,7 +69,7 @@ typedef struct s_command
 {
 	char				*str;
 	char				**tokens;
-	int					spc[10];
+	int					spc[11];
 
 	char				*command;
 	char				**arguments;
@@ -101,6 +102,10 @@ char	*exp_tkn(char *str, char **env);
 // expander/expander_utils.c
 char	**ft_arrdup(char **arr);
 
+// main/init.c
+void					init_shell(t_hellmini *shell, char **env);
+t_command				*init_command(t_hellmini *shell);
+
 // main/free_structs.c
 void	free_commands(t_hellmini *shell);
 void	free_shell(t_hellmini *shell);
@@ -111,9 +116,8 @@ int		parser(t_hellmini *sh);
 // lexer/lexer.c
 int		lexer_init(t_hellmini *shell);
 // lexer/lexer_splitter.c
-void	lexer_error(char *message);
-char	*split_operator(char *line, int *ff, int not_new);
-char	*split_line(char *line);
+char					*split_operator(char *line, int *ff, int not_new);
+char					*split_line(char *line);
 
 //signals.c
 void	ft_suppress_output(void);
