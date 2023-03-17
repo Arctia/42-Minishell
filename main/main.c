@@ -37,6 +37,8 @@ int	prompt_loop(t_hellmini *shell)
 				if (parser(shell) == SUCCESS)
 				{
 					pfn("\n%3t enter executor");
+					if (ft_strcmp(shell->current_cmd->command, "export"))
+						ft_export(shell->current_cmd->arguments, *shell);
 					ft_executor(shell);
 				}
 			}
@@ -52,7 +54,7 @@ int	prompt_loop(t_hellmini *shell)
 	//rip_and_tear(shell->current_cmd, shell->current_cmd->command);
 	return (0);
 }
-// int	prompt_loop(t_hellmini *shell)
+// int	prompt_loop(t_hellmini *shell)	
 // {
 // //signal
 // 	while(1)
@@ -112,6 +114,6 @@ int	main(int argc, char **argv, char **env)
 	shell.env = env;
 	init_shell_env(shell.env, shell);
 	init_shell(&shell);
-	alpha_sort(shell.env, -1);
+	// alpha_sort(shell.env);
 	prompt_loop(&shell);
 }

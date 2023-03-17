@@ -130,7 +130,8 @@ void					ft_sigs_handler(int sig);
 
 //export.c
 char 					**exp_(t_hellmini shell);
-void					alpha_sort(char **mtrx, int n);
+// int						alpha_cmp(char *str1, char *str2);
+void					alpha_sort(char **mtrx);
 void					export_aux(char **key_value, char **env_cpy);
 int						ft_export(char **key_value, t_hellmini shell);
 
