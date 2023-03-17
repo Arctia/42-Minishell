@@ -146,6 +146,8 @@ void	ft_executor(t_command *cmd)
 			ft_redir(cmd);
 			break;
 		}
+		// else if (cmd->spc[HERDOC])
+		// 	ft_heredoc(cmd);
 		else if (cmd->next == NULL)	//simple command?
 		{
 			// if (ft_strcmp(cmd->command, builtin[i]))
@@ -154,14 +156,12 @@ void	ft_executor(t_command *cmd)
 			//else
 			ft_execv(cmd, pid, &(cmd->shell->exit_status));
 		}
-		else if (cmd->spc[REDIN])
-			ft_redin(cmd);
-		else if (cmd->spc[REDOUT])
-			ft_redout(cmd);
-		else if (cmd->spc[REDAPP])
-			ft_redappend(cmd);
-		else if (cmd->spc[HERDOC])
-			ft_heredoc(cmd);
+		// else if (cmd->spc[REDIN])
+		// 	ft_redin(cmd);
+		// else if (cmd->spc[REDOUT])
+		// 	ft_redout(cmd);
+		// else if (cmd->spc[REDAPP])
+		// 	ft_redappend(cmd);
 		else if (cmd->spc[PIPE])
 		{ 
 			ft_pipe(cmd);
