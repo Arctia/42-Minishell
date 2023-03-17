@@ -11,11 +11,14 @@ SRCS =	./main/signals2_0.c \
 		./main/signals.c \
 		./main/main.c \
 		./main/free_structs.c \
+		./main/init.c \
 		./lexer/lexer.c \
 		./lexer/lexer_splitter.c \
 		./lexer/lexer_syntax.c \
 		./parser/parser.c \
 		./parser/ps_utils.c \
+		./parser/ps_write.c \
+		./parser/ps_flags_red.c \
 		./executor/executor.c \
 		./executor/ft_execv.c \
 		./executor/pipe.c \

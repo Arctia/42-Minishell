@@ -28,7 +28,7 @@ static void	move_to_end_quote(char **line)
 		move_to_end_quote(line);
 }
 
-static void move_to_next_char(char **line)
+static void	move_to_next_char(char **line)
 {
 	while (ft_isspace(*line[0]))
 		(*line)++;
@@ -58,4 +58,23 @@ int	syntax_check_2(char *line)
 	if (ft_isredirection(cc) && (!line[0] || line[0] == '\n'))
 		return (lx_error('\n'));
 	return (0);
+}
+
+int	check_syntax(char *line, int i)
+{
+	char	ch;
+
+	ch = check_closures(line, i);
+	if (ch)
+		return (lx_error(ch));
+	while (line[i] != 0)
+	{
+		if (ms_isoperator(line[i]) == 1)
+		{
+			if (check_operator(line, i) == -1)
+				return (lx_error('|'));
+		}
+		i++;
+	}
+	return (syntax_check_2(line));
 }

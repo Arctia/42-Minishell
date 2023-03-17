@@ -1,13 +1,7 @@
 #include "./lexer.h"
 
-void	lexer_error(char *message) //example and sketch of an exit error function, not really integrated with the minishell
-{
-	ft_printf("Error: %s\n", message);
-	//free(com->shell->input);
-	//free(com);
-}
-
-//looks for the index where to split the line between command and line yet to be checked.
+//looks for the index where to split the line between 
+// command and line yet to be checked.
 int	split_operator_line(char *line, int i)
 {
 	char	quote;
@@ -54,21 +48,31 @@ char	*split_operator(char *line, int *ff, int not_new)
 	return (ret);
 }
 
-//splits the line yet to be controlled from the command already split
-/*char	*split_line(char *line)
+int	check_operator(char *line, int i)
 {
-	char	*ret;
-	int		i;
-	int		j;
+	int	flag;
 
-	j = 0;
-	//i = split_operator_line(line);
-	i = 0;
-	while (line[i] != 0)
-	{
-		ret[j] = line[i];
-		j++;
+	flag = 0;
+	while (ms_isoperator(line[i]) || ft_isspace(line[i]))
+	{	
+		if (!line[i + 1])
+			return (-1);
+		if (ms_isoperator(line[i]) == 1)
+		{
+			if (ms_isoperator(line[i + 1]) && line[i + 1] == '|')
+				return (-1);
+			else if (ms_isoperator(line[i + 1]) && line[i + 1] != line[i])
+				return (-1);
+			else if (ms_isoperator(line[i + 1]) && ms_isoperator(line[i + 2]))
+				return (-1);
+			else if (ms_isoperator(line[i] == 1) && flag == 1)
+				return (-1);
+		}
+		else if (ft_isspace(line[i]) == 1)
+			flag = 1;
 		i++;
 	}
-	return (ret);
-}*/
+	return (0);
+}
+
+

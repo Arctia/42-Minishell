@@ -26,3 +26,47 @@ int	to_next_quote(char *str, int i, char quote)
 		i++;
 	return (i);
 }
+
+int	i_after_quote(char *str, int i, int *iw, int *in)
+{
+	char	c;
+
+	c = str[i];
+	if (*iw == 0 && str[i + 1] && str[i] != str[i + 1])
+	{
+		*iw = 1;
+		*in = *in + 1;
+	}
+	i++;
+	i = to_next_quote(str, i, c);
+	return (i);
+}
+
+/* __ items in string ___________________?______________________________________
+		. return number of items to be stored
+		. single/double quotes TODO
+_________________________________________!_________________________________ */
+int	items_in_string(char *str)
+{
+	int	items_number;
+	int	in_word;
+	int	i;
+
+	i = 0;
+	in_word = 0;
+	items_number = 0;
+	while (str[i])
+	{	
+		if (ft_isquote(str[i]))
+			i = i_after_quote(str, i, &in_word, &items_number);
+		else if (ft_isnotspace(str[i]) && in_word == 0)
+		{
+			items_number++;
+			in_word = 1;
+		}
+		else if (ft_isspace(str[i]) || (i && ft_isredirection(str[i - 1])))
+			in_word = 0;
+		i++;
+	}
+	return (items_number);
+}
