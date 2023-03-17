@@ -99,6 +99,10 @@ char					*exp_tkn(char *str, char **env);
 // expander/expander_utils.c
 char    				**ft_arrdup(char **arr);
 
+// main/init.c
+void					init_shell(t_hellmini *shell, char **env);
+t_command				*init_command(t_hellmini *shell);
+
 // main/free_structs.c
 void					free_commands(t_hellmini *shell);
 void					free_shell(t_hellmini *shell);
@@ -109,7 +113,6 @@ int						parser(t_hellmini *sh);
 // lexer/lexer.c
 int     				lexer_init(t_hellmini *shell);
 // lexer/lexer_splitter.c
-void					lexer_error(char *message);
 char					*split_operator(char *line, int *ff, int not_new);
 char					*split_line(char *line);
 
