@@ -46,7 +46,7 @@ void	write_redirection(t_command *cmd, char c1, char c2)
 		cmd->red_type[red_n] = REDIN;
 	else if (c1 == '>')
 		cmd->red_type[red_n] = REDOUT;
-	move_to_next_char(cmd);
+	ps_move_to_next_char(cmd);
 	cmd->red[red_n] = ft_calloc(sizeof(char), ft_strlen(cmd->str) + 1);
 	write_word(cmd->red[red_n], cmd);
 }
@@ -81,5 +81,5 @@ void	before_write_word(t_command *cmd, int *argc, int *items)
 	}
 	else
 		fill_token(cmd, argc);
-	move_to_next_char(cmd);
+	ps_move_to_next_char(cmd);
 }

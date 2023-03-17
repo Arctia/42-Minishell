@@ -16,8 +16,9 @@ int		check_operator(char *line, int i);
 void	lexer_error(char *message);
 
 // lexer_syntax.c
+int		check_syntax(char *line, int i);
+void	move_to_next_char(char **line);
 int		lx_error(unsigned char chr);
 int		syntax_check_2(char *line);
-int		check_syntax(char *line, int i);
 
 #endif

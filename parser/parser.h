@@ -21,7 +21,7 @@ void	set_meta_flags(t_command *cmd, char c);
 // ps_utils.c
 int		i_after_quote(char *str, int i, int *iw, int *in);
 int		to_next_quote(char *str, int i, char quote);
-void	move_to_next_char(t_command *cmd);
+void	ps_move_to_next_char(t_command *cmd);
 int		until_space(const char *str);
 int		items_in_string(char *str);
 

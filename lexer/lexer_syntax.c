@@ -28,7 +28,7 @@ static void	move_to_end_quote(char **line)
 		move_to_end_quote(line);
 }
 
-static void	move_to_next_char(char **line)
+void	move_to_next_char(char **line)
 {
 	while (ft_isspace(*line[0]))
 		(*line)++;
