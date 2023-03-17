@@ -98,16 +98,13 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	else
 		return ;
 	arg = cmd->arguments;
-	pid = fork();
-	if (!pid)
+	if (!fork()) 
 		execute_process(cmd->shell, path, arg);
-	else if (pid < 0)
-		perror("execv fork failed");
 	else
 	{
-		waitpid(pid, status, WUNTRACED);
-		while (!WIFEXITED(*status) && !WIFSIGNALED(*status))
-			waitpid(pid, status, WUNTRACED);
+		waitpid(-1, status, 0);
+		// while (!WIFEXITED(*status) && !WIFSIGNALED(*status))
+		// 	waitpid(pid, status, WUNTRACED);
 	}
 	free(path);
 }

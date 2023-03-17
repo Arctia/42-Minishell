@@ -15,22 +15,23 @@
 void	ft_pipe(t_command *cmd)
 {
 	int		std_cpy[2];
-	int		fd[2];
+	int		fd[cmd->shell->mc_pipes][2];
 	pid_t		pid;
+	int			i = 0;
 
 	std_cpy[0] = dup(0);	// input
 	std_cpy[1] = dup(1);	//	output
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
-		pipe(fd);
+		pipe(fd[i]);
 		pid = fork();
 		if(!pid)
 		{
-			close(fd[0]);
+			close(fd[i][0]);
 			if (cmd->spc[PIPE])
 			{
-				dup2(fd[1], STDOUT_FILENO);
-				close(fd[1]);
+				dup2(fd[i][1], STDOUT_FILENO);
+				close(fd[i][1]);
 			}
 			else
 			{
@@ -38,18 +39,19 @@ void	ft_pipe(t_command *cmd)
 				close(std_cpy[1]);
 			}
 			ft_execv(cmd, pid, &cmd->shell->exit_status);
-			waitpid(pid,0,0);
 			exit(1);
-			// if(cmd->next = NULL)
-				// while(waitpid(pid, 0, 0))
-					// ;
 		}
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		dup2(fd[i][0], STDIN_FILENO);
+		close(fd[i][0]);
+		close(fd[i][1]);
 		cmd = cmd->next;
+		i++;
 	}
-	// waitpid(pid, 0, 0);
+	while (i > 0)
+	{
+		waitpid(-1, 0, 0);
+		i--;
+	}
 	dup2(std_cpy[0], STDIN_FILENO);
 	close(std_cpy[0]);
 	close(std_cpy[1]);

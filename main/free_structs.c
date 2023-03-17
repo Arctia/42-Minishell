@@ -14,7 +14,7 @@ static void	free_things_inside_command(t_command *cmd)
 
 void	free_commands(t_hellmini *shell)
 {
-	//return;
+	return;
 	t_command	*cmd;
 	t_command	*nxt;
 
