@@ -1,5 +1,20 @@
 #include "../global.h"
 
+void	ft_free_cmatrix(char **mtx)
+{
+	int	i;
+
+	i = -1;
+	if (mtx)
+	{
+		while (mtx[++i] && mtx[i][0])
+		{
+			//pfn("freeing mtx[%d] : p->%p s->%s", i, mtx[i], mtx[i]);
+			free(mtx[i]);
+		}
+		free(mtx);
+	}
+}
 //export [-fn] [name[=value] ...] or export -p
 // NO FLAGS, NO OTIOINS, only export, export name, export name=value,
 //ALSO a b c=6 d=
@@ -25,17 +40,6 @@
 //se non lo ha trovato, if (ft_strncmp(env[i], NAME, ft_strlen(name)))
 //sorta(alphab)e individua l'ultima posizione NON UTILE -->> i++;
 //
-char **exp_(t_hellmini shell)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = -1;
-	char **new_env;
-	new_env = ft_arrdup(shell.env);
-	return (new_env);
-}
 
 void	alpha_cmp(char *str1, char *str2)
 {
@@ -54,65 +58,87 @@ void	alpha_cmp(char *str1, char *str2)
 //come perdersi in un bicchiere d'acqua,
 //ho fatto un casino, si puo fare molto piu'semplice
 //i && k for mtrx lines, j for mtrx columns, n for size to compare
-void	alpha_sort(char **mtrx)
-{
-	size_t	i;
-	//int	j;
-	size_t	k;
-	int	n;
+// if i < 0 sorta tutto altrimenti sorta finche'non arriva
 
-	i = 0;
-	k = 1;
-	n = 1;
-	//j = ft_strlen;
-	while (mtrx[i])
+//se n < 0 sortala tutta, altrimenti sortala fino ad n
+void	alpha_sort(char **mtrx, int n)
+{
+	int	i;
+	int	j;
+	size_t	k;
+
+	j = 0;
+	i = -1;
+	k = 0;
+	if (n < 0)
+		while (mtrx[j++])
+			n = j;
+	while (mtrx[i][k])
 	{
-		n = 1;
-		k = i + 1;
-		printf("N = %d\n", n);
-		printf("i = %zu: %s\n", i, mtrx[i]);
-		printf("k = %zu: %s\n", k, mtrx[k]);
-		//write(1, "porcodio\n", 10);
-		if (ft_strncmp(mtrx[i], mtrx[k], n))// mtrx[i][0] == mtrx[k][0]
-		{
-			while (((ft_strncmp(mtrx[i], mtrx[k], n) == 0) && mtrx[i] && mtrx[k]))
-			{
-				n++;
-				write(1, "PPORCAMDONNA\n",14);
-			}
-			if(mtrx[i][n + 1] != mtrx[k][n + 1])
-			{
-				write(1, "PORCODIO\n", 10);
-				i++;
-			}
-		}
-		if (!ft_strncmp(mtrx[i], mtrx[k], n)
-			&& mtrx[i][n + 1] != mtrx[k][n + 1])
-			{
-				alpha_cmp(mtrx[i], mtrx[k]);
-				i++;
-			}
-		else
-			i++;
+		k = 0;
+		while (!(mtrx[i][k] == mtrx[i + 1][k] 
+			&& mtrx[i][k] != mtrx[i + 1][k + 1]))
+				k++;
+		alpha_cmp(mtrx[i], mtrx[i + 1]);
+		i++;
 	}
 }
-	// while ()
-	// if ((unsigned char)mtrx[i][n] > (unsigned char)mtrx[k][n])
-			// {
-			// 	mtrx[k] = mtrx[i];
-			// 	k++;
-			// }
-			// else if ((unsigned char)mtrx[i][n] < (unsigned char)mtrx[k][n])
-			// {
-			// 	mtrx[i] = mtrx[k];
-			// 	k++;
-			// }
-			// printf("%s zwei\n", mtrx[k]);
-int	ft_export(char **mtrx, char *str)
-{
-	(void)mtrx;
-	(void)str;
 
+//stac4$$0 di norma
+void	export_aux(char **key_value, char **env_cpy)
+{
+	int	i;
+	int	k;
+	int	j;
+	char **big_buff;
+
+	j = 0;
+	k = 0;
+	i = 0;
+	while (key_value[i++])
+	while (env_cpy[k++])
+	big_buff = malloc((i + k + 1) * sizeof (char *));
+	i = 0;
+	k = 0;
+	while (big_buff[i])
+	{
+		while ((ft_strncmp(env_cpy[k++], key_value[j], 
+			ft_strchr_len(key_value[j], '='))))
+			big_buff[i] = ft_strdup(env_cpy[k]);
+		big_buff[i++] = ft_strdup(key_value[j]);
+		j++;
+	}
+	while (big_buff[i++] && key_value[j++])
+		big_buff[i] = key_value[j];
+	big_buff[i] = NULL;
+}
+
+
+
+//se key_value == NULL, sorta e stampa in ordine alpha gli argomenti
+//altrimenti, verifica se key_value e'presente(con o senza '='), poi
+//strjoinfree di ogni key_value -->> while (key_value[i] != ('\0'|| ))
+// in fondo alla matrice
+int	ft_export(char **key_value, t_hellmini shell)
+{
+	char	**env_cpy;
+	int		i;
+	int		k;
+	int		n;
+
+	i = -1;
+	k = 0;
+	n = -1;
+	env_cpy = ft_arrdup(shell.env);
+	alpha_sort(key_value, n);
+	export_aux(key_value, env_cpy);
+
+	i = -1;
+	alpha_sort(env_cpy, i);
+	while (env_cpy[++i])
+		printf("%s\n", env_cpy[i]);
+	shell.env = env_cpy;
+	ft_free_cmatrix(env_cpy);
 	return (0);
 }
 // int	main()
