@@ -85,7 +85,7 @@ static int	ps_split_string(t_command *cmd)
 	int		c;
 
 	init = cmd->str;
-	move_to_next_char(cmd);
+	ps_move_to_next_char(cmd);
 	red_n = red_in_string(cmd, cmd->str, 0);
 	if (red_n > 0)
 		ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
