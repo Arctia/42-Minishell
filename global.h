@@ -38,6 +38,7 @@
 # define HERDOC 7
 # define CASH 8
 # define TILDE 9
+# define NOCMD 10
 # define EMPTY -1
 
 // Errors
@@ -68,7 +69,7 @@ typedef struct s_command
 {
 	char				*str;
 	char				**tokens;
-	int					spc[10];
+	int					spc[11];
 
 	char				*command;
 	char				**arguments;

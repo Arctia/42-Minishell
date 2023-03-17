@@ -155,6 +155,43 @@ int	check_syntax(char *line, int i)
 		}
 		i++;
 	}
+
+	// if pipe at first unexpected token
+	// if pipe after redirection unexpected token
+	unsigned char	q;
+	unsigned char	pch;
+	unsigned char	cha;
+	q = 0;
+	pch = 0;
+	cha = 0;
+	pfn("trying");
+	while (line[0])
+	{
+		cha = line[0];
+		if (!q && ft_isnotspace(line[0]))
+			q = line[0];
+		else if (ft_isnotspace(line[0]))
+			pch = line[0];
+
+		if (q == '|' || (ft_isquote(pch)) && line[0] == '|')
+			lexer_error("syntax error near unexpected tokken \"|\"");
+		else if (line[0] == '(' || line[0] == ')')
+			lexer_error("syntax error near unexpected tokken \"(\"");
+		else if (line[0] == ')')
+			lexer_error("syntax error near unexpected tokken \")\"");
+		if (ft_isredirection(line[0]) && line[0] == line[1])
+			line++;
+		else if (ft_isredirection(line[0]) && ft_isredirection(line[1]) && line[1] != line[2])
+			lexer_error("syntax error near unexpected tokken \"<\"");
+		while (ft_isquote(cha))
+		{
+			line++;
+			if (line[0] == cha)
+				break ;
+		}
+		line++;
+	}
+
 	return (0);
 }
 

@@ -2,7 +2,7 @@
 
 void	lexer_error(char *message) //example and sketch of an exit error function, not really integrated with the minishell
 {
-	printf("Error: %s\n", message);
+	ft_printf("Error: %s\n", message);
 	//free(com->shell->input);
 	//free(com);
 }
