@@ -22,7 +22,9 @@ SRCS =	./main/signals2_0.c \
 		./executor/executor_process.c \
 		./expander/expander.c \
 		./expander/expander_utils.c \
-		./cd/cd.c
+		./builtin/redirector.c \
+		./builtin/unset.c \
+		./builtin/cd.c
 
 READLINE_DIR = $(shell brew --prefix readline)
 

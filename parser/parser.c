@@ -257,8 +257,7 @@ int	red_in_string(t_command *cmd, char *str, int red_n)
 	if (red_n > 0)
 	{
 		cmd->red_type = ft_calloc(sizeof(int), red_n + 1);
-		cmd->red = (char **) malloc(sizeof(char *) * red_n + 1);
-		cmd->red[red_n + 1] = NULL;
+		cmd->red = ft_calloc(sizeof(char *), red_n + 1);
 	}
 	return (red_n);
 }

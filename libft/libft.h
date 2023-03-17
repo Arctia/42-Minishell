@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 16:02:29 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/15 08:39:34 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/16 11:25:01 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,6 @@ void	ft_filliarrayto_n(int *arr, int val, int n);
 void	ft_free_ptr(void *ptr);
 char	**ft_arrdup(char **arr);
 void	ft_print_matrix(char **mtx);
+size_t	ft_cmtxlen(char **mtx);
 
 #endif
