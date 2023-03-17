@@ -5,7 +5,7 @@ CC=gcc
 
 FLAGS= -g # -Wall -Werror -Wextra
 
-INCS = ./global.h ./executor/executor.h ./parser/parser.h
+INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h
 
 SRCS =	./main/signals2_0.c \
 		./main/signals.c \
@@ -13,6 +13,7 @@ SRCS =	./main/signals2_0.c \
 		./main/free_structs.c \
 		./lexer/lexer.c \
 		./lexer/lexer_splitter.c \
+		./lexer/lexer_syntax.c \
 		./parser/parser.c \
 		./parser/ps_utils.c \
 		./executor/executor.c \

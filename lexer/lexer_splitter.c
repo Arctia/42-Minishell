@@ -1,8 +1,8 @@
-#include "../global.h"
+#include "./lexer.h"
 
 void	lexer_error(char *message) //example and sketch of an exit error function, not really integrated with the minishell
 {
-	printf("Error: %s\n", message);
+	ft_printf("Error: %s\n", message);
 	//free(com->shell->input);
 	//free(com);
 }
@@ -42,7 +42,7 @@ char	*split_operator(char *line, int *ff, int not_new)
 	i = split_operator_line(line, *ff);
 	ret = ft_calloc(sizeof(char), (i + 1));
 	if (!ret)
-		return ('\0');
+		return (NULL);
 	while ((j + r) < i)
 	{
 		ret[j] = line[j + r];

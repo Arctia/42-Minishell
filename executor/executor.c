@@ -89,12 +89,14 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	char	*path;
 	char	**arg;
 
-	if (redirector(cmd) != -1)
+	if (cmd->command && redirector(cmd) != -1)
 		return ;
-	if (ft_strchr(cmd->command, '/'))
+	if (cmd->command && ft_strchr(cmd->command, '/'))
 		path = ft_strdup(cmd->command);
-	else
+	else if (cmd->command)
 		path = ft_findpath(cmd, 0);
+	else
+		return ;
 	arg = cmd->arguments;
 	pid = fork();
 	if (!pid)
