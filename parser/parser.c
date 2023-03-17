@@ -23,8 +23,7 @@ static void	set_command_name2(t_command *cmd)
 	int	i;
 
 	i = 0;
-	cmd->command = (char *) malloc(sizeof(char)
-			* (ft_strlen(cmd->arguments[0]) + 1));
+	cmd->command = ft_calloc(sizeof(char), ft_strlen(cmd->arguments[0]) + 1);
 	while (cmd->arguments[0][i++])
 		cmd->command[i - 1] = cmd->arguments[0][i - 1];
 	cmd->command[i - 1] = '\0';
@@ -412,8 +411,8 @@ int	parser(t_hellmini *sh)
 	while (cmd && cmd != NULL)
 	{
 		args = split_string(cmd);
-		if (!args)
-			return (FAIL);
+		//if (!args)
+		//	return (FAIL);
 		init_flags(cmd);
 		set_cmd_flags(cmd, 0);
 		set_arguments(cmd, args, 1);

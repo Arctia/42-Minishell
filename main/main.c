@@ -41,6 +41,7 @@ static int	prompt_loop(t_hellmini *shell)
 				}
 			}
 		}
+		//pfn("\n%3t enter free");
 		free_commands(shell);
 	}
 	rl_clear_history();
