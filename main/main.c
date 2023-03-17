@@ -15,13 +15,10 @@
 
 static int	prompt_loop(t_hellmini *shell)
 {
-	// t_command *cmd;
-
-	// cmd = shell->current_cmd;
+	signal(SIGQUIT, SIG_IGN);
 	while(1)
 	{
 		signal(SIGINT, ft_sigs_handler);
-		signal(SIGQUIT, SIG_IGN);
 		shell->input = readline(PROMPT);
 		if (!shell->input)
 		{
@@ -44,12 +41,11 @@ static int	prompt_loop(t_hellmini *shell)
 				}
 			}
 		}
-		//pfn("\n%3t try to free command stack");
+		//pfn("\n%3t enter free");
 		free_commands(shell);
-		//rl_on_new_line();
-		//free(shell->input);
 	}
-
+	rl_clear_history();
+	free_shell(shell);
 	//rip_and_tear(shell->current_cmd, shell->current_cmd->command);
 	return (0);
 }

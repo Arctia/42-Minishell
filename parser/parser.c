@@ -23,8 +23,12 @@ static void	set_command_name2(t_command *cmd)
 	int	i;
 
 	i = 0;
-	cmd->command = (char *) malloc(sizeof(char)
-			* (ft_strlen(cmd->arguments[0]) + 1));
+	if (!(cmd->arguments && cmd->arguments[0]))
+	{
+		cmd->spc[NOCMD] = 1;
+		return ;
+	}
+	cmd->command = ft_calloc(sizeof(char), ft_strlen(cmd->arguments[0]) + 1);
 	while (cmd->arguments[0][i++])
 		cmd->command[i - 1] = cmd->arguments[0][i - 1];
 	cmd->command[i - 1] = '\0';
@@ -96,7 +100,7 @@ int	items_in_string(char *str)
 			items_number++;
 			in_word = 1;
 		}
-		else if (ft_isspace(str[i]))
+		else if (ft_isspace(str[i]) || (i && ft_isredirection(str[i - 1])))
 			in_word = 0;
 		i++;
 	}
@@ -194,10 +198,7 @@ void	fill_token(t_command *cmd, int *argc)
 		return ;
 	write_word(cmd->tokens[*argc], cmd);
 	if (cmd->tokens[*argc] != NULL && cmd->tokens[*argc][0] == '|')
-	{
 		cmd->shell->mc_pipes += 1;
-		//cmd->tokens[*argc][0] = '\0';
-	}
 	*argc = *argc + 1;
 }
 
@@ -280,16 +281,14 @@ int	split_string(t_command *cmd)
 	if (red_n > 0)
 		ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
 	items = items_in_string(cmd->str);
+	pfn("items: %d", items);
 	cmd->tokens = NULL;
-	cmd->tokens = (char **) malloc(sizeof(char *) * (items + 1));
+	cmd->tokens = ft_calloc(sizeof(char *), items + 1);
 	if (!(cmd->tokens))
 		return (0);
 	c = 0;
 	while (cmd->str[0] != 0)
-	{
-		//write_from_quote_to_quote(cmd->tokens[c])
 		before_write_word(cmd, &c, &items);
-	}
 	cmd->tokens[c] = NULL;
 	pfn("%t test 2");
 	cmd->str = init;
@@ -412,8 +411,6 @@ int	parser(t_hellmini *sh)
 	while (cmd && cmd != NULL)
 	{
 		args = split_string(cmd);
-		if (!args)
-			return (FAIL);
 		init_flags(cmd);
 		set_cmd_flags(cmd, 0);
 		set_arguments(cmd, args, 1);

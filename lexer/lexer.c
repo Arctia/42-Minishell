@@ -1,4 +1,4 @@
-#include "./../global.h"
+#include "./lexer.h"
 
 t_command	*init_command(t_hellmini *shell)
 {
@@ -53,7 +53,7 @@ int check_closures(char *line, int i)
 			while (line[i] != 0 && line[i] != quote)
 				i++;
 			if (line[i] == 0)
-				return (-1);
+				return (quote);
 		}
 		i++;
 	}
@@ -138,39 +138,38 @@ int	check_operator(char *line, int i)
 
 int	check_syntax(char *line, int i)
 {
-	//printf("cc=%d\n", check_closures(line, i));
-	if (check_closures(line, i) != 0)
-	{
-		write(1, "?", 1);
-		return (-1);
-	}
-	kalirio();
-	//write(1, "meow", 4);
+	char	ch;
+
+	ch = check_closures(line, i);
+	if (ch)
+		return (lx_error(ch));
 	while(line[i] != 0)
 	{
 		if (ms_isoperator(line[i]) == 1)
 		{
 			if (check_operator(line, i) == -1)
-				return (-1);
+				return (lx_error('|'));
 		}
 		i++;
 	}
-	return (0);
+	return (syntax_check_2(line));
 }
 
 //main function and of the lexer process, it initializes the struct, checks unclosed quotes.
 int lexer_init(t_hellmini *shell)
 {
 	char		*line;
+	int			exit_status;
 	int			i;
 
 	line = shell->input;
 	line[ft_strlen(line)] = '\0';
 	i = 0;
-	if (check_syntax(line, i) != 0)
+	exit_status = check_syntax(line, i);
+	if (exit_status)
 	{
-		lexer_error("bad syntax.");
-		return (-1);
+		shell->exit_status = exit_status;
+		return (exit_status);
 	}
 	shell->current_cmd = init_command(shell);
 	if (!(shell->current_cmd))
