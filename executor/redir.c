@@ -3,36 +3,44 @@
 
 void	ft_chooseredir(t_command *cmd)
 {
-	if (cmd->spc[REDIN]) //<
-		ft_redin(cmd);
-	if (cmd->spc[REDOUT]) //>
-		ft_redout(cmd);
-	if (cmd->spc[REDAPP])	//>>
-		ft_redappend(cmd);
-	if (cmd->spc[HERDOC])	//<<
+	if (cmd->red_type[0] == HERDOC)			//<<
 		ft_heredoc(cmd);
+	else if (cmd->red_type[0] == REDIN)		//<
+		ft_redin(cmd);
+	else if (cmd->red_type[0] == REDOUT)	//>
+		ft_redout(cmd);
+	else if (cmd->red_type[0] == REDAPP)	//>>
+		ft_redappend(cmd);
 }
 
 int	ft_redir(t_command * cmd)
 {
 	pid_t	pid;
-	int	stdin_cpy = dup(0); // maybe better STD...
-	int	stdout_cpy = dup(1); // maybe better STD...
-	char	**reset;
+	int		stdin_cpy = dup(0); // maybe better STD...
+	int		stdout_cpy = dup(1); // maybe better STD...
+	char	**redreset;
+	int		*typereset;
 
-	reset = cmd->red;
-	while (cmd && (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP]))		//cmd->spc[HEREDOC]?
+	redreset = cmd->red;
+	typereset = cmd->red_type;
+	// ft_printf("print matrix\n");
+	ft_print_matrix(cmd->red);
+	while (*cmd->red && *cmd->red_type)		//cmd->spc[HEREDOC]?
 	{
 		ft_chooseredir(cmd);
-		if(cmd->next==NULL)
-			break;
-		cmd = cmd->next;
+		// ft_printf("cmd red: %s\n",*cmd->red);
+		// ft_printf("cmd red type %d\n",*cmd->red_type);
+		*cmd->red++;
+		*cmd->red_type++;
+		// ft_printf("++cmd red: %s\n",*cmd->red);
+		// ft_printf("++cmd red type %d\n",*cmd->red_type);
 	}
-	cmd->red = reset;
 	ft_execv(cmd,pid,&cmd->shell->exit_status);
-	if(!cmd->spc[REDIN])
+	if(cmd->red_type[0] != REDIN)
 		dup2(stdout_cpy, STDOUT_FILENO);
 	dup2(stdin_cpy, STDIN_FILENO);
+	cmd->red = redreset;
+	cmd->red_type = typereset;
 	return (0);
 }
 
@@ -55,7 +63,7 @@ void	ft_redin(t_command *cmd)												//	<
 {
 	int	file;
 
-	file = open(*cmd->red++, O_RDONLY);
+	file = open(*cmd->red, O_RDONLY);
 	if (file < 0)
 	{
 		ft_putstr_fd("minishell: infile: No such file or directory\n",
@@ -76,7 +84,9 @@ void	ft_redin(t_command *cmd)												//	<
 void	ft_redout(t_command *cmd)										//	>
 {
 	int	file;
-	file = open(*cmd->red++,
+	// ft_printf("red: %s",*cmd->red);
+	// ft_printf("red[0]: %s",cmd->red[0]);
+	file = open(*cmd->red,
 			O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (file < 0)
 	{
@@ -98,7 +108,7 @@ void	ft_redappend(t_command *cmd) // lo so è sbajato ma fa piu' ride		//	>>
 {
 	int	file;
 
-	file = open(*cmd->red++,
+	file = open(*cmd->red,
 			O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (file < 0)
 	{
@@ -122,6 +132,7 @@ void	ft_heredoc(t_command *cmd)											//	<<
 	char	*filename;
 
 	filename = ft_name();
+	ft_printf("*cmd->red:%s",*cmd->red);
 	delimiter = *cmd->red;
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline(HEREDOC_MSG);
@@ -134,8 +145,23 @@ void	ft_heredoc(t_command *cmd)											//	<<
 		free(line);
 		line = readline(HEREDOC_MSG);
 	}
+	// dup2(fd, STDOUT_FILENO);
+	if (cmd->red[1])
+	{
+		if (fd < 0)
+		{
+			ft_putstr_fd("minishell: heredoc: Error\n", STDERR_FILENO);
+			//  (EXIT_FAILURE);
+		}
+		if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
+		{
+			ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
+			//  (EXIT_FAILURE);
+		}		
+		if (fd > 0)
+			close(fd);
+	}
 	if (filename)
 		free(filename);
 	free(line);
-	close(fd);
 }

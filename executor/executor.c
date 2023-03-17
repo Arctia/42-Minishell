@@ -144,7 +144,7 @@ void	ft_executor(t_command *cmd)
 			ft_redir(cmd);
 			break;
 		}
-		// else if (cmd->spc[HERDOC])
+		// if (cmd->spc[HERDOC])
 		// 	ft_heredoc(cmd);
 		else if (cmd->next == NULL)	//simple command?
 		{
@@ -154,20 +154,12 @@ void	ft_executor(t_command *cmd)
 			//else
 			ft_execv(cmd, pid, &(cmd->shell->exit_status));
 		}
-		// else if (cmd->spc[REDIN])
-		// 	ft_redin(cmd);
-		// else if (cmd->spc[REDOUT])
-		// 	ft_redout(cmd);
-		// else if (cmd->spc[REDAPP])
-		// 	ft_redappend(cmd);
 		else if (cmd->spc[PIPE])
 		{ 
 			ft_pipe(cmd);
 			break ;
 		}
-		// ft_execv(shell, pid); //see function comment maybe every single exceptio call his own ft_sexecv
-		// if (cmd->next)
-			cmd = cmd->next;
+		cmd = cmd->next;
 	}
 }
 
