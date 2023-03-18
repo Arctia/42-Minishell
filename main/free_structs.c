@@ -14,7 +14,6 @@ static void	free_things_inside_command(t_command *cmd)
 
 void	free_commands(t_hellmini *shell)
 {
-	return;
 	t_command	*cmd;
 	t_command	*nxt;
 
@@ -31,7 +30,6 @@ void	free_commands(t_hellmini *shell)
 
 void	free_shell(t_hellmini *shell)
 {
-	return;
 	if (shell->input)
 		free(shell->input);
 	ft_free_cmatrix(shell->env);
