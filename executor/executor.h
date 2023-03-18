@@ -49,9 +49,13 @@ void	ft_fixstinpipe(t_command *cmd, Pipe output);
 	***********************************************************
 */
 char	*ft_name(void);
-void	ft_less(t_command *cmd);												//	<
-void	ft_redir(t_command *cmd);										//	>
-void	ft_moremore(t_command *cmd); // lo so è sbajato ma fa piu' ride		//	>>
+int		ft_redir(t_command * cmd);
+void	ft_chooseredir(t_command *cmd);
+
+
+void	ft_redin(t_command *cmd);												//	<
+void	ft_redout(t_command *cmd);										//	>
+void	ft_redappend(t_command *cmd); // lo so è sbajato ma fa piu' ride		//	>>
 void	ft_heredoc(t_command *cmd);											//	<<
 /*
 	***********************************************************

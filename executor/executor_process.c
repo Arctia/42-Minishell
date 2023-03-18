@@ -74,7 +74,7 @@ void	execute_process(t_hellmini *shell, char *path, char **args)
 	if (path && ft_strchr(path, '/'))
 		execve(path, args, shell->env);
 	errno = error_print(path, args[0]);
-	rl_clear_history();
+	clear_history();
 	free_shell(shell);
 	free(path);
 	exit(errno);

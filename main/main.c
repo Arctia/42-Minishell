@@ -44,7 +44,7 @@ static int	prompt_loop(t_hellmini *shell)
 		//pfn("\n%3t enter free");
 		free_commands(shell);
 	}
-	rl_clear_history();
+	clear_history();
 	free_shell(shell);
 	//rip_and_tear(shell->current_cmd, shell->current_cmd->command);
 	return (0);

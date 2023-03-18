@@ -25,25 +25,25 @@ t_command	*init_command(t_hellmini *shell)
 	return (cmd);
 }
 
-static void	init_shell_env(char **or_env, t_hellmini *shell)
+static void	init_shell_env(t_hellmini *shell, char **original_env)
 {
 	char	*sh_lvl;
 	char	*itoa;
 	int		i;
 
-	shell->env = ft_arrdup(or_env);
+	shell->env = ft_arrdup(original_env);
 	if (!shell->env)
 	{
-		write(1, "Error!Not enough memory to set env\n", 36);
+		write(1, "Error! Not enough memory to set env\n", 36);
 		free(shell);
 		exit(EXIT_FAILURE);
 	}
 	i = 0;
-	while (or_env[i])
+	while (original_env[i])
 	{
-		if (!ft_strncmp(or_env[i], "SHLVL=", 6))
+		if (!ft_strncmp(original_env[i], "SHLVL=", 6))
 		{
-			sh_lvl = ft_strtrim(or_env[i], "SHLVL=");
+			sh_lvl = ft_strtrim(original_env[i], "SHLVL=");
 			itoa = ft_itoa(ft_atoi(sh_lvl) + 1);
 			free(shell->env[i]);
 			shell->env[i] = ft_strjoin("SHLVL=", itoa);
@@ -63,5 +63,5 @@ void	init_shell(t_hellmini *shell, char **env)
 	shell->mc_wquotes = 0;
 	shell->exit_status = 0;
 	shell->current_cmd = NULL;
-	init_shell_env(env, shell);
+	init_shell_env(shell, env);
 }

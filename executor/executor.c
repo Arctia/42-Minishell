@@ -98,16 +98,13 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	else
 		return ;
 	arg = cmd->arguments;
-	pid = fork();
-	if (!pid)
+	if (!fork()) 
 		execute_process(cmd->shell, path, arg);
-	else if (pid < 0)
-		perror("execv fork failed");
 	else
 	{
-		waitpid(pid, status, WUNTRACED);
-		while (!WIFEXITED(*status) && !WIFSIGNALED(*status))
-			waitpid(pid, status, WUNTRACED);
+		waitpid(-1, status, 0);
+		// while (!WIFEXITED(*status) && !WIFSIGNALED(*status))
+		// 	waitpid(pid, status, WUNTRACED);
 	}
 	free(path);
 }
@@ -141,7 +138,14 @@ void	ft_executor(t_command *cmd)
 			expander(cmd);
 		pfn("%3t -----------------------------------------------------------");
 		pfn("%t running command: %s", cmd->str);
-		if (cmd->next == NULL)	//simple command?
+		if (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP] || cmd->spc[HERDOC])
+		{
+			ft_redir(cmd);
+			break;
+		}
+		// if (cmd->spc[HERDOC])
+		// 	ft_heredoc(cmd);
+		else if (cmd->next == NULL)	//simple command?
 		{
 			// if (ft_strcmp(cmd->command, builtin[i]))
 			//if (ft_builtin(cmd->command))
@@ -149,29 +153,11 @@ void	ft_executor(t_command *cmd)
 			//else
 			ft_execv(cmd, pid, &(cmd->shell->exit_status));
 		}
-		else if (cmd->spc[REDIN])
-			ft_less(cmd);
-		else if (cmd->spc[REDOUT])
-			ft_redir(cmd);
-		else if (cmd->spc[REDAPP])
-			ft_moremore(cmd);
-		else if (cmd->spc[HERDOC])
-			ft_heredoc(cmd);
 		else if (cmd->spc[PIPE])
 		{ 
 			ft_pipe(cmd);
-			// while ((waitpid(-1, 0, 0)<0))
-			// 	;
 			break ;
-			// cmd = cmd->next;
-
-			// while ((waitpid(-1, &status, 0)))
-			// 	;
-			// while (waitpid(0, &status ,0))
-			// 	;//? not sure if here or in ft_executor with a while loop
 		}
-		// ft_execv(shell, pid); //see function comment maybe every single exceptio call his own ft_sexecv
-		// if (cmd->next)
 		cmd = cmd->next;
 	}
 }
