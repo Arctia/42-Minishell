@@ -1,4 +1,5 @@
 #include "executor.h"
+#include "../glob.h"
 
 /*
 	***********************************************************
@@ -87,25 +88,28 @@ int	(*ft_builtin(char *str))(t_hellmini *shell)
 void	ft_execv(t_command *cmd, pid_t pid, int *status)
 {
 	char	*path;
-	char	**arg;
+	int		ecode;
 
-	if (cmd->command && redirector(cmd) != -1)
+	if (cmd->command)
+		ecode = redirector(cmd);
+	if (cmd->command && ecode != -1)
+	{
+		set_ecode(ecode);
 		return ;
+	}
 	if (cmd->command && ft_strchr(cmd->command, '/'))
 		path = ft_strdup(cmd->command);
 	else if (cmd->command)
 		path = ft_findpath(cmd, 0);
 	else
 		return ;
-	arg = cmd->arguments;
 	if (!fork()) 
-		execute_process(cmd->shell, path, arg);
-	else
-	{
-		waitpid(-1, status, 0);
-		// while (!WIFEXITED(*status) && !WIFSIGNALED(*status))
-		// 	waitpid(pid, status, WUNTRACED);
-	}
+		execute_process(cmd->shell, path, cmd->arguments);
+	set_ecode(0);
+	signal(SIGINT, control_c_signal);
+	waitpid(0, status, 0);
+	if (*status && get_ecode() != 130)
+		set_ecode(127);
 	free(path);
 }
 

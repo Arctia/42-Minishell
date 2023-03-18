@@ -14,6 +14,7 @@
 # include <sys/ioctl.h>
 # include <sys/param.h>
 # include <sys/types.h>
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -45,10 +46,12 @@
 # define ERR_DIR 126
 # define ERR_UNK 127
 
-# define PROMPT "\033[1;31mminisHELL$:\033[0m "
+# define PROMPT "\033[1;31mminisHELL\033[0m:"BGRN
 
 //per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
+
+//int *g_error_code;
 
 // Struct declarations --> Every array/matrix should be null terminated
 typedef struct s_hellmini
@@ -92,6 +95,7 @@ int		cd(t_command *cmd);
 int 	pwd(t_command *cmd);
 int		echo(t_command *cmd);
 int		env(t_command *cmd);
+int		ms_exit(t_command *cmd);
 
 // expander/expander.c
 void	expander(t_command *cmd);
@@ -105,6 +109,8 @@ char	**ft_arrdup(char **arr);
 // main/init.c
 void					init_shell(t_hellmini *shell, char **env);
 t_command				*init_command(t_hellmini *shell);
+void					set_ecode(int code);
+void					control_c_signal(int sig);
 
 // main/free_structs.c
 void	free_commands(t_hellmini *shell);
@@ -120,11 +126,7 @@ char					*split_operator(char *line, int *ff, int not_new);
 char					*split_line(char *line);
 
 //signals.c
-void	ft_suppress_output(void);
-void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
-void	sigquit_macro(int sig, t_hellmini *shell);
-void	*ft_handler(int sig);
+//void	ft_suppress_output(void);
 void	ft_sigs_handler(int sig);
 
 #endif

@@ -1,5 +1,5 @@
-
 #include "./expander.h"
+#include "../glob.h"
 
 void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i)
 {
@@ -28,7 +28,7 @@ int	expand_question(t_hellmini *sh, char buff[4095], char *(*str), int *i)
 	value = NULL;
 	if ((*str)[1] != '?')
 		return (FALSE);
-	value = ft_itoa(sh->exit_status);
+	value = ft_itoa(get_ecode());
 	c = 0;
 	while (value[c])
 	{

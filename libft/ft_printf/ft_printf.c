@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/05 14:09:10 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/18 12:04:31 by mmariani         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ft_printf.h"
 #include "../libft.h"
 
@@ -39,8 +27,8 @@ int	ft_printf(const char *str, ...)
 
 int	pfn(const char *str, ...)
 {
-	// ft_printf("vincenzo ti vedeeeeeee!");
-	return 0;
+
+	//return 0;
 	char		*start;
 	char		*seg;
 	va_list		valist;

@@ -1,5 +1,8 @@
 
 #include "../global.h"
+#include "../glob.h"
+
+int	g_error_code[1];
 
 t_command	*init_command(t_hellmini *shell)
 {
@@ -56,6 +59,7 @@ static void	init_shell_env(t_hellmini *shell, char **original_env)
 
 void	init_shell(t_hellmini *shell, char **env)
 {
+	set_ecode(0);
 	shell->env = NULL;
 	shell->input = NULL;
 	shell->mc_pipes = 0;
@@ -64,4 +68,14 @@ void	init_shell(t_hellmini *shell, char **env)
 	shell->exit_status = 0;
 	shell->current_cmd = NULL;
 	init_shell_env(shell, env);
+}
+
+void	set_ecode(int code)
+{
+	g_error_code[0] = code;
+}
+
+int	get_ecode(void)
+{
+	return (g_error_code[0]);
 }

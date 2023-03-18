@@ -1,14 +1,24 @@
 #include "../global.h"
 
+static void	ft_suppress_output(void)
+{
+	struct termios	new_settings;
+
+	tcgetattr(STDIN_FILENO, &new_settings);
+	//if (!tcgetattr(STDIN_FILENO, &new_settings))
+	//old_settings = new_settings;
+	//	write(1, "dioladrobastardo\n", 18);
+	//ft_re_canon();
+	new_settings.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, 0, &new_settings);
+	// write(1, "exit\n", 5);
+	// if(!tcsetattr(STDOUT_FILENO, 0, &new_settings))
+	// 	write(1,"bioparco\n", 10);
+		//exit(0);
+}
+
 void	ft_sigs_handler(int sig)
 {
-	// struct sigaction sa;
-
-	// sa.sa_flags = SA_SIGINFO;
-	// sa.sa_sigaction = ft_handler(sig);
-
-
-	//char tmp_buf[4095];
 	if (sig == SIGINT)
 	{
 		(void)sig;
@@ -18,13 +28,4 @@ void	ft_sigs_handler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	// if (sig == SIGQUIT)
-	// {
-	// 	(void)sig;
-	// 	// waitpid(- 1, NULL, WUNTRACED);
-	// 	rl_replace_line("exit", 0);
-	// 	rl_redisplay();
-	// 	exit(0);
-	// }
-	//return(0);
 }

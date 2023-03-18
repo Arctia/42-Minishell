@@ -1,6 +1,5 @@
 
 #include "../global.h"
-
 /*##############################################################################
 ####	CD '-': 
 		 ° if '-' is the argument try to go to previous folder if stored
@@ -56,6 +55,7 @@ static int	cd_execute(t_command *cmd)
 		error = chdir(cmd->arguments[1]);
 	if (error)
 	{
+		set_ecode(1);
 		pfn("bash: cd: %s: Not a directory");
 		return (1);
 	}

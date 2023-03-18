@@ -14,15 +14,13 @@
 
 void	ft_pipe(t_command *cmd)
 {
-	int		std_cpy[2];
-	int		**fd;
-	pid_t		pid;
+	int	pid = 10;
+	int			std_cpy[2];
+	int			**fd;
 	int			i = -1;
 
-	pid =118;
-	// std_cpy[0] = dup(0);	// input
-	// std_cpy[1] = dup(1);	//	output
-	ft_dupandclose(std_cpy, fd, 0, pid);
+	std_cpy[0] = dup(0);
+	std_cpy[1] = dup(1);
 	fd = malloc(sizeof(int *) * cmd->shell->mc_pipes);
 	while(++i < 2)
 		fd[i] = ft_calloc(sizeof(int), PATH_MAX);
@@ -32,8 +30,7 @@ void	ft_pipe(t_command *cmd)
 	{
 		pipe(fd[i]);
 		ft_printf("ï'hehre\n");
-		pid = fork();
-		if(!pid)
+		if(!fork())
 		{
 			close(fd[i][0]);
 			if (cmd->spc[PIPE])
@@ -50,9 +47,8 @@ void	ft_pipe(t_command *cmd)
 			exit(1);
 		}
 		dup2(fd[i][0], STDIN_FILENO);
-		// close(fd[i][0]);
-		// close(fd[i][1]);
-		ft_dupandclose(std_cpy, fd, 2, pid);
+		close(fd[i][0]);
+		close(fd[i][1]);
 
 		cmd = cmd->next;
 		i++;
@@ -63,9 +59,8 @@ void	ft_pipe(t_command *cmd)
 		i--;
 	}
 	dup2(std_cpy[0], STDIN_FILENO);
-	// close(std_cpy[0]);
-	// close(std_cpy[1]);
-	ft_dupandclose(std_cpy, fd, 1, pid);
+	close(std_cpy[0]);
+	close(std_cpy[1]);
 
 }
 
