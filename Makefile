@@ -11,6 +11,7 @@ SRCS=	./main/signals2_0.c \
 		./main/signals.c \
 		./main/tokenizer.c \
 		./expander/export.c \
+		./expander/export_utils.c \
 		./expander/expander_utils.c \
 		./main/expander.c \
 		./main/env_handlers.c \

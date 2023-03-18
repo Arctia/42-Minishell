@@ -117,6 +117,9 @@ void					free_arr(char **split_arr);
 char					**ft_arrdup(char **arr);
 char					*exp_tkn(char *str, char **env);
 
+//expander_utils.c
+char					*check_key_value(char *key_value);
+
 //env_handlers.c
 void					init_shell_env(char **pr_env, t_hellmini shell);
 
@@ -130,10 +133,16 @@ void					ft_sigs_handler(int sig);
 
 //export.c
 char 					**exp_(t_hellmini shell);
+
+//export_utils.c
+char					*full_key_value(char *key_value);
+char					*check_key_value(char *key_value);
+void					sort_export(char **key_value, char ** env_cpy, char **big_buff);
+
 // int						alpha_cmp(char *str1, char *str2);
 void					alpha_sort(char **mtrx);
 void					export_aux(char **key_value, char **env_cpy);
-int						ft_export(char **key_value, t_hellmini shell);
+int						ft_export(char **key_value, t_hellmini *shell);
 
 //main.c
 int						prompt_loop(t_hellmini *shell);

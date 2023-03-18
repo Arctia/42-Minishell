@@ -38,7 +38,7 @@ int	prompt_loop(t_hellmini *shell)
 				{
 					pfn("\n%3t enter executor");
 					if (ft_strcmp(shell->current_cmd->command, "export"))
-						ft_export(shell->current_cmd->arguments, *shell);
+						ft_export(shell->current_cmd->arguments, shell);
 					ft_executor(shell);
 				}
 			}
