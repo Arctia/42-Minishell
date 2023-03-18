@@ -56,7 +56,7 @@ static int	cd_execute(t_command *cmd)
 		error = chdir(cmd->arguments[1]);
 	if (error)
 	{
-		change_code(1);
+		set_ecode(1);
 		pfn("bash: cd: %s: Not a directory");
 		return (1);
 	}

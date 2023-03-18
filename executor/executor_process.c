@@ -63,7 +63,6 @@ static int	error_print(char *path, char *cmd_name)
 		err = ERR_UNK;
 	else
 		err = ERR_DIR;
-	//errno = err;
 	print_free_close(str, fd, dir, err);
 	return (err);
 }

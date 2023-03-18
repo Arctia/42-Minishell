@@ -18,7 +18,7 @@
 # include "./ft_printf/ft_printf.h"
 # include "./get_next_line/get_next_line.h"
 
-# define DEBUGGING 0
+# define DEBUGGING 2
 
 # define TRUE 1
 # define FALSE 0

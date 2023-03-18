@@ -94,7 +94,7 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 		ecode = redirector(cmd);
 	if (cmd->command && ecode != -1)
 	{
-		change_code(ecode);
+		set_ecode(ecode);
 		return ;
 	}
 	if (cmd->command && ft_strchr(cmd->command, '/'))
@@ -105,10 +105,11 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 		return ;
 	if (!fork()) 
 		execute_process(cmd->shell, path, cmd->arguments);
-	change_code(0);
+	set_ecode(0);
+	signal(SIGINT, control_c_signal);
 	waitpid(0, status, 0);
-	if (*status)
-		change_code(127);
+	if (*status && get_ecode() != 130)
+		set_ecode(127);
 	free(path);
 }
 

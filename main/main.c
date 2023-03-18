@@ -16,17 +16,21 @@
 //tokenizing the input. And it's quite some badass music.
 //If you don't agree, feel free to go and f##k off :)
 
-static char	*our_prompt(char *str)
+
+
+static char	*our_prompt(t_hellmini *shell, char *str)
 {
 	char	*buff;
 
 	buff = ft_calloc(sizeof(char), 2);
 	buff[0] = '[';
 	buff = ft_strjoin_free(buff, ft_itoa(get_ecode()), 1, 1);
-	buff = ft_strjoin_free(buff, "]", 1, 0);
+	buff = ft_strjoin_free(buff, "] "BYEL, 1, 0);
+	buff = ft_strjoin_free(buff, exp_tkn("USER", shell->env), 1, 1);
+	buff = ft_strjoin_free(buff, WHITE"@", 1, 0);
 	buff = ft_strjoin_free(buff, PROMPT, 1, 0);
-	buff = ft_strjoin_free(buff, str, 1, 0);
-	buff = ft_strjoin_free(buff, ": ", 1, 0);
+	buff = ft_strjoin_free(buff, str, 1, 1);
+	buff = ft_strjoin_free(buff, "$ ", 1, 0);
 	buff = ft_strjoin_free(buff, WHITE, 1, 0);
 	return (buff);
 }
@@ -37,7 +41,7 @@ static int	prompt_loop(t_hellmini *shell)
 	while(TRUE)
 	{
 		signal(SIGINT, ft_sigs_handler);
-		shell->input = readline(our_prompt(getcwd(NULL, 0)));
+		shell->input = readline(our_prompt(shell, getcwd(NULL, 0)));
 		if (!shell->input)
 		{
 			write(1, "\rexit\n", 7);
@@ -61,6 +65,14 @@ static int	prompt_loop(t_hellmini *shell)
 	clear_history();
 	free_shell(shell);
 	return (0);
+}
+
+void	control_c_signal(int sig)
+{
+	if (sig == SIGINT)
+		pfn("^C\n");
+	set_ecode(130);
+	return ;
 }
 
 int	main(int argc, char **argv, char **env)

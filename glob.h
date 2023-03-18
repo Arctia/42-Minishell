@@ -2,6 +2,6 @@
 # define GLOB_H
 
 int	get_ecode(void);
-void	change_code(int code);
+void	set_ecode(int code);
 
 #endif

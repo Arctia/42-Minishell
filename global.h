@@ -46,7 +46,7 @@
 # define ERR_DIR 126
 # define ERR_UNK 127
 
-# define PROMPT "\033[1;31mminisHELL$\033[0m"GRN
+# define PROMPT "\033[1;31mminisHELL\033[0m:"BGRN
 
 //per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
@@ -108,7 +108,8 @@ char	**ft_arrdup(char **arr);
 // main/init.c
 void					init_shell(t_hellmini *shell, char **env);
 t_command				*init_command(t_hellmini *shell);
-void					change_code(int code);
+void					set_ecode(int code);
+void					control_c_signal(int sig);
 
 // main/free_structs.c
 void	free_commands(t_hellmini *shell);

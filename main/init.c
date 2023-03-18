@@ -59,7 +59,7 @@ static void	init_shell_env(t_hellmini *shell, char **original_env)
 
 void	init_shell(t_hellmini *shell, char **env)
 {
-	change_code(0);
+	set_ecode(0);
 	shell->env = NULL;
 	shell->input = NULL;
 	shell->mc_pipes = 0;
@@ -70,7 +70,7 @@ void	init_shell(t_hellmini *shell, char **env)
 	init_shell_env(shell, env);
 }
 
-void	change_code(int code)
+void	set_ecode(int code)
 {
 	g_error_code[0] = code;
 }
