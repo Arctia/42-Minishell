@@ -6,7 +6,7 @@
 
 //keeps reading the env until it finds the desired $VAR, then
 //mallocs and replaces $VAR with it's expansion(aka the string after '=')
-char *exp_tkn(char *str, char **env)
+/*char *exp_tkn(char *str, char **env)
 {
 	int	i;
 	int	j;
@@ -30,21 +30,9 @@ char *exp_tkn(char *str, char **env)
 		new_token[k++] = env[i][j++];
 	new_token[k] = '\0';
 	return (new_token);
-}
+}*/
 
-void    free_arr(char **split_arr)
-{
-    int i;
-    i = 0;
-    while (split_arr[i])
-    {
-        free(split_arr[i]);
-        i++;
-    }
-    free(split_arr);
-}
-
-char    **ft_arrdup(char **arr)
+/*char    **ft_arrdup(char **arr)
 {
     char    **rtn;
     size_t  i;
@@ -71,7 +59,7 @@ char    **ft_arrdup(char **arr)
 	//ft_putstr_fd("Dioboia3",1);
     rtn[i] = NULL;
     return (rtn);
-}
+}*/
 // int test_main(char **envp)
 // {
 //     t_hellmini seashell;

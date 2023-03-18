@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 16:02:29 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/14 08:54:25 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/16 11:25:01 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "./ft_printf/ft_printf.h"
 # include "./get_next_line/get_next_line.h"
 
-# define DEBUGGING 0
+# define DEBUGGING 2
 
 # define TRUE 1
 # define FALSE 0
@@ -104,5 +104,9 @@ int		ft_isnotspace(int c);
 char	ft_isquote(char ch);
 char	ft_isredirection(char ch);
 void	ft_filliarrayto_n(int *arr, int val, int n);
+void	ft_free_ptr(void *ptr);
+char	**ft_arrdup(char **arr);
+void	ft_print_matrix(char **mtx);
+size_t	ft_cmtxlen(char **mtx);
 
 #endif

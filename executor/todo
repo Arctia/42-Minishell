@@ -19,6 +19,13 @@ processes will be redirected to errfile
 remember is better make a pointer to the head of the list and loop on it instead of loop on the list and change the position
 
 
+REDIDR:
+
+ft_checkredir		simili ft_pipe
+redirect fd with dup2 end call right redir until the execve
+
+
+
 
 /*
 	***********************************************************
@@ -139,3 +146,226 @@ int main(int argc, char **argv)
 			// close(fd0);
 			// dup2(fd3,fd4);	//clone fd3 on fd4 
 			// close(fd3);//dup2 duplicate the fd so is good to close the old one
+
+
+
+
+
+
+
+/*
+	***********************************************************
+					ft_fixstinpipe
+	***********************************************************
+	dealt with the in and out of command and recall ft pipejunior 
+	for eventually other pipe 
+*/
+
+void	ft_fixstinpipe(t_command *cmd, Pipe output)
+{
+	dup2(output[1], 1);
+	close(output[0]);
+	close(output[1]);
+	if (cmd->next->spc[PIPE] == 0)
+		return ;
+	ft_pipejunior(cmd);
+}
+
+/*
+	***********************************************************
+					ft_pipejunior
+	***********************************************************
+	pipe fork chek
+	maybe ft_execpipe must be bring here
+*/
+
+void	ft_pipejunior(t_command *cmd)
+{
+	pid_t	pid;
+	Pipe	input;
+
+	if (cmd->spc[PIPE])
+	{
+		if (pipe(input) != 0)
+			perror("failed to create pipe");
+		pid = fork();
+		if ((pid < 0))
+			perror("failed to fork");
+		if (!pid)
+			ft_fixstinpipe(cmd, input);
+		dup2(input[0], 0);
+		close(input[0]);
+		close(input[1]);
+	}
+	// waitpid(0, &status ,0);	//? not sure if here or in ft_executor with a while loop or in ft pipe
+	ft_execvepipe(cmd);
+}
+
+/*
+	***********************************************************
+					ft_pipe
+	***********************************************************
+	making start the magic trick 
+	maybe ft_execpipe must be bring in an other function
+	i've to study the  if else state to break the while 
+*/
+
+void	ft_pipe(t_command *cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	while (cmd->spc[PIPE] 
+		&& cmd->next->spc[PIPE])	// check it
+	{
+		pid = fork();
+		if (pid < 0)
+			perror("failed to fork");
+		if (pid != 0)
+			return ;	//  wait??
+		ft_pipejunior(cmd);
+		if (cmd->spc[PIPE])
+			cmd = cmd->next;
+		waitpid(0, &status, 0);		//? not sure if here or in ft_executor with a while loop
+	}
+}
+
+
+
+
+
+
+
+
+
+void	ft_execvepipe(t_command *cmd,int fd)
+{
+	char	*path;
+	char	**arg;
+
+	arg = ft_listtomatrix(cmd);
+	path = ft_findpath(cmd, 0);
+		dup2(fd, 1);
+
+	if (execve(path, arg, cmd->shell->env) == -1)
+		perror("execution failed");
+	
+	int i =-1;
+	while (arg[++i])
+		ft_printf("arg[%d]:%s",i,arg[i]);
+
+
+	ft_free_cmatrix(arg);
+	free(path);
+	// exit(EXIT_FAILURE);
+}
+
+
+void	ft_pipe(t_command *cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	if ((pid = fork()) < 0)
+			perror("filed to create fd");
+	if (!pid)
+		ft_pipeline(cmd);
+	while ((waitpid(0, &status, 0)) != -1)
+		;
+
+}
+
+
+void	ft_pipejunior(t_command *cmd, int *fd, int n_pipe)
+{
+	(void)n_pipe;
+	(void)cmd;
+    if (n_pipe > 0)
+	    dup2(fd[0],0);
+    else
+        close(fd[0]);
+	close(fd[0]);
+	close(fd[1]);
+	// if(n_pipe >=1)
+		return ;
+	// ft_pipeline(cmd);
+}
+
+void	ft_pipeline(t_command *cmd)
+{
+	int		fd[2];
+	pid_t	pid;
+	int		n_pipe;
+    int     i = 0;
+	// int		status;
+
+	n_pipe = cmd->shell->mc_pipes;
+	while (i < n_pipe)
+	{
+		if (pipe(fd) != 0)
+			perror("filed to create fd");
+		if ((pid = fork()) < 0)
+			perror("failed to fork");
+		if (!pid)
+		{
+			ft_pipejunior(cmd,fd,i);
+		}
+		// waitpid(0,&status,0);
+		dup2(fd[1],1);
+		close(fd[0]);
+		close(fd[1]);
+		i++;
+			ft_execvepipe(cmd,fd[1]);
+	}
+}
+
+
+int	ft_redir(t_command * cmd)
+{
+	pid_t	pid;
+	int	stdin_cpy = dup(0); // maybe better STD...
+	int fd[2];
+	char	**reset;
+	reset = cmd->red;
+	while (cmd && (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP]))		//cmd->spc[HEREDOC]?
+	{
+		int i =0;
+		i++;
+		ft_printf("ciack si gira %d\n",i);
+		// pipe(fd);
+		// close(fd[0]);
+		// if (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP])
+		// 	dup2(fd[1], STDOUT_FILENO);
+		// else
+	// ft_printf("mauraaaaaaaaaaaaaaaaaaaa");
+	ft_printf("in while pria cmd: %s\n",cmd->command);
+		// close(fd[1]);
+		ft_chooseredir(cmd);
+	ft_printf("in while post cmd: %s\n",cmd->command);
+
+		// if (cmd->next)
+		if(cmd->next==NULL)
+			break;
+	// ft_printf("mauroooooooooooooooooooo");
+	ft_printf("cmd: %s\n",cmd->command);
+	
+		cmd = cmd->next;
+	// ft_printf("cmd.next: %s\n",cmd->command);
+
+	}
+	ft_printf("vince siamo qui cmd: %s\n",cmd->command);
+
+	// ft_printf("cmd.prev.prev:%s'n",cmd->prev->prev->command);
+	// ft_printf("cmd.prev:%s\n",cmd->prev->command);
+	// cmd = cmd->prev;
+	cmd->red = reset;
+	ft_execv(cmd,pid,&cmd->shell->exit_status);
+	// dup2(stdin_cpy, STDOUT_FILENO);
+
+	// if(cmd && (!cmd->prev->spc[PIPE]))
+	// {
+	// 	ft_execv(cmd,pid,&cmd->shell->exit_status);
+	// 	return (1);
+	// }
+	return (0);
+}

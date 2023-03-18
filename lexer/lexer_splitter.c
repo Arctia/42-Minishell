@@ -1,38 +1,22 @@
-#include "../global.h"
+#include "./lexer.h"
 
-void	lexer_error(char *message) //example and sketch of an exit error function, not really integrated with the minishell
-{
-	printf("Error: %s\n", message);
-	//free(com->shell->input);
-	//free(com);
-}
-
-//looks for the index where to split the line between command and line yet to be checked.
+//looks for the index where to split the line between 
+// command and line yet to be checked.
 int	split_operator_line(char *line, int i)
 {
 	char	quote;
 
-	while (line[i] != 0)
+	while (line[i])
 	{
-		//pfn("augusto miagola: %c\n", line[i]);
-		if (line[i] == '\"' || line[i] == '\'')
+		quote = line[i];
+		if (ft_isquote(quote))
 		{
-			quote = line[i];
 			i++;
-			//pfn("augusto miagola ancora: %c\n", quote);
-			while (line[i] != quote && line[i] != 0)
+			while (line[i] && line[i] != quote)
 				i++;
 		}
-		if (line[i] == '|')
-			break ;
-		//else if (line[i] == '<' || line[i] == '>')
-		//{
-		//	operator = line[i];
-		//	if (line[i + 1] == operator)
-		//		i++;
-			//printf("splitto %s su %c\n", line, line[i]);
-		//	break;
-		//}
+		if (line[i] && line[i] == '|')
+			return (i + 1);
 		i++;
 	}
 	return (i);
@@ -50,8 +34,10 @@ char	*split_operator(char *line, int *ff, int not_new)
 		r = 0;
 	j = 0;
 	i = split_operator_line(line, *ff);
-	ret = (char *) malloc(sizeof(char) * (i) + 1);
-	while ((j + r) <= i)
+	ret = ft_calloc(sizeof(char), (i + 1));
+	if (!ret)
+		return (NULL);
+	while ((j + r) < i)
 	{
 		ret[j] = line[j + r];
 		j++;
@@ -62,21 +48,29 @@ char	*split_operator(char *line, int *ff, int not_new)
 	return (ret);
 }
 
-//splits the line yet to be controlled from the command already split
-/*char	*split_line(char *line)
+int	check_operator(char *line, int i)
 {
-	char	*ret;
-	int		i;
-	int		j;
+	int	flag;
 
-	j = 0;
-	//i = split_operator_line(line);
-	i = 0;
-	while (line[i] != 0)
-	{
-		ret[j] = line[i];
-		j++;
+	flag = 0;
+	while (ms_isoperator(line[i]) || ft_isspace(line[i]))
+	{	
+		if (!line[i + 1])
+			return (-1);
+		if (ms_isoperator(line[i]) == 1)
+		{
+			if (ms_isoperator(line[i + 1]) && line[i + 1] == '|')
+				return (-1);
+			else if (ms_isoperator(line[i + 1]) && line[i + 1] != line[i])
+				return (-1);
+			else if (ms_isoperator(line[i + 1]) && ms_isoperator(line[i + 2]))
+				return (-1);
+			else if (ms_isoperator(line[i] == 1) && flag == 1)
+				return (-1);
+		}
+		else if (ft_isspace(line[i]) == 1)
+			flag = 1;
 		i++;
 	}
-	return (ret);
-}*/
+	return (0);
+}

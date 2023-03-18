@@ -1,8 +1,8 @@
 #ifndef GLOBAL_H
 # define GLOBAL_H
 
-// e libft?
 # include "./libft/libft.h"
+
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -14,6 +14,7 @@
 # include <sys/ioctl.h>
 # include <sys/param.h>
 # include <sys/types.h>
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -23,10 +24,9 @@
 
 // Constant declarations
 //# define NAME_MAX 255
-// # define PATH_MAX 1024
+//# define PATH_MAX 1024
 # define SUCCESS 0
 # define FAIL 1
-
 
 // Operator presence
 # define PIPE 0
@@ -38,39 +38,43 @@
 # define REDAPP 6
 # define HERDOC 7
 # define CASH 8
+# define TILDE 9
+# define NOCMD 10
 # define EMPTY -1
 
-# define PROMPT "\033[1;31mminisHELL$:\033[0m "
+// Errors
+# define ERR_DIR 126
+# define ERR_UNK 127
 
-//per far funzionare rl_replace_lline
+# define PROMPT "\033[1;31mminisHELL\033[0m:"BGRN
+
+//per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
+
+//int *g_error_code;
 
 // Struct declarations --> Every array/matrix should be null terminated
 typedef struct s_hellmini
 {
 	char 				**env;
 
-	int					exit_status;
 	char				*input;
 	struct s_command 	*current_cmd;
+
+	int					exit_status;
 	int					mc_pipes;
 	int					mc_quotes;
 	int					mc_wquotes;
 
-//	pid_t				pid; // maybe
-}           t_hellmini;
+}				t_hellmini;
 
-//words_operators e'la prima splittata(" ")dell'input, ergo la prima tokenizzazione;
-//potrebbe servirne una ulteriore per semplificare la lettura del codice(in generale ma
-//soprattutto in presenza di < > << >>)
 typedef struct s_command
 {
 	char				*str;
 	char				**tokens;
-	int					spc[9];
+	int					spc[11];
 
 	char				*command;
-	char				**flags; // useless (?)
 	char				**arguments;
 
 	int					*red_type;
@@ -84,18 +88,40 @@ typedef struct s_command
 	t_hellmini 			*shell;
 }	t_command;
 
+// builtins
+int		redirector(t_command *cmd);
+int		unset(t_command *cmd);
+int		cd(t_command *cmd);
+int 	pwd(t_command *cmd);
+int		echo(t_command *cmd);
+int		env(t_command *cmd);
+int		ms_exit(t_command *cmd);
+
+// expander/expander.c
+void	expander(t_command *cmd);
+
+// expander/expander_utils.c
+char	*exp_tkn(char *str, char **env);
+
+// expander/expander_utils.c
+char	**ft_arrdup(char **arr);
+
+// main/init.c
+void					init_shell(t_hellmini *shell, char **env);
+t_command				*init_command(t_hellmini *shell);
+void					set_ecode(int code);
+void					control_c_signal(int sig);
+
 // main/free_structs.c
-void					free_commands(t_hellmini *shell);
-void					free_shell(t_hellmini *shell);
+void	free_commands(t_hellmini *shell);
+void	free_shell(t_hellmini *shell);
 
 // parser.c
-int						parser(t_hellmini *sh);
+int		parser(t_hellmini *sh);
 
-/*lexer.c
-			lexer.c			*/
-int     				lexer_init(t_hellmini *shell);
-/*			lexer_splitter.c  */
-void					lexer_error(char *message);
+// lexer/lexer.c
+int		lexer_init(t_hellmini *shell);
+// lexer/lexer_splitter.c
 char					*split_operator(char *line, int *ff, int not_new);
 char					*split_line(char *line);
 
@@ -120,16 +146,9 @@ char					*exp_tkn(char *str, char **env);
 //expander_utils.c
 char					*check_key_value(char *key_value);
 
-//env_handlers.c
-void					init_shell_env(char **pr_env, t_hellmini shell);
-
 //signals.c
-void					ft_suppress_output(void);
-void					sigint_handler(int sig);
-void					sigquit_handler(int sig);
-void					sigquit_macro(int sig, t_hellmini *shell);
-void					*ft_handler(int sig);
-void					ft_sigs_handler(int sig);
+//void	ft_suppress_output(void);
+void	ft_sigs_handler(int sig);
 
 //export.c
 char 					**exp_(t_hellmini shell);
@@ -144,7 +163,4 @@ void					alpha_sort(char **mtrx);
 void					export_aux(char **key_value, char **env_cpy);
 int						ft_export(char **key_value, t_hellmini *shell);
 
-//main.c
-int						prompt_loop(t_hellmini *shell);
-void					init_shell(t_hellmini *shell);
 #endif

@@ -3,28 +3,38 @@ NAME=minishell
 
 CC=gcc
 
-FLAGS= -g -Wall -Werror -Wextra -fno-stack-protector
 
-INCS = ./global.h ./executor/executor.h ./parser/parser.h
+FLAGS= -g #-Wall -Werror -Wextra
 
-SRCS=	./main/signals2_0.c \
-		./main/signals.c \
-		./main/tokenizer.c \
-		./expander/export.c \
-		./expander/export_utils.c \
-		./expander/expander_utils.c \
-		./main/expander.c \
-		./main/env_handlers.c \
+INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h \
+		./glob.h
+
+
+SRCS =	./main/signals2_0.c \
+		./main/main.c \
 		./main/free_structs.c \
+		./main/init.c \
 		./lexer/lexer.c \
 		./lexer/lexer_splitter.c \
+		./lexer/lexer_syntax.c \
 		./parser/parser.c \
 		./parser/ps_utils.c \
+		./parser/ps_write.c \
+		./parser/ps_flags_red.c \
 		./executor/executor.c \
 		./executor/ft_execv.c \
 		./executor/pipe.c \
 		./executor/redir.c \
-		./main/main.c 
+		./executor/executor_process.c \
+		./expander/expander.c \
+		./expander/expander_utils.c \
+		./builtin/redirector.c \
+		./builtin/unset.c \
+		./builtin/cd.c \
+		./builtin/echo.c \
+		./builtin/env.c \
+		./builtin/pwd.c \
+		./builtin/exit.c
 
 READLINE_DIR = $(shell brew --prefix readline)
 

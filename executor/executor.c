@@ -1,4 +1,5 @@
 #include "executor.h"
+#include "../glob.h"
 
 /*
 	***********************************************************
@@ -84,48 +85,32 @@ int	(*ft_builtin(char *str))(t_hellmini *shell)
 	we have to decide if do the fork in ft execve or in executor
 */
 
-void	ft_execv(t_hellmini *shell, pid_t pid)
+void	ft_execv(t_command *cmd, pid_t pid, int *status)
 {
-	//char	*path;
-	char	**arg;
-	//int		status;
-	int	tmp_index;
-	(void)pid;
-	tmp_index = 0;
-	write(1, "ppath\n", 7);
-	//path = ft_findpath(shell, 0);
-	//ft_printf("path:%s\n",path);
-	write(1, "aarg\n", 5);
-	arg = ft_listtomatrix(shell);
-	while (arg)
+	char	*path;
+	int		ecode;
+
+	if (cmd->command)
+		ecode = redirector(cmd);
+	if (cmd->command && ecode != -1)
 	{
-		printf("%s\n", arg[tmp_index]);
-		tmp_index++;
+		set_ecode(ecode);
+		return ;
 	}
-	// pid = fork();
-	// if (!pid)
-	// {
-	// 	printf("PID= %d\n", pid);
-	// 	if (execve(path, arg, shell->env) == -1)
-	// 	{
-	// 		perror("execv execution failed");
-	// 		free_shell(shell);
-	// 		exit(1);
-	// 	}
-	// }
-	// else if (pid < 0)
-	// 	perror("execv fork failed");
-	// else
-	// {
-		// waitpid(pid, &status, WUNTRACED);
-		// while (!WIFEXITED(status) && !WIFSIGNALED(status))
-			// waitpid(pid, &status, WUNTRACED);
-	// }
-	write(1, "voila\n", 6);
-	ft_free_cmatrix(arg);
-	write(1, "lematrix\n",10);
-	// free(path);
-	// exit(EXIT_FAILURE);
+	if (cmd->command && ft_strchr(cmd->command, '/'))
+		path = ft_strdup(cmd->command);
+	else if (cmd->command)
+		path = ft_findpath(cmd, 0);
+	else
+		return ;
+	if (!fork()) 
+		execute_process(cmd->shell, path, cmd->arguments);
+	set_ecode(0);
+	signal(SIGINT, control_c_signal);
+	waitpid(-1, status, 0);
+	if (*status && get_ecode() != 130)
+		set_ecode(127);
+	free(path);
 }
 
 /*
@@ -142,43 +127,26 @@ void	ft_execv(t_hellmini *shell, pid_t pid)
 	fd between pipe or maybe not
 
 */
-void	ft_executor(t_hellmini *shell)
+void	ft_executor(t_command *cmd)
 {
 	pid_t	pid;
-	t_command *cmd;
 
-	cmd = shell->current_cmd;
 	pid = 111;
-	while (cmd)
+	if	(cmd->spc[PIPE])
+			ft_pipe(cmd);
+	else if (cmd)
 	{
-		if (cmd->spc[DQUOTE] || cmd->spc[CASH] || cmd->spc[MQUOTE])
-			the_expanse(shell->current_cmd);
-		return ;
-		if (cmd->next == NULL)	//simple command?
+		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] 
+				|| cmd->spc[CASH] || cmd->spc[TILDE])
+			expander(cmd);
+		pfn("%3t -----------------------------------------------------------");
+		pfn("%t running command: %s", cmd->str);
+		if (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP] || cmd->spc[HERDOC])
 		{
-			// if (ft_strcmp(cmd->command, builtin[i]))
-			//if (ft_builtin(cmd->command))
-			//	;
-			//else
-			ft_execv(shell, pid);
+			ft_redir(cmd);
+			return ;
 		}
-		else if (cmd->spc[REDIN])
-			ft_less(shell);
-		else if (cmd->spc[REDOUT])
-			ft_redir(shell);
-		else if (cmd->spc[REDAPP])
-			ft_moremore(shell);
-		else if (cmd->spc[HERDOC])
-			ft_heredoc(shell);
-		else if (cmd->spc[PIPE])
-		{
-			ft_pipe(shell);
-			// while (waitpid(0, &status ,0))
-			// 	;//? not sure if here or in ft_executor with a while loop
-		}
-		// ft_execv(shell, pid); //see function comment maybe every single exceptio call his own ft_sexecv
-		// if (cmd->next)
-			cmd = cmd->next;
+		ft_execv(cmd, pid, &(cmd->shell->exit_status));
 	}
 }
 
@@ -190,16 +158,16 @@ void	ft_executor(t_hellmini *shell)
 	maybe generalize it if necessary
 */
 
-void	ft_fixcommand(t_hellmini *shell)
+void	ft_fixcommand(t_command *cmd)
 {
 	char	*temp;
 	char	*tmp;
 
-	if (ft_strncmp("./", shell->current_cmd->command, 2) == 0)
+	if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
 	{
-		tmp = shell->current_cmd->command;
-		temp = ft_strtrim(shell->current_cmd->command, "./");
-		shell->current_cmd->command = temp;
+		tmp = cmd->arguments[0];
+		temp = ft_strtrim(cmd->arguments[0], "./");
+		cmd->arguments[0] = temp;
 		free(tmp);
 	}
 }

@@ -1,199 +1,104 @@
-#include "../global.h"
+#include "./expander.h"
+#include "../glob.h"
 
-
-///receives cmd,
-// void    handle_quotes(t_command cmd)
-// {
-//     int         i;
-//     char        c;
-//     char     *tmp;
-
-//     i = 0;
-//     while (&cmd.command[i])
-//     {}
-
-
-// }
-
-//return lowest number among three numbers, currently unused
-int mini_mini_sort(int a, int b, int c)
+void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i)
 {
-    int min;
+	char	*home;
+	int		c;
 
-    min = -1;
-    if (a >= 0 && ((b > c && c > a) || (c > b && b > a)))
-            min = a;
-    if (b >= 0 && ((a > c && c > b) || (c > a && a > b)))
-            min = b;
-    if (c >= 0 && ((b > a && a > c) || (a > b && b > c)))
-            min = c;
-    return (min);
+	home = NULL;
+	if (!((*str)[0] == '~' && ((*str)[1] == '/' || !((*str)[1]))))
+		return ;
+	home = exp_tkn("HOME", sh->env);
+	c = 0;
+	while (home[c])
+	{
+		buff[*i] = home[c++];
+		*i = *i + 1;
+	}
+	(*str)++;
+	ft_free_ptr(home);
 }
 
-// int mini_sort(char *str)
-// {
-//     char set[2];
-//     int min;
-//     int qi;
-//     int wi;
-//     int ci;
-
-//     set[0] = '\'';
-//     set[1] = '"';
-//     set[2] = '$';
-//     qi = ft_strchr_len(str, set[0]);
-//     wi = ft_strchr_len(str, set[1]);
-//     ci = ft_strchr_len(str, set[2]);
-//     if (qi >= 0 && qi < wi && wi < ci)
-//         min = qi;
-//     else if (wi >= 0 && wi < qi && qi < ci)
-//         min = wi;
-//     else if (ci >= 0 && ci < qi && qi < wi)
-//         min = ci;
-//     return(min);
-// }
-
-//norm-proof version, fetches min nbr out of three
-int mini_sort(char *str)
+int	expand_question(t_hellmini *sh, char buff[4095], char *(*str), int *i)
 {
-    char set[3];
-    int min;
-    int qi;
-    int wi;
-    int ci;
+	char	*value;
+	int		c;
 
-    set[0] = '\'';
-    set[1] = '"';
-    set[2] = '$';
-    min = -1;
-    qi = ft_strchr_len(str, set[0]);
-    wi = ft_strchr_len(str, set[1]);
-    ci = ft_strchr_len(str, set[2]);
-    if (qi == -1)
-        qi = 2147483646;
-    if (wi == -1)
-        wi = 2147483646;
-    if (ci == -1)
-        ci = 2147483646;
-    if (qi >= 0 && ((wi >= ci && ci > qi) || (ci >= wi && wi > qi)))
-        min = qi;
-    if (wi >= 0 && ((qi >= ci && ci > wi) || (ci >= qi && qi > wi)))
-        min = wi;
-    if (ci >= 0 && ((wi >= qi && qi > ci) || (qi >= wi && wi > ci)))
-        min = ci;
-    return (min);
+	value = NULL;
+	if ((*str)[1] != '?')
+		return (FALSE);
+	value = ft_itoa(get_ecode());
+	c = 0;
+	while (value[c])
+	{
+		buff[*i] = value[c++];
+		*i = *i + 1;
+	}
+	(*str)++;
+	(*str)++;
+	ft_free_ptr(value);
+	return (TRUE);
 }
 
-int    expansion_explosion(char *str,char tmp[4095], int *index, char **env)
+void	to_next_single_quote(char *(*str), char buff[4095], int *i)
 {
-    char    *to_ret;
-    char    buff[4095];
-    int     i;
-    int     j;
-
-write(1, "YOYOYO\n", 7);
-    i = *index;
-    j = 0;
-    while (str[++i] != '\''|| str[i] != '"'
-        || str[i] != '$' || str[i] != '\0' || !ft_isspace(str[i]))
-    {
-        buff[j++] = str[i];
-    }
-    *index = i;
-    i = 0;
-    buff[j] = '\0';
-    to_ret = exp_tkn(buff, env);
-    j = ft_strlen(tmp);
-    while (to_ret[i])
-        tmp[j++] = to_ret[i++];
-    return (i);
+	if (*str[0] == '\'')
+	{
+		(*str)++;
+		while (*str[0] && *str[0] != '\'')
+		{
+			buff[*i] = *str[0];
+			(*str)++;
+			*i = *i + 1;
+		}
+		(*str)++;
+	}
 }
 
-// char    *new_tkn_aux(char *str, t_command cmd, int i , int k)
-// {
-//     int f;
-//     int c;
-//     char tmp[4095];
-
-//     f = mini_sort(str);
-//     c = str[f];
-//     while (++k < f && (str[k] != c && (c == '"' || c == '\'') || str[k]))
-//     {
-//         if ((str[k] == '$' && c == '"') || (c != '\'' && str[k] == '$'))
-//             i += expansion_explosion(str, tmp, &k, cmd.shell->env);
-//         tmp[i] = str[k];
-//     }
-//     return (tmp);
-// }
-
-// char    *new_tkn(char *ol_tkn, t_command cmd)
-// {
-//     int     i;
-//     int     f;
-//     int     k;
-//     char    tmp[4095];
-//     char    c;
-
-//     i = 0;
-//     k = -1;
-//     if (mini_sort(ol_tkn) >= 0)
-//     {
-//         while (i < ft_strlen(ol_tkn))
-//         {
-//             new_tkn_aux(ol_tkn, cmd, i, k);
-//             // f = mini_sort(ol_tkn);
-//             // c = ol_tkn[f];
-//             // while (++k < f)
-//             // {
-//             //     if (ol_tkn[k] == '$')
-//             //         i += expansion_explosion(ol_tkn,tmp, &k, &cmd.shell->env);
-//             //     tmp[i] = ol_tkn[k];
-//             //     while (ol_tkn[++k] != c)
-//             //     {
-//             //         if (ol_tkn[k] == '$')
-//             //             i += expansion_explosion(ol_tkn, tmp, &k, &cmd.shell->env);
-//             //         tmp[i] = ol_tkn[k];
-//             //     }
-//             // }
-//         }
-//         return (tmp);
-//     }
-//     else
-//         return(ol_tkn);
-// }
-
-char *new_tkn(char *ol_tkn, t_command *cmd)
+char	*get_string_to_expand(char *(*str))
 {
-    size_t i;
-    int f;
-    int k;
-    char tmp[4095];
-    char c;
+	char	*str_e;
+	int		i;
 
-    pfn("%t new_tkn %s", ol_tkn);
-    i = 0;
-    k = -1;
-    pfn("%t sort = %d", mini_sort(ol_tkn));
-    if (mini_sort(ol_tkn) >= 0)
-    {
-        while (i < ft_strlen(ol_tkn))
-        {
-            pfn("%1t %d", i);
+	i = 1;
+	while ((*str)[i] && ((ft_isalnum((*str)[i])) || (*str)[i] == '_'))
+		i++;
+	str_e = ft_calloc(sizeof(char), i);
+	i = 0;
+	(*str)++;
+	while ((*str)[0] && ((ft_isalnum((*str)[0])) || (*str)[0] == '_'))
+	{
+		str_e[i] = ((*str)++)[0];
+		i++;
+	}
+	return (str_e);
+}
 
-            f = mini_sort(ol_tkn);
-            c = ol_tkn[f];
-            while (k <= f || ((ol_tkn[k + 1] != c && (c == '"' || c == '\''))
-                || ol_tkn[k + 1]))
-            {
-                pfn("dead loop");
-                if ((ol_tkn[k] == '$' && c == '"') || (c != '\'' && ol_tkn[k] == '$'))
-                    i += expansion_explosion(ol_tkn, tmp, &k, cmd->shell->env);
-                tmp[i++] = ol_tkn[k++];
-            }
-            i++;
-        }
-    }
-    free (ol_tkn);
-    ol_tkn = ft_strdup(tmp);
-    return (ol_tkn);
+char	*exp_tkn(char *str, char **env)
+{
+	char	*new_token;
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	j = 0;
+	if (!str || !env || !ft_strlen(str))
+		return (NULL);
+	while (env[i] && !((ft_strncmp(str, env[i], ft_strlen(str))) == 0))
+		i++;
+	if (!env[i])
+		return (NULL);
+	while (env[i][j] != '=')
+		j++;
+	j++;
+	new_token = ft_calloc(sizeof(char), ft_strlen(env[i]) + 1);
+	if (!new_token)
+		return (NULL);
+	k = 0;
+	while (env[i][j])
+		new_token[k++] = env[i][j++];
+	new_token[k] = '\0';
+	return (new_token);
 }
