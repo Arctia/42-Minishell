@@ -93,9 +93,12 @@ void	ft_pipe_new(t_command *cmd)
 
 //###############################################################################
 
-t_command	*ft_pipe_part_3(int **fd, t_command *cmd, int stdc_o, int *i)
+t_command	*ft_pipe_part_3(int **fd, t_command *cmd, int stdc[2], int *i)
 {
+	expander(cmd);
 	pipe(fd[*i]);
+	int fu = open(*cmd->red,
+			O_CREAT | O_RDWR, 0644);
 	if(!fork())
 	{
 		close(fd[*i][0]);
@@ -106,10 +109,21 @@ t_command	*ft_pipe_part_3(int **fd, t_command *cmd, int stdc_o, int *i)
 		}
 		else
 		{
-			dup2(stdc_o, STDOUT_FILENO);
-			close(stdc_o);
+			dup2(stdc[1], STDOUT_FILENO);
+			close(stdc[1]);
+		}
+		if (cmd->spc[REDIN] || cmd->spc[REDOUT]
+			|| cmd->spc[REDAPP] || cmd->spc[HERDOC])
+			ft_redir_pipe(cmd);
+		if (cmd->spc[HERDOC])
+		{
+			dup2(fu,STDIN_FILENO);
+			close(fu);
 		}
 		ft_execv(cmd, 100, &cmd->shell->exit_status);
+		if (cmd->spc[REDIN])
+			dup2(stdc[1], STDOUT_FILENO);
+		dup2(stdc[0], STDIN_FILENO);
 		exit(1);
 	}
 	dup2(fd[*i][0], STDIN_FILENO);
@@ -136,7 +150,7 @@ void	ft_pipe(t_command *cmd)
 	std_cpy[0] = dup(0);
 	std_cpy[1] = dup(1);
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
-		cmd = ft_pipe_part_3(fd, cmd, std_cpy[1], &i);
+		cmd = ft_pipe_part_3(fd, cmd, std_cpy, &i);
 	while (i > 0)
 	{
 		waitpid(-1, 0, 0);

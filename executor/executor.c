@@ -130,12 +130,11 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 void	ft_executor(t_command *cmd)
 {
 	pid_t	pid;
-	// int		status;
-	// t_command *cmd;
 
-	// cmd = shell->current_cmd;
 	pid = 111;
-	while (cmd)
+	if	(cmd->spc[PIPE])
+			ft_pipe(cmd);
+	else if (cmd)
 	{
 		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] 
 				|| cmd->spc[CASH] || cmd->spc[TILDE])
@@ -145,24 +144,9 @@ void	ft_executor(t_command *cmd)
 		if (cmd->spc[REDIN] || cmd->spc[REDOUT] || cmd->spc[REDAPP] || cmd->spc[HERDOC])
 		{
 			ft_redir(cmd);
-			break;
+			return ;
 		}
-		// if (cmd->spc[HERDOC])
-		// 	ft_heredoc(cmd);
-		else if (cmd->next == NULL)	//simple command?
-		{
-			// if (ft_strcmp(cmd->command, builtin[i]))
-			//if (ft_builtin(cmd->command))
-			//	;
-			//else
-			ft_execv(cmd, pid, &(cmd->shell->exit_status));
-		}
-		else if (cmd->spc[PIPE])
-		{ 
-			ft_pipe(cmd);
-			break ;
-		}
-		cmd = cmd->next;
+		ft_execv(cmd, pid, &(cmd->shell->exit_status));
 	}
 }
 

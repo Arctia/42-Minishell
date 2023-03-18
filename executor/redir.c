@@ -40,19 +40,31 @@ int	ft_redir(t_command * cmd)
 	return (0);
 }
 
-
-char	*ft_name(void)
+int	ft_redir_pipe(t_command * cmd)
 {
-	int		i;
-	char	*name;
-	char	*ihavetofree;
+	pid_t	pid;
+	//int		stdin_cpy = dup(0); // maybe better STD...
+	//int		stdout_cpy = dup(1); // maybe better STD...
+	char	**redreset;
+	int		*typereset;
 
-	i = 0;
-	i++;
-	ihavetofree = ft_itoa(i);
-	name = ft_strjoin("tempfd_", ihavetofree);
-	free(ihavetofree);
-	return (name);
+	redreset = cmd->red;
+	typereset = cmd->red_type;
+	while (*cmd->red && cmd->red_type)		//cmd->spc[HEREDOC]?
+	{
+		ft_chooseredir(cmd);
+		cmd->red++;
+		cmd->red_type++;
+	}
+	//ft_execv(cmd,pid,&cmd->shell->exit_status);
+	//if(cmd->red_type[0] != REDIN)
+	//	dup2(stdout_cpy, STDOUT_FILENO);
+	//dup2(stdin_cpy, STDIN_FILENO);
+	cmd->red = redreset;
+	cmd->red_type = typereset;
+	//close(stdin_cpy);
+	//close(stdout_cpy);
+	return (0);
 }
 
 void	ft_redin(t_command *cmd)												//	<
@@ -125,15 +137,15 @@ void	ft_heredoc(t_command *cmd)											//	<<
 	delimiter = *cmd->red;
 	int	end[2];
 	pipe(end);
-	line = readline("");
+	line = readline(HEREDOC_MSG);
 	while (!ft_strcmp(delimiter, line))
 	{
 		write(end[1], line, ft_strlen(line));
 		write(end[1], "\n", 1);
 		free(line);
-		line = readline("");
+		line = readline(HEREDOC_MSG);
 	}
-	dup2(end[0], STDIN_FILENO);
+	//dup2(end[0], STDIN_FILENO);
 	close(end[0]);
 	close(end[1]);
 	

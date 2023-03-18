@@ -51,6 +51,7 @@ void	ft_fixstinpipe(t_command *cmd, Pipe output);
 */
 char	*ft_name(void);
 int		ft_redir(t_command * cmd);
+int		ft_redir_pipe(t_command * cmd);
 void	ft_chooseredir(t_command *cmd);
 
 
