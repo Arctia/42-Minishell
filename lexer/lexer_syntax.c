@@ -7,6 +7,8 @@ int	lx_error(unsigned char chr)
 		ft_printf("minishell: expected `%c' found `newline' instead\n", chr);
 	else if (chr == '\n')
 		ft_printf("minishell: syntax error near unexpected token `newline'\n");
+	else if (chr == '\0')
+		ft_printf("minishell: syntax error near unexpected token `EOF'\n");
 	else
 		ft_printf("minishell: syntax error near unexpected token `%c'\n", chr);
 	return (157);
@@ -48,7 +50,7 @@ int	syntax_check_2(char *line)
 		if (ft_isredirection(cc) && line[0] == '|')
 			return (lx_error(line[0]));
 		cc = line[0];
-		if (ft_strchr(UNEXPECTED, cc))
+		if (cc && ft_strchr(UNEXPECTED, cc))
 			return (lx_error(cc));
 		if (ft_isredirection(cc) && ft_isredirection(line[1]) && cc != line[1])
 			return (lx_error(line[1]));
