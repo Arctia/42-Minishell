@@ -1,8 +1,6 @@
 
 #include "executor.h"
 
-extern int	*g_error_code;
-
 static void	print_free_close(char *str, int fd, DIR *dir, int err)
 {
 	ft_printf("%s\n[%d]\n", str, err);
@@ -68,8 +66,6 @@ static int	error_print(char *path, char *cmd_name)
 	print_free_close(str, fd, dir, err);
 	return (err);
 }
-
-extern int errno;
 
 void	execute_process(t_hellmini *shell, char *path, char **args)
 {

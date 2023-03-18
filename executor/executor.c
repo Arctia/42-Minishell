@@ -101,8 +101,10 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	if (!fork()) 
 		execute_process(cmd->shell, path, arg);
 
-	pfn("sh: [%d]", cmd->shell->exit_status);
-	waitpid(0, &cmd->shell->exit_status, 0);
+	waitpid(0, status, 0);
+	if (!(*status))
+		*g_error_code = 127;
+
 	//cmd->shell->exit_status = *status;
 	pfn("sh: [%d]", cmd->shell->exit_status);
 		// while (!WIFEXITED(*status) && !WIFSIGNALED(*status))

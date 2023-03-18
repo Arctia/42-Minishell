@@ -7,19 +7,36 @@
 #define BRED "\e[1;31m"
 #define BGRN "\e[1;32m"
 #define BYEL "\e[1;33m"
+#define WHITE "\e[0m"
 //# define PROMPT "\033[1;31mminisHELL$:\033[0m "
 
 //rip_and_tear is the name of a song from DOOM's O.S.T..
 //I think it's quite an appropriate name for the process of splitting and
 //tokenizing the input. And it's quite some badass music.
 //If you don't agree, feel free to go and f##k off :)
+
+char	*our_prompt(char *str)
+{
+	char	*buff;
+
+	buff = ft_calloc(sizeof(char), 1);
+	buff[0] = '[';
+	buff = ft_strjoin_free(buff, ft_itoa(*g_error_code), 1, 1);
+	buff = ft_strjoin_free(buff, "]", 1, 0);
+	buff = ft_strjoin_free(buff, PROMPT, 1, 0);
+	buff = ft_strjoin_free(buff, str, 1, 0);
+	buff = ft_strjoin_free(buff, ": ", 1, 0);
+	buff = ft_strjoin_free(buff, WHITE, 1, 0);
+	return (buff);
+}
+
 static int	prompt_loop(t_hellmini *shell)
 {
 	signal(SIGQUIT, SIG_IGN);
 	while(TRUE)
 	{
 		signal(SIGINT, ft_sigs_handler);
-		shell->input = readline(PROMPT);
+		shell->input = readline(our_prompt(getcwd(NULL, 0)));
 		if (!shell->input)
 		{
 			write(1, "\rexit\n", 7);
