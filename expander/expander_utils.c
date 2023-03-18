@@ -1,4 +1,3 @@
-
 #include "./expander.h"
 
 void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i)
