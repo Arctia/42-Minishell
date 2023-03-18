@@ -1,31 +1,13 @@
-//#include "../global.h"
-#include <stdio.h>
-
-int	ft_isdigit(char *com)
-{
-	if (ch <= '9' && ch >= '0')
-		return (1);
-	return (0);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
+#include "../global.h"
 
 int	check_exit_argument(char *com)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	i = ft_strlen(com);
 	if (i > 19)
 		return (-1);
-	while (i => 0)
+	while (i >= 0)
 	{
 		i--;
 		if (!(ft_isdigit(com[i])) && i > 0)
@@ -76,22 +58,26 @@ long long	ft_atoll(const char *str)
 	return (res * sign);
 }
 
-int exit(t_command *cmd)
+int	ms_exit(t_command *cmd)
 {
-	int n;
 	int	ret;
 
-	n = 0;
 	ret = 0;
 	if (!(!(cmd->arguments[2]))) //questa è per vincenzo
 	{
-		printf("exit: too many arguments\n");
-		return (255);
+		printf("exit\nexit: too many arguments\n");
+		ret = 255;
 	}
-	if (check_exit_arguments(com->arguments[1]) != 0)
-		return (255);
-	ret = ft_atoll(cmd->arguments);
-	free_shell
-	ret %= 256 + 256 * (ret < 0);
-	return (ret);
+	else if (check_exit_arguments(cmd->arguments[1]) != 0)
+	{
+		pfn("exit\nexit: %s: numeric argument required", cmd->arguments[1]);
+		ret = 255;
+	}
+	else
+	{
+		ret = ft_atoll(cmd->arguments);
+		ret %= 256 + 256 * (ret < 0);
+	}
+	free_shell(cmd->shell);
+	exit (ret);
 }

@@ -1,8 +1,8 @@
 #include "../global.h"
 
-int pwd(t_command *cmd)
+int	pwd(t_command *cmd)
 {
-	char *pos;
+	char	*pos;
 
 	pos = getcwd(NULL, 0);
 	ft_printf("%s\n", pos);
