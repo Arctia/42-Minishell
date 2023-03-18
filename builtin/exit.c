@@ -16,7 +16,7 @@ int	check_exit_argument(char *com)
 		{
 			if ((ft_isdigit(com[i])))
 				return (0);
-			else if (com[i] == "-")
+			else if (com[i] == '-')
 				return (0);
 			else
 				return (-1);
@@ -25,7 +25,7 @@ int	check_exit_argument(char *com)
 	return (0);
 }
 
-int	check_spaces(const char *s)
+int	exit_check_spaces(const char *s)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ long long	ft_atoll(const char *str)
 	long	sign;
 	long	res;
 
-	i = check_spaces(str);
+	i = exit_check_spaces(str);
 	sign = 1;
 	res = 0;
 	if (str[i] == '-' || str[i] == '+')
@@ -68,15 +68,16 @@ int	ms_exit(t_command *cmd)
 		printf("exit\nexit: too many arguments\n");
 		ret = 255;
 	}
-	else if (check_exit_arguments(cmd->arguments[1]) != 0)
+	else if (check_exit_argument(cmd->arguments[1]) != 0)
 	{
 		pfn("exit\nexit: %s: numeric argument required", cmd->arguments[1]);
 		ret = 255;
 	}
 	else
 	{
-		ret = ft_atoll(cmd->arguments);
+		ret = ft_atoll(cmd->arguments[1]);
 		ret %= 256 + 256 * (ret < 0);
+		printf("ëxit\n");
 	}
 	free_shell(cmd->shell);
 	exit (ret);
