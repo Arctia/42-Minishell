@@ -51,7 +51,7 @@
 //per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
 
-int *g_error_code;
+//int *g_error_code;
 
 // Struct declarations --> Every array/matrix should be null terminated
 typedef struct s_hellmini
@@ -108,6 +108,7 @@ char	**ft_arrdup(char **arr);
 // main/init.c
 void					init_shell(t_hellmini *shell, char **env);
 t_command				*init_command(t_hellmini *shell);
+void					change_code(int code);
 
 // main/free_structs.c
 void	free_commands(t_hellmini *shell);

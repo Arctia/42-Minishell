@@ -1,5 +1,6 @@
 
 #include "executor.h"
+#include "../glob.h"
 
 static void	print_free_close(char *str, int fd, DIR *dir, int err)
 {
@@ -78,7 +79,5 @@ void	execute_process(t_hellmini *shell, char *path, char **args)
 	clear_history();
 	free_shell(shell);
 	free(path);
-	*g_error_code = errnoa;
-	pfn("%t Gcode: [%d]", *g_error_code);
 	exit(errnoa);
 }

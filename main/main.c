@@ -1,6 +1,7 @@
 #include "../global.h"
+#include "../glob.h"
 #include "../executor/executor.h"
-#include "prompt_and_signals.h"
+//#include "prompt_and_signals.h"
 
 #define YEL "\e[0;33m"
 #define GRN "\e[0;32m"
@@ -15,13 +16,13 @@
 //tokenizing the input. And it's quite some badass music.
 //If you don't agree, feel free to go and f##k off :)
 
-char	*our_prompt(char *str)
+static char	*our_prompt(char *str)
 {
 	char	*buff;
 
-	buff = ft_calloc(sizeof(char), 1);
+	buff = ft_calloc(sizeof(char), 2);
 	buff[0] = '[';
-	buff = ft_strjoin_free(buff, ft_itoa(*g_error_code), 1, 1);
+	buff = ft_strjoin_free(buff, ft_itoa(get_ecode()), 1, 1);
 	buff = ft_strjoin_free(buff, "]", 1, 0);
 	buff = ft_strjoin_free(buff, PROMPT, 1, 0);
 	buff = ft_strjoin_free(buff, str, 1, 0);
