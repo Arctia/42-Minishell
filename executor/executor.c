@@ -100,12 +100,13 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	arg = cmd->arguments;
 	if (!fork()) 
 		execute_process(cmd->shell, path, arg);
-	else
-	{
-		waitpid(-1, status, 0);
+
+	pfn("sh: [%d]", cmd->shell->exit_status);
+	waitpid(0, &cmd->shell->exit_status, 0);
+	//cmd->shell->exit_status = *status;
+	pfn("sh: [%d]", cmd->shell->exit_status);
 		// while (!WIFEXITED(*status) && !WIFSIGNALED(*status))
 		// 	waitpid(pid, status, WUNTRACED);
-	}
 	free(path);
 }
 

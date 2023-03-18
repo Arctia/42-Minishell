@@ -8,7 +8,6 @@ FLAGS= -g # -Wall -Werror -Wextra
 INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h
 
 SRCS =	./main/signals2_0.c \
-		./main/signals.c \
 		./main/main.c \
 		./main/free_structs.c \
 		./main/init.c \

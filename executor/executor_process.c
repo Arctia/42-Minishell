@@ -1,9 +1,11 @@
 
 #include "executor.h"
 
-static void	print_free_close(char *str, int fd, DIR *dir)
+extern int	*g_error_code;
+
+static void	print_free_close(char *str, int fd, DIR *dir, int err)
 {
-	ft_printf("%s\n", str);
+	ft_printf("%s\n[%d]\n", str, err);
 	if (fd != -1)
 		close(fd);
 	if (dir)
@@ -62,20 +64,25 @@ static int	error_print(char *path, char *cmd_name)
 		err = ERR_UNK;
 	else
 		err = ERR_DIR;
-	print_free_close(str, fd, dir);
+	//errno = err;
+	print_free_close(str, fd, dir, err);
 	return (err);
 }
 
+extern int errno;
+
 void	execute_process(t_hellmini *shell, char *path, char **args)
 {
-	int	errno;
+	int	errnoa;
 
-	errno = 0;
-	if (path && ft_strchr(path, '/'))
-		execve(path, args, shell->env);
-	errno = error_print(path, args[0]);
+	errnoa = 0;
+	//if (path && ft_strchr(path, '/'))
+	if (execve(path, args, shell->env))
+		errnoa = error_print(path, args[0]);
 	clear_history();
 	free_shell(shell);
 	free(path);
-	exit(errno);
+	*g_error_code = errnoa;
+	pfn("%t Gcode: [%d]", *g_error_code);
+	exit(errnoa);
 }

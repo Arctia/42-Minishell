@@ -14,6 +14,7 @@
 # include <sys/ioctl.h>
 # include <sys/param.h>
 # include <sys/types.h>
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -49,6 +50,8 @@
 
 //per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
+
+int *g_error_code;
 
 // Struct declarations --> Every array/matrix should be null terminated
 typedef struct s_hellmini
@@ -120,11 +123,7 @@ char					*split_operator(char *line, int *ff, int not_new);
 char					*split_line(char *line);
 
 //signals.c
-void	ft_suppress_output(void);
-void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
-void	sigquit_macro(int sig, t_hellmini *shell);
-void	*ft_handler(int sig);
+//void	ft_suppress_output(void);
 void	ft_sigs_handler(int sig);
 
 #endif

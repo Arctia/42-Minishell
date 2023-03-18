@@ -56,6 +56,7 @@ static void	init_shell_env(t_hellmini *shell, char **original_env)
 
 void	init_shell(t_hellmini *shell, char **env)
 {
+	g_error_code = ft_calloc(sizeof(int), 0);
 	shell->env = NULL;
 	shell->input = NULL;
 	shell->mc_pipes = 0;
