@@ -74,5 +74,3 @@ int	check_operator(char *line, int i)
 	}
 	return (0);
 }
-
-

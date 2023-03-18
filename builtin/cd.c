@@ -1,6 +1,5 @@
 
 #include "../global.h"
-
 /*##############################################################################
 ####	CD '-': 
 		 ° if '-' is the argument try to go to previous folder if stored

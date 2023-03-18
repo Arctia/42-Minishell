@@ -15,9 +15,9 @@ int	redirector(t_command *com)
 		return (pwd(com));
 	else if (ft_strcmp(command, "env"))
 		return (env(com));
-	/*else if (ft_strcmp(command, "export"))
-		return (export(com));
 	else if (ft_strcmp(command, "exit"))
-		return (exit(com));*/
+		ms_exit(com);
+	/*else if (ft_strcmp(command, "export"))
+		return (export(com));*/ 
 	return (-1);
 }
