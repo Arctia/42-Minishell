@@ -63,22 +63,24 @@ int	ms_exit(t_command *cmd)
 	int	ret;
 
 	ret = 0;
-	if (!(!(cmd->arguments[2]))) //questa è per vincenzo
+	while(cmd->arguments[ret])
+		ret++;
+	if (ret > 2)
 	{
 		printf("exit\nexit: too many arguments\n");
 		ret = 255;
 	}
-	else if (check_exit_argument(cmd->arguments[1]) != 0)
+	else if (ret == 2 && (check_exit_argument(cmd->arguments[1]) != 0))
 	{
 		pfn("exit\nexit: %s: numeric argument required", cmd->arguments[1]);
 		ret = 255;
 	}
-	else
+	else if (ret == 2)
 	{
 		ret = ft_atoll(cmd->arguments[1]);
 		ret %= 256 + 256 * (ret < 0);
-		printf("ëxit\n");
 	}
+	printf("exit\n");
 	free_shell(cmd->shell);
 	exit (ret);
 }
