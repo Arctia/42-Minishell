@@ -16,9 +16,9 @@ void	free_commands(t_hellmini *shell)
 {
 	t_command	*cmd;
 	t_command	*nxt;
+
 	cmd = shell->current_cmd;
 	nxt = NULL;
-
 	while (cmd)
 	{
 		nxt = cmd->next;

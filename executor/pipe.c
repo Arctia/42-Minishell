@@ -14,6 +14,7 @@
 
 t_command	*ft_pipe_part_2(int **fd, t_command *cmd, int std_cpy_o, int *i)
 {
+	expander(cmd);
 	pipe(fd[*i]);
 	if(!fork())
 	{
@@ -54,8 +55,8 @@ void	ft_pipe_new(t_command *cmd)
 	i = 0;
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
-		cmd = ft_pipe_part_2(fd, cmd, std_cpy[1], &i);
-		/*pipe(fd[i]);
+		//cmd = ft_pipe_part_2(fd, cmd, std_cpy[1], &i);
+		pipe(fd[i]);
 		if(!fork())
 		{
 			close(fd[i][0]);
@@ -77,7 +78,7 @@ void	ft_pipe_new(t_command *cmd)
 		close(fd[i][1]);
 
 		cmd = cmd->next;
-		i++;*/
+		i++;
 	}
 	while (i > 0)
 	{
@@ -87,7 +88,6 @@ void	ft_pipe_new(t_command *cmd)
 	dup2(std_cpy[0], STDIN_FILENO);
 	close(std_cpy[0]);
 	close(std_cpy[1]);
-
 }
 
 
@@ -150,7 +150,7 @@ void	ft_pipe(t_command *cmd)
 	std_cpy[0] = dup(0);
 	std_cpy[1] = dup(1);
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
-		cmd = ft_pipe_part_3(fd, cmd, std_cpy, &i);
+		cmd = ft_pipe_part_2(fd, cmd, std_cpy[0], &i);
 	while (i > 0)
 	{
 		waitpid(-1, 0, 0);

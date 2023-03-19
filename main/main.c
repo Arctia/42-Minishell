@@ -1,7 +1,6 @@
 #include "../global.h"
 #include "../glob.h"
 #include "../executor/executor.h"
-//#include "prompt_and_signals.h"
 
 #define YEL "\e[0;33m"
 #define GRN "\e[0;32m"
@@ -9,7 +8,6 @@
 #define BGRN "\e[1;32m"
 #define BYEL "\e[1;33m"
 #define WHITE "\e[0m"
-//# define PROMPT "\033[1;31mminisHELL$:\033[0m "
 
 //rip_and_tear is the name of a song from DOOM's O.S.T..
 //I think it's quite an appropriate name for the process of splitting and
@@ -44,7 +42,7 @@ static char	*our_prompt(t_hellmini *shell, char *str)
 
 static int	prompt_loop(t_hellmini *shell)
 {
-	while(TRUE)
+	while (TRUE)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ft_sigs_handler);
@@ -56,17 +54,11 @@ static int	prompt_loop(t_hellmini *shell)
 		}
 		if (ft_strncmp(shell->input, "", 1))
 			add_history(shell->input);
-		pfn("%3t enter lexer");
 		if (lexer_init(shell) == 0)
 		{
-			pfn("\n%3t enter parser");
 			if (parser(shell) == SUCCESS)
-			{
-				pfn("\n%3t enter executor");
 				ft_executor(shell->current_cmd);
-			}
 		}
-		//pfn("\n%3t enter free");
 		free_commands(shell);
 	}
 	clear_history();
@@ -80,7 +72,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-
 	shell = (t_hellmini *) malloc(sizeof(t_hellmini));
 	if (!shell)
 		return (EXIT_FAILURE);

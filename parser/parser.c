@@ -107,36 +107,6 @@ static int	ps_split_string(t_command *cmd)
 		fill their fields. Every command struct should have a
 		str, which stores input with the operator at the end
 ############################################################################*/
-static void	print_arguments_and_flags(t_command *cmd)
-{
-	int		i;
-	char	*ar[] = {"PIPE", "SQUOTE", "DQUOTE", "MQUOTE",
-			"REDIN ", "REDOUT", "REDAPP", "HERDOC", "CASH"};
-	char	*co[] = {" ", GRN"TRUE"WHITE};
-
-	i = 0;
-	pfn("%2t command: '%s'", cmd->command);
-	while (cmd->arguments && cmd->arguments[i])
-	{
-		pfn("%2t arg[%d]: '%s'", i, cmd->arguments[i]);
-		i++;
-	}
-	i = 0;
-	pfn("%t -----------------------");
-	while (i < 9)
-	{
-		if (cmd->spc[i])
-			pfn("%t %-8s-->  %s", ar[(i) % 9], co[cmd->spc[i] % 2]);
-		i++;
-	}
-	pfn("%t -----------------------");
-	i = -1;
-	while (cmd->red && cmd->red_type[++i] != 0)
-		pfn("%t %d. %s -> %s", i, ar[cmd->red_type[i]], cmd->red[i]);
-	pfn("%t -----------------------");
-	pfn("%t shell pipes: %d", cmd->shell->mc_pipes);
-}
-
 int	parser(t_hellmini *sh)
 {
 	t_command	*cmd;
@@ -150,7 +120,6 @@ int	parser(t_hellmini *sh)
 		set_cmd_flags(cmd, 0);
 		set_arguments(cmd, args, 1);
 		set_command_name(cmd);
-		print_arguments_and_flags(cmd);
 		if (cmd->next)
 			cmd = cmd->next;
 		else

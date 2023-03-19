@@ -3,12 +3,10 @@ NAME=minishell
 
 CC=gcc
 
-
 FLAGS= -g #-Wall -Werror -Wextra
 
 INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h \
 		./glob.h
-
 
 SRCS =	./main/signals2_0.c \
 		./main/main.c \
@@ -20,6 +18,7 @@ SRCS =	./main/signals2_0.c \
 		./parser/parser.c \
 		./parser/ps_utils.c \
 		./parser/ps_write.c \
+		./parser/ps_utils_2.c \
 		./parser/ps_flags_red.c \
 		./executor/executor.c \
 		./executor/ft_execv.c \

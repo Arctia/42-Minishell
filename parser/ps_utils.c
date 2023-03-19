@@ -14,12 +14,6 @@ int	until_space(const char *str)
 	return (i);
 }
 
-void	ps_move_to_next_char(t_command *cmd)
-{
-	while (cmd->str[0] && ft_isspace(cmd->str[0]))
-		cmd->str++;
-}
-
 int	to_next_quote(char *str, int i, char quote)
 {
 	while (str[i] && str[i] != quote)
@@ -46,7 +40,7 @@ int	i_after_quote(char *str, int i, int *iw, int *in)
 		. return number of items to be stored
 		. single/double quotes TODO
 _________________________________________!_________________________________ */
-int	calc_redir(char *str, int *i, int *in_word)
+static int	calc_redir(char *str, int *i, int *in_word)
 {
 	*in_word = 1;
 	if (str[*i] == str[*i + 1])

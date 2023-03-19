@@ -1,6 +1,6 @@
 #include "../global.h"
 
-static void	ft_suppress_output(void)
+/*static void	ft_suppress_output(void)
 {
 	struct termios	new_settings;
 
@@ -15,6 +15,14 @@ static void	ft_suppress_output(void)
 	// if(!tcsetattr(STDOUT_FILENO, 0, &new_settings))
 	// 	write(1,"bioparco\n", 10);
 		//exit(0);
+}*/
+static void	ft_suppress_output(void)
+{
+	struct termios	new_settings;
+
+	tcgetattr(STDIN_FILENO, &new_settings);
+	new_settings.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, 0, &new_settings);
 }
 
 void	ft_sigs_handler(int sig)

@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:56:48 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/15 07:26:06 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/19 19:14:24 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,6 @@ void	expander(t_command *cmd)
 
 	tmp = cmd->command;
 	cmd->command = replace_token(cmd, &(cmd->command));
-	if (cmd->command && cmd->command[0])
-		pfn("%t expanded command: %s", cmd->command);
-	else
-		pfn("%t expanded command: (null)");
 	free(tmp);
 	i = 0;
 	while (cmd->arguments && cmd->arguments[i] && cmd->arguments[i][0])
@@ -115,7 +111,6 @@ void	expander(t_command *cmd)
 		tmp = cmd->arguments[i];
 		cmd->arguments[i] = replace_token(cmd, &(cmd->arguments[i]));
 		free(tmp);
-		pfn("%t expanded argument[%d]: %s", i, cmd->arguments[i]);
 		i++;
 	}
 	i = 0;
@@ -124,7 +119,6 @@ void	expander(t_command *cmd)
 		tmp = cmd->red[i];
 		cmd->red[i] = replace_token(cmd, &(cmd->red[i]));
 		free(tmp);
-		pfn("%t expanded red[%d]: %s", i, cmd->red[i]);
 		i++;
 	}
 }
