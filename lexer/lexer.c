@@ -57,7 +57,7 @@ void	print_commands(t_command *cmd)
 	i = 0;
 	while (tmp && tmp != NULL)
 	{
-		pfn("%d. %s", i, tmp->str);
+		pfnd("%d. %s", i, tmp->str);
 		tmp = tmp->next;
 		i++;
 	}

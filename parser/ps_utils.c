@@ -46,6 +46,14 @@ int	i_after_quote(char *str, int i, int *iw, int *in)
 		. return number of items to be stored
 		. single/double quotes TODO
 _________________________________________!_________________________________ */
+int	calc_redir(char *str, int *i, int *in_word)
+{
+	*in_word = 1;
+	if (str[*i] == str[*i + 1])
+		*i = *i + 1;
+	return (1);
+}
+
 int	items_in_string(char *str)
 {
 	int	items_number;
@@ -63,11 +71,10 @@ int	items_in_string(char *str)
 			if (!in_word && items_number++ >= 0)
 				in_word = 1;
 		}
-		else if (ft_isnotspace(str[i]) && in_word == 0)
-		{
+		else if (ft_isredirection(str[i]) && calc_redir(str, &i, &in_word))
 			items_number++;
-			in_word = 1;
-		}
+		else if (ft_isnotspace(str[i]) && in_word == 0 && !in_word++)
+			items_number++;
 		else if (ft_isspace(str[i]) || (i && ft_isredirection(str[i - 1])))
 			in_word = 0;
 		i++;

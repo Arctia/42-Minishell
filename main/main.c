@@ -15,9 +15,6 @@
 //I think it's quite an appropriate name for the process of splitting and
 //tokenizing the input. And it's quite some badass music.
 //If you don't agree, feel free to go and f##k off :)
-
-
-
 static char	*our_prompt(t_hellmini *shell, char *str)
 {
 	char	*buff;
@@ -31,7 +28,6 @@ static char	*our_prompt(t_hellmini *shell, char *str)
 	buff = ft_strjoin_free(buff, "] "BYEL, 1, 0);
 	buff = ft_strjoin_free(buff, exp_tkn("USER", shell->env), 1, 1);
 	buff = ft_strjoin_free(buff, PROMPT, 1, 0);
-	
 	if (!ft_strncmp(str, path, ft_strlen(path)))
 	{
 		new_path = ft_strtrim(str, path);

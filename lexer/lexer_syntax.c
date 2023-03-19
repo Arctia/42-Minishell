@@ -74,7 +74,7 @@ int	check_syntax(char *line, int i)
 		if (ms_isoperator(line[i]) == 1)
 		{
 			if (check_operator(line, i) == -1)
-				return (lx_error('|'));
+				return (lx_error(line[i]));
 		}
 		i++;
 	}

@@ -9,7 +9,6 @@ static void	set_command_name(t_command *cmd)
 	int	i;
 
 	i = 0;
-	ft_print_matrix(cmd->arguments);
 	if (!(cmd->arguments && cmd->arguments[0]))
 	{
 		cmd->spc[NOCMD] = 1;
@@ -91,7 +90,6 @@ static int	ps_split_string(t_command *cmd)
 	if (red_n > 0)
 		ft_filliarrayto_n(cmd->red_type, EMPTY, red_n);
 	items = items_in_string(cmd->str);
-	pfn("items: %d", items);
 	cmd->tokens = NULL;
 	cmd->tokens = ft_calloc(sizeof(char *), items + 1);
 	if (!(cmd->tokens))
@@ -100,7 +98,6 @@ static int	ps_split_string(t_command *cmd)
 	while (cmd->str[0] != 0)
 		before_write_word(cmd, &c, &items);
 	cmd->tokens[c] = NULL;
-	pfn("%t test 2");
 	cmd->str = init;
 	return (items);
 }
