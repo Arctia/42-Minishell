@@ -127,9 +127,47 @@ int		lexer_init(t_hellmini *shell);
 char					*split_operator(char *line, int *ff, int not_new);
 char					*split_line(char *line);
 
+//tokenizer.c
+int						tkn_nbr(char *str);
+int 					ft_strchr_len(char *str, char c);
+t_command				* count_pqwq(t_command *command, char *str);
+void					the_expanse(t_command *cmd);
+char					**rip_and_tear(t_command *command, char *str);
+
+//expander_utils.c
+int						mini_sort(char *str);
+int						expansion_explosion(char *str, char tmp[4095], int *index, char **env);
+char					*new_tkn_aux(char *str, t_command cmd, int i, int k);
+char					*new_tkn(char *ol_tkn, t_command *cmd);
+
+//expander.c
+void					free_arr(char **split_arr);
+char					**ft_arrdup(char **arr);
+char					*exp_tkn(char *str, char **env);
+
+//expander_utils.c
+char					*check_key_value(char *key_value);
+
 //signals.c
 //void	ft_suppress_output(void);
 void	ft_sigs_handler(int sig);
 void	control_slash(int sig);
+
+//export.c
+char 					**exp_(t_hellmini shell);
+
+//export_utils.c
+char					*full_key_value(char *key_value);
+char					*check_key_value(char *key_value);
+char					**sort_export(char **key_value, char ** env_cpy, char **big_buff);
+void					print_env_vars(char *env_cpy);
+int						ft_strcmp_better(const char *s1, const char *s2);
+
+// int						alpha_cmp(char *str1, char *str2);
+void					alpha_sort(char **mtrx);
+char					**export_aux(char **key_value, char **env_cpy);
+int						ft_export(char **key_value, t_hellmini *shell);
+
+
 
 #endif

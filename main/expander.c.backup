@@ -68,3 +68,37 @@
 //     exp_tkn("$user", seashell.env);
 //     return 0;
 // }
+
+//expansion of all t_command cmd args(cmd name, flags && args, redirs (not yet implem.))
+void    the_expanse(t_command *cmd)
+{
+    int i;
+
+    i = 0;
+    cmd->command = new_tkn(cmd->command, cmd);
+    pfn("%2t testing %s", cmd->command);
+    while(cmd->arguments)
+    {
+        cmd->arguments[i] = new_tkn(cmd->arguments[i], cmd);
+        i++;
+    }
+    i = 0;
+    //while (cmd->red)
+    //{
+    //    cmd->red[i] = new_tkn(cmd->red[i], cmd);
+    //}
+    write(1, "YO DAWG, WE HEARD YOU LIKE EXPLOSIONS SO WE PUT SOME EXPLOSIONS IN YOUR EXPLOSION\n", 83);
+    i = 0;
+    printf("%s ", cmd->command);
+    while (cmd->arguments)
+    {
+        printf("%s", cmd->arguments[i]);
+        i++;
+    }
+    i = 0;
+    //while (cmd->red)
+    //{
+    //    printf("%s ", cmd->red[i]);
+    //    i++;
+    //}
+}

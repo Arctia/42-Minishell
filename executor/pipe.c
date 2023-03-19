@@ -12,20 +12,51 @@
 
 */
 
-void	ft_pipe(t_command *cmd)
+t_command	*ft_pipe_part_2(int **fd, t_command *cmd, int std_cpy_o, int *i)
 {
-	int		std_cpy[2];
-	int		fd[cmd->shell->mc_pipes][2];
-	pid_t		pid;
-	int			i = 0;
+	pipe(fd[*i]);
+	if(!fork())
+	{
+		close(fd[*i][0]);
+		if (cmd->spc[PIPE])
+		{
+			dup2(fd[*i][1], STDOUT_FILENO);
+			close(fd[*i][1]);
+		}
+		else
+		{
+			dup2(std_cpy_o, STDOUT_FILENO);
+			close(std_cpy_o);
+		}
+		ft_execv(cmd, 100, &cmd->shell->exit_status);
+		exit(1);
+	}
+	dup2(fd[*i][0], STDIN_FILENO);
+	close(fd[*i][0]);
+	close(fd[*i][1]);
+	cmd = cmd->next;
+	(*i)++;
+	return (cmd);
+}
 
-	std_cpy[0] = dup(0);	// input
-	std_cpy[1] = dup(1);	//	output
+void	ft_pipe_new(t_command *cmd)
+{
+	int	pid = 10;
+	int			std_cpy[2];
+	int			**fd;
+	int			i = -1;
+
+	std_cpy[0] = dup(0);
+	std_cpy[1] = dup(1);
+	fd = malloc(sizeof(int *) * cmd->shell->mc_pipes);
+	while(++i < 2)
+		fd[i] = ft_calloc(sizeof(int), PATH_MAX);
+	i = 0;
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
-		pipe(fd[i]);
-		pid = fork();
-		if(!pid)
+		cmd = ft_pipe_part_2(fd, cmd, std_cpy[1], &i);
+		/*pipe(fd[i]);
+		if(!fork())
 		{
 			close(fd[i][0]);
 			if (cmd->spc[PIPE])
@@ -44,8 +75,9 @@ void	ft_pipe(t_command *cmd)
 		dup2(fd[i][0], STDIN_FILENO);
 		close(fd[i][0]);
 		close(fd[i][1]);
+
 		cmd = cmd->next;
-		i++;
+		i++;*/
 	}
 	while (i > 0)
 	{
@@ -55,6 +87,110 @@ void	ft_pipe(t_command *cmd)
 	dup2(std_cpy[0], STDIN_FILENO);
 	close(std_cpy[0]);
 	close(std_cpy[1]);
+
+}
+
+
+//###############################################################################
+
+t_command	*ft_pipe_part_3(int **fd, t_command *cmd, int stdc[2], int *i)
+{
+	expander(cmd);
+	pipe(fd[*i]);
+	int fu = open(*cmd->red,
+			O_CREAT | O_RDWR, 0644);
+	if(!fork())
+	{
+		close(fd[*i][0]);
+		if (cmd->spc[PIPE])
+		{
+			dup2(fd[*i][1], STDOUT_FILENO);
+			close(fd[*i][1]);
+		}
+		else
+		{
+			dup2(stdc[1], STDOUT_FILENO);
+			close(stdc[1]);
+		}
+		if (cmd->spc[REDIN] || cmd->spc[REDOUT]
+			|| cmd->spc[REDAPP] || cmd->spc[HERDOC])
+			ft_redir_pipe(cmd);
+		if (cmd->spc[HERDOC])
+		{
+			dup2(fu,STDIN_FILENO);
+			close(fu);
+		}
+		ft_execv(cmd, 100, &cmd->shell->exit_status);
+		if (cmd->spc[REDIN])
+			dup2(stdc[1], STDOUT_FILENO);
+		dup2(stdc[0], STDIN_FILENO);
+		exit(1);
+	}
+	dup2(fd[*i][0], STDIN_FILENO);
+	close(fd[*i][0]);
+	close(fd[*i][1]);
+	cmd = cmd->next;
+	(*i)++;
+	return (cmd);
+}
+
+void	ft_pipe(t_command *cmd)
+{
+	int	pid = 10;
+	int			std_cpy[2];
+	int			**fd;
+	int			i;
+
+
+	i = 0;
+	fd = malloc(sizeof(int *) * (cmd->shell->mc_pipes + 1));
+	while (i < cmd->shell->mc_pipes + 1)
+		fd[i++] = ft_calloc(sizeof(int), 2);
+	i = 0;
+	std_cpy[0] = dup(0);
+	std_cpy[1] = dup(1);
+	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
+		cmd = ft_pipe_part_3(fd, cmd, std_cpy, &i);
+	while (i > 0)
+	{
+		waitpid(-1, 0, 0);
+		i--;
+	}
+	dup2(std_cpy[0], STDIN_FILENO);
+	close(std_cpy[0]);
+	close(std_cpy[1]);
+}
+
+
+
+
+
+
+
+
+//###############################################################################
+
+void	ft_dupandclose(int std_cpy[2], int **fd, int i, pid_t pid)
+{
+	// int		std_cpy[2];
+	if (i == 0)
+	{
+		std_cpy[0] = dup(0);	// input
+		std_cpy[1] = dup(1);	//	output
+		// return (std_cpy[2]);
+	}
+	else if (i == 1)
+	{
+		close(std_cpy[0]);
+		close(std_cpy[1]);
+	}
+	else if (pid != 0 && i == 2)
+	{
+		close(fd[i][0]);
+		close(fd[i][1]);
+	}
+	
+
 }
 
 /*

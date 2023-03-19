@@ -3,10 +3,12 @@ NAME=minishell
 
 CC=gcc
 
+
 FLAGS= -g #-Wall -Werror -Wextra
 
 INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h \
 		./glob.h
+
 
 SRCS =	./main/signals2_0.c \
 		./main/main.c \
@@ -32,26 +34,30 @@ SRCS =	./main/signals2_0.c \
 		./builtin/echo.c \
 		./builtin/env.c \
 		./builtin/pwd.c \
-		./builtin/exit.c
+		./builtin/exit.c \
+		./expander/export.c \
+		./expander/export_utils.c \
+		./expander/export_utils2.c
 
 READLINE_DIR = $(shell brew --prefix readline)
 
 READLINE_LIB = -lreadline -lhistory -L $(READLINE_DIR)/lib
 
 
-
 OBJS=$(SRCS:.c=.o)
 
+%.o:%.c $(INCS)
+		$(CC) $(FLAGS) -I$(READLINE)  -c $< -o $@
 %.o:%.c $(INCS)
 		$(CC) $(FLAGS) -I$(READLINE_DIR)/include  -c $< -o $@
 
 LIBFT=./libft/libft.a
 
-# READLINE = -L/usr/include -lreadline -L$(HOME)/.brew/opt/readline/lib \
-# 				-I$(HOME)/.brew/opt/readline/include
+ #READLINE = -L/usr/include -lreadline -L$(HOME)/.brew/opt/readline/lib \
+ 				-I$(HOME)/.brew/opt/readline/include
 
 $(NAME): $(OBJS) $(LIBFT)
-		$(CC) $(FLAGS) $(SRCS) $(LIBFT) $(READLINE_LIB) -o $(NAME) 
+		$(CC) $(FLAGS) $(SRCS) $(LIBFT) $(READLINE_LIB) -o $(NAME)
 #$(READLINE)
 
 $(LIBFT):

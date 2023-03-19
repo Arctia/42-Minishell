@@ -128,6 +128,7 @@ char	**ft_getpath(t_command *cmd)
 	facile per essere a norma e non avere leak
 */
 
+
 static char	*path_to_use(char **paths, t_command *cmd, int id)
 {
 	char	*path;

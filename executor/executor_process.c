@@ -4,7 +4,7 @@
 
 static void	print_free_close(char *str, int fd, DIR *dir, int err)
 {
-	ft_printf("%s\n[%d]\n", str, err);
+	set_ecode(err);
 	if (fd != -1)
 		close(fd);
 	if (dir)
@@ -72,7 +72,6 @@ void	execute_process(t_hellmini *shell, char *path, char **args)
 	int	errnoa;
 
 	errnoa = 0;
-	//if (path && ft_strchr(path, '/'))
 	signal(SIGINT, control_slash);
 	signal(SIGQUIT, control_slash);
 	if (execve(path, args, shell->env))

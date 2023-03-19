@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 16:02:29 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/16 11:25:01 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:09:17 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "./ft_printf/ft_printf.h"
 # include "./get_next_line/get_next_line.h"
 
-# define DEBUGGING 2
+# define DEBUGGING 0
 
 # define TRUE 1
 # define FALSE 0
