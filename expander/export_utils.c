@@ -16,7 +16,6 @@ char	*full_key_value(char *key_value)
 			tmp[j++] = '=';
 		else if (key_value[i] == '"')
 		{
-			tmp[j++] = '\\';
 			tmp[j++] = key_value[i];
 		}
 		else

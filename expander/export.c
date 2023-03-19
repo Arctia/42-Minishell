@@ -1,20 +1,5 @@
 #include "../global.h"
 
-void	ft_free_cmatrix(char **mtx)
-{
-	int	i;
-
-	i = -1;
-	if (mtx)
-	{
-		while (mtx[++i] && mtx[i][0])
-		{
-			free(mtx[i]);
-		}
-		free(mtx);
-	}
-}
-
 int	alpha_cmp(char **str1, char **str2)
 {
 	char	*tmp;
@@ -63,7 +48,7 @@ char	**export_aux(char **key_value, char **env_cpy)
 		;
 	while (env_cpy[k++])
 		;
-	big_buff = malloc((i + k + 1) * sizeof (char *));
+	big_buff = ft_calloc(sizeof(char *), i + k + 1);
 	big_buff = sort_export(key_value, env_cpy, big_buff);
 	write(1, "terminating\n", 13);
 	i = 0;
@@ -94,7 +79,8 @@ int	ft_export(char **key_value, t_hellmini *shell)
 		if (key_value[1] == NULL)
 		{
 			i = -1;
-			while (env_cpy[++i])
+			while (env_cpy[++i]
+					&& (!(env_cpy[i][0] == '_' && env_cpy[i][1] == '=')))
 			{
 				write(1, "declare -x ", 11);
 				print_env_vars(env_cpy[i]);

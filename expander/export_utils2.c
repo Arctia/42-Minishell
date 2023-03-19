@@ -32,26 +32,22 @@ void	print_env_vars(char *env_cpy)
 {
 	int		i;
 	int		k;
+	int		not_func;
 	char	tmp[4095];
 
 	i = -1;
 	k = -1;
+	not_func = 0;
 	while (env_cpy[++i])
 	{
-		if (env_cpy[i] == '=')
-		{
-			tmp[++k] = env_cpy[i];
+		if ( i > 0 && env_cpy[i - 1] == '=' && not_func++ >= 0)
 			tmp[++k] = '"';
-		}
 		else if (env_cpy[i] == '"')
-		{
 			tmp[++k] = '\\';
-			tmp[++k] = env_cpy[i];
-		}
-		else
-			tmp[++k] = env_cpy[i];
+		tmp[++k] = env_cpy[i];
 	}
-	tmp[++k] = '"';
+	if (not_func)
+		tmp[++k] = '"';
 	tmp[++k] = '\n';
 	tmp[++k] = '\0';
 	ft_putstr_fd(tmp, 1);
