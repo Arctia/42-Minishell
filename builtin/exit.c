@@ -63,7 +63,7 @@ int	ms_exit(t_command *cmd)
 	int	ret;
 
 	ret = 0;
-	while(cmd->arguments[ret])
+	while (cmd->arguments[ret])
 		ret++;
 	if (ret > 2)
 	{

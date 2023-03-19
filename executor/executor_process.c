@@ -5,6 +5,7 @@
 static void	print_free_close(char *str, int fd, DIR *dir, int err)
 {
 	set_ecode(err);
+	ft_printf("%s\n", str, err);
 	if (fd != -1)
 		close(fd);
 	if (dir)

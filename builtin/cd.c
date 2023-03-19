@@ -1,27 +1,43 @@
-
 #include "../global.h"
+
 /*##############################################################################
 ####	CD '-': 
 		 ° if '-' is the argument try to go to previous folder if stored
 		 	else write an error
 		 ° store in *pfc the executed code status
 ############################################################################*/
-static int	cd_prev_folder(t_hellmini *shell, char *arg, int *pfc)
+static void	write_old_path_in_env(t_command *cmd, char *path)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (cmd->shell->env[i] && ft_strrncmp(cmd->shell->env[i], "OLDPWD", 6))
+		i++;
+	tmp = ft_strdup("OLDPWD=");
+	tmp = ft_strjoin_free("OLDPWD=", path, 0, 1);
+	if (cmd->shell->env[i])
+		free(cmd->shell->env[i]);
+	cmd->shell->env[i] = tmp;
+}
+
+static int	cd_prev_folder(t_command *cmd, char *arg, int *pfc)
 {
 	char	*old_path;
 
-	old_path = exp_tkn("OLDPWD", shell->env);
+	old_path = exp_tkn("OLDPWD", cmd->shell->env);
 	if (arg[0] == '-' && arg[1] == '\0')
 	{
 		if (old_path == NULL)
 		{
-			pfn("bash: cd: OLDPWD not set");
+			ft_printf("bash: cd: OLDPWD not set\n");
 			*pfc = -1;
 		}
 		else
 		{
+			write_old_path_in_env(cmd, getcwd(NULL, 0));
 			chdir(old_path);
-			pfn("%s", old_path);
+			ft_printf("%s\n", old_path);
 			ft_free_ptr(old_path);
 			*pfc = 1;
 		}
@@ -40,12 +56,14 @@ static int	cd_prev_folder(t_hellmini *shell, char *arg, int *pfc)
 ############################################################################*/
 static int	cd_execute(t_command *cmd)
 {
-	int	error;
-	int	pfc;
+	char	*old_path;
+	int		error;
+	int		pfc;
 
 	pfc = 0;
 	error = -1;
-	if (cd_prev_folder(cmd->shell, cmd->arguments[1], &pfc) == 1)
+	old_path = getcwd(NULL, 0);
+	if (cd_prev_folder(cmd, cmd->arguments[1], &pfc) == 1)
 	{
 		if (pfc == -1)
 			return (1);
@@ -56,10 +74,10 @@ static int	cd_execute(t_command *cmd)
 	if (error)
 	{
 		set_ecode(1);
-		pfn("bash: cd: %s: Not a directory");
+		ft_printf("bash: cd: %s: Not a directory\n");
 		return (1);
 	}
-	pfn("CWD: %s", getcwd(NULL, 0));
+	write_old_path_in_env(cmd, old_path);
 	return (0);
 }
 
@@ -97,7 +115,7 @@ int	cd(t_command *cmd)
 	home = exp_tkn("HOME", cmd->shell->env);
 	if (cmd->arguments[1] && cmd->arguments[2])
 	{
-		pfn("bash: cd: too many arguments");
+		ft_printf("bash: cd: too many arguments\n");
 		return (1);
 	}
 	else if (!(cmd->arguments[1]))
