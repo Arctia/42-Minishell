@@ -156,11 +156,13 @@ char 					**exp_(t_hellmini shell);
 //export_utils.c
 char					*full_key_value(char *key_value);
 char					*check_key_value(char *key_value);
-void					sort_export(char **key_value, char ** env_cpy, char **big_buff);
+char					**sort_export(char **key_value, char ** env_cpy, char **big_buff);
 
 // int						alpha_cmp(char *str1, char *str2);
 void					alpha_sort(char **mtrx);
-void					export_aux(char **key_value, char **env_cpy);
+char					**export_aux(char **key_value, char **env_cpy);
 int						ft_export(char **key_value, t_hellmini *shell);
+
+
 
 #endif

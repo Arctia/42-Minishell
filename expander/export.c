@@ -94,7 +94,7 @@ void	alpha_sort(char **mtrx)
 }
 
 //stac4$$0 di norma
-void	export_aux(char **key_value, char **env_cpy)
+char	**export_aux(char **key_value, char **env_cpy)
 {
 	int	i;
 	int	k;
@@ -113,11 +113,17 @@ void	export_aux(char **key_value, char **env_cpy)
 	// k = 0;
 	// while (env_cpy[++i])
 	// 	big_buff[i] = ft_strdup(env_cpy[i]);
-	sort_export(key_value, env_cpy, big_buff);
+	big_buff = sort_export(key_value, env_cpy, big_buff);
 	write(1, "terminating\n", 13 );
-	big_buff[i++] = NULL;
+	i = 0;
+	while (big_buff[i])
+		i++;
+
+	big_buff[i] = NULL;
+	//ft_free_cmatrix(env_cpy);
+	ft_print_matrix(big_buff);
 	env_cpy = big_buff;
-	ft_free_cmatrix(big_buff);
+	return (env_cpy);
 }
 
 // //stac4$$0 di norma
@@ -165,23 +171,26 @@ int	ft_export(char **key_value, t_hellmini *shell)
 	int		k;
 	int		n;
 
-	i = -1;
 	k = 0;
 	n = -1;
 	env_cpy = ft_arrdup(shell->env);
-	if (key_value)
-		export_aux(key_value, shell->env);
-	i = -1;
-	alpha_sort(env_cpy);
-	shell->env = env_cpy;
-	if (key_value[1] == NULL)
+	if (key_value && key_value[1])
+		env_cpy = export_aux(key_value, shell->env);
+	else
 	{
-		i = -1;
-		while (env_cpy[++i])
-			printf("CIAO%s\n", env_cpy[i]);
+		alpha_sort(env_cpy);
+		if (key_value[1] == NULL)
+		{
+			i = -1;
+			while (env_cpy[++i])
+				printf("declare -x %s\n", env_cpy[i]);
+		}
 	}
+
+	ft_free_cmatrix(shell->env);
+	shell->env = env_cpy;
 	// shell->env = env_cpy;
-	ft_free_cmatrix(env_cpy);
+	//ft_free_cmatrix(env_cpy);
 	return (0);
 }
 // int	main(int argc,char** srgv,char**envp)

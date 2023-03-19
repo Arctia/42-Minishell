@@ -21,7 +21,7 @@ void	ft_print_matrix(char **mtx)
 	{
 		while (mtx[i])
 		{
-			pfn("element[%d]: %s", i, mtx[i]);
+			ft_printf("element[%d]: %s\n", i, mtx[i]);
 			i++;
 		}
 	}
