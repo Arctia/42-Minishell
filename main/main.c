@@ -21,17 +21,28 @@
 static char	*our_prompt(t_hellmini *shell, char *str)
 {
 	char	*buff;
+	char	*path;
+	char	*new_path;
 
+	path = exp_tkn("HOME", shell->env);
 	buff = ft_calloc(sizeof(char), 2);
 	buff[0] = '[';
 	buff = ft_strjoin_free(buff, ft_itoa(get_ecode()), 1, 1);
 	buff = ft_strjoin_free(buff, "] "BYEL, 1, 0);
 	buff = ft_strjoin_free(buff, exp_tkn("USER", shell->env), 1, 1);
-	buff = ft_strjoin_free(buff, WHITE"@", 1, 0);
 	buff = ft_strjoin_free(buff, PROMPT, 1, 0);
-	buff = ft_strjoin_free(buff, str, 1, 1);
-	buff = ft_strjoin_free(buff, "$ ", 1, 0);
-	buff = ft_strjoin_free(buff, WHITE, 1, 0);
+	
+	if (!ft_strncmp(str, path, ft_strlen(path)))
+	{
+		new_path = ft_strtrim(str, path);
+		buff = ft_strjoin_free(buff, "~/", 1, 0);
+		buff = ft_strjoin_free(buff, new_path, 1, 1);
+		free(str);
+	}
+	else
+		buff = ft_strjoin_free(buff, str, 1, 1);
+	free(path);
+	buff = ft_strjoin_free(buff, WHITE"$ ", 1, 0);
 	return (buff);
 }
 

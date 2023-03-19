@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 15:58:31 by vgavioli          #+#    #+#             */
-/*   Updated: 2022/02/05 12:07:51 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/19 14:56:44 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_strtrim(const char *s1, const char *set)
 	e = ft_strlen(s1);
 	while (e > s && removable(set, s1[e - 1]))
 		e--;
-	str = malloc(sizeof(char) * (e - s + 1));
+	str = ft_calloc(sizeof(char), e - s + 2);
 	if (!str)
 		return (NULL);
 	i = 0;
