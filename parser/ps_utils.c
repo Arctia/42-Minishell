@@ -58,7 +58,14 @@ int	items_in_string(char *str)
 	while (str[i])
 	{	
 		if (ft_isquote(str[i]))
+		{
 			i = i_after_quote(str, i, &in_word, &items_number);
+			if (!in_word)
+			{
+				in_word = 1;
+				items_number++;
+			}
+		}
 		else if (ft_isnotspace(str[i]) && in_word == 0)
 		{
 			items_number++;

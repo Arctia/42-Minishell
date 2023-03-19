@@ -9,6 +9,7 @@ static void	set_command_name(t_command *cmd)
 	int	i;
 
 	i = 0;
+	ft_print_matrix(cmd->arguments);
 	if (!(cmd->arguments && cmd->arguments[0]))
 	{
 		cmd->spc[NOCMD] = 1;

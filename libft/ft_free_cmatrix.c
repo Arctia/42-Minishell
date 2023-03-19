@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 20:02:14 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/15 08:19:29 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/19 14:25:57 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ void	ft_free_cmatrix(char **mtx)
 	if (mtx)
 	{
 		while (mtx[++i] && mtx[i][0])
-		{
-			//pfn("freeing mtx[%d] : p->%p s->%s", i, mtx[i], mtx[i]);
 			free(mtx[i]);
-		}
 		free(mtx);
 	}
 }
