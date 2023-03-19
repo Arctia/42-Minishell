@@ -15,6 +15,8 @@
 # include <sys/param.h>
 # include <sys/types.h>
 # include <errno.h>
+# include <sys/types.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -128,5 +130,6 @@ char					*split_line(char *line);
 //signals.c
 //void	ft_suppress_output(void);
 void	ft_sigs_handler(int sig);
+void	control_slash(int sig);
 
 #endif

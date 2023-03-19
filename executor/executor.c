@@ -107,8 +107,9 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 		execute_process(cmd->shell, path, cmd->arguments);
 	set_ecode(0);
 	signal(SIGINT, control_c_signal);
+	signal(SIGQUIT, control_c_signal);
 	waitpid(0, status, 0);
-	if (*status && get_ecode() != 130)
+	if (*status && get_ecode() != 130 && get_ecode() != 131)
 		set_ecode(127);
 	free(path);
 }

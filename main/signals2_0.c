@@ -22,10 +22,47 @@ void	ft_sigs_handler(int sig)
 	if (sig == SIGINT)
 	{
 		(void)sig;
+		set_ecode(130);
 		write(1, "\n", 1);
 		ft_suppress_output();
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	else if (sig == SIGQUIT)
+	{
+		ft_printf("Quit (core dumped)\n");
+		set_ecode(131);
+	}
+}
+
+void	control_c_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_printf("^C\n");
+		set_ecode(130);
+	}
+	else if (sig == SIGQUIT)
+	{
+		ft_printf("Quit (core dumped)\n");
+		set_ecode(131);
+	}
+	return ;
+}
+
+void	control_slash(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_printf("^C\n");
+		set_ecode(130);
+	}
+	else if (sig == SIGQUIT)
+	{
+		ft_printf("Quit (core dumped)\n");
+		set_ecode(131);
+		exit(131);
+	}
+	return ;
 }

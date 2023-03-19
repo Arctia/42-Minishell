@@ -44,9 +44,9 @@ static char	*our_prompt(t_hellmini *shell, char *str)
 
 static int	prompt_loop(t_hellmini *shell)
 {
-	signal(SIGQUIT, SIG_IGN);
 	while(TRUE)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ft_sigs_handler);
 		shell->input = readline(our_prompt(shell, getcwd(NULL, 0)));
 		if (!shell->input)
@@ -72,14 +72,6 @@ static int	prompt_loop(t_hellmini *shell)
 	clear_history();
 	free_shell(shell);
 	return (0);
-}
-
-void	control_c_signal(int sig)
-{
-	if (sig == SIGINT)
-		pfn("^C\n");
-	set_ecode(130);
-	return ;
 }
 
 int	main(int argc, char **argv, char **env)

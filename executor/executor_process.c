@@ -73,6 +73,8 @@ void	execute_process(t_hellmini *shell, char *path, char **args)
 
 	errnoa = 0;
 	//if (path && ft_strchr(path, '/'))
+	signal(SIGINT, control_slash);
+	signal(SIGQUIT, control_slash);
 	if (execve(path, args, shell->env))
 		errnoa = error_print(path, args[0]);
 	clear_history();
