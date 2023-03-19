@@ -157,6 +157,8 @@ char 					**exp_(t_hellmini shell);
 char					*full_key_value(char *key_value);
 char					*check_key_value(char *key_value);
 char					**sort_export(char **key_value, char ** env_cpy, char **big_buff);
+void					print_env_vars(char *env_cpy);
+int						ft_strcmp_better(const char *s1, const char *s2);
 
 // int						alpha_cmp(char *str1, char *str2);
 void					alpha_sort(char **mtrx);
