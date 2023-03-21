@@ -4,7 +4,6 @@
 ####	CD '-': 
 		 ° if '-' is the argument try to go to previous folder if stored
 		 	else write an error
-		 ° store in *pfc the executed code status
 ############################################################################*/
 static void	write_old_path_in_env(t_command *cmd, char *path)
 {
@@ -38,7 +37,7 @@ static int	cd_prev_folder(t_command *cmd, char *arg, int *pfc)
 	{
 		if (old_path == NULL)
 		{
-			ft_printf("bash: cd: OLDPWD not set\n");
+			ft_printf("minishell: cd: OLDPWD not set\n");
 			*pfc = -1;
 		}
 		else
@@ -58,9 +57,8 @@ static int	cd_prev_folder(t_command *cmd, char *arg, int *pfc)
 
 /*##############################################################################
 ####	CD execution: 
-		 ° if '-' is the argument go to previous fd stored in static pf
+		 ° if '-' is the argument go to previous fd stored in OLDPWD
 		 ° if error print no directory at path
-									 - remove last printf after implementation
 ############################################################################*/
 static int	cd_execute(t_command *cmd)
 {
@@ -82,7 +80,7 @@ static int	cd_execute(t_command *cmd)
 	if (error)
 	{
 		set_ecode(1);
-		ft_printf("bash: cd: %s: Not a directory\n", cmd->arguments[1]);
+		ft_printf("minishell: cd: %s: Not a directory\n", cmd->arguments[1]);
 		return (1);
 	}
 	write_old_path_in_env(cmd, old_path);
@@ -123,7 +121,7 @@ int	cd(t_command *cmd)
 	home = exp_tkn("HOME", cmd->shell->env);
 	if (cmd->arguments[1] && cmd->arguments[2])
 	{
-		ft_printf("bash: cd: too many arguments\n");
+		ft_printf("minishell: cd: too many arguments\n");
 		return (1);
 	}
 	else if (!(cmd->arguments[1]))
