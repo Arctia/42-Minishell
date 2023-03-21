@@ -91,85 +91,87 @@ typedef struct s_command
 }	t_command;
 
 // builtins
-int		redirector(t_command *cmd);
-int		unset(t_command *cmd);
-int		cd(t_command *cmd);
-int 	pwd(t_command *cmd);
-int		echo(t_command *cmd);
-int		env(t_command *cmd);
-int		ms_exit(t_command *cmd);
+int			redirector(t_command *cmd);
+int			unset(t_command *cmd);
+int			cd(t_command *cmd);
+int			pwd(t_command *cmd);
+int			echo(t_command *cmd);
+int			env(t_command *cmd);
+int			ms_exit(t_command *cmd);
 
 // expander/expander.c
-void	expander(t_command *cmd);
+void		expander(t_command *cmd);
 
 // expander/expander_utils.c
-char	*exp_tkn(char *str, char **env);
+char		*exp_tkn(char *str, char **env);
 
 // expander/expander_utils.c
-char	**ft_arrdup(char **arr);
+char		**ft_arrdup(char **arr);
 
 // main/init.c
-void					init_shell(t_hellmini *shell, char **env);
-t_command				*init_command(t_hellmini *shell);
-void					set_ecode(int code);
-void					control_c_signal(int sig);
+void		init_shell(t_hellmini *shell, char **env);
+t_command	*init_command(t_hellmini *shell);
+void		set_ecode(int code);
+void		control_c_signal(int sig);
 
 // main/free_structs.c
-void	free_commands(t_hellmini *shell);
-void	free_shell(t_hellmini *shell);
+void		free_commands(t_hellmini *shell);
+void		free_shell(t_hellmini *shell);
 
 // parser.c
-int		parser(t_hellmini *sh);
+int			parser(t_hellmini *sh);
 
 // lexer/lexer.c
-int		lexer_init(t_hellmini *shell);
+int			lexer_init(t_hellmini *shell);
+
 // lexer/lexer_splitter.c
-char					*split_operator(char *line, int *ff, int not_new);
-char					*split_line(char *line);
+char		*split_operator(char *line, int *ff, int not_new);
+char		*split_line(char *line);
 
 //tokenizer.c
-int						tkn_nbr(char *str);
-int 					ft_strchr_len(char *str, char c);
-t_command				* count_pqwq(t_command *command, char *str);
-void					the_expanse(t_command *cmd);
-char					**rip_and_tear(t_command *command, char *str);
+int			tkn_nbr(char *str);
+int 		ft_strchr_len(char *str, char c);
+t_command	* count_pqwq(t_command *command, char *str);
+void		the_expanse(t_command *cmd);
+char		**rip_and_tear(t_command *command, char *str);
 
 //expander_utils.c
-int						mini_sort(char *str);
-int						expansion_explosion(char *str, char tmp[4095], int *index, char **env);
-char					*new_tkn_aux(char *str, t_command cmd, int i, int k);
-char					*new_tkn(char *ol_tkn, t_command *cmd);
+int			mini_sort(char *str);
+int			expansion_explosion(char *str, char tmp[4095], int *index, char **env);
+char		*new_tkn_aux(char *str, t_command cmd, int i, int k);
+char		*new_tkn(char *ol_tkn, t_command *cmd);
 
 //expander.c
-void					free_arr(char **split_arr);
-char					**ft_arrdup(char **arr);
-char					*exp_tkn(char *str, char **env);
+void		free_arr(char **split_arr);
+char		**ft_arrdup(char **arr);
+char		*exp_tkn(char *str, char **env);
 
 //expander_utils.c
-char					*check_key_value(char *key_value);
+char		*check_key_value(char *key_value);
 
 //signals.c
 //void	ft_suppress_output(void);
-void	ft_sigs_handler(int sig);
-void	control_slash(int sig);
+void		ft_sigs_handler(int sig);
+void		control_slash(int sig);
 
 //export.c
-char 					**exp_(t_hellmini shell);
+char		**exp_(t_hellmini shell);
 
 //export_utils.c
-char					*full_key_value(char *key_value);
-char					*check_key_value(char *key_value);
-char					**sort_export(char **key_value, char ** env_cpy, char **big_buff);
-void					print_env_vars(char *env_cpy);
-int						ft_strcmp_better(const char *s1, const char *s2);
+char		*full_key_value(char *key_value);
+char		*check_key_value(char *key_value);
+char		**sort_export(char **key_value, char ** env_cpy, char **big_buff);
+void		print_env_vars(char *env_cpy);
+int			ft_strcmp_better(const char *s1, const char *s2);
 
-// int						alpha_cmp(char *str1, char *str2);
-void					alpha_sort(char **mtrx);
-char					**export_aux(char **key_value, char **env_cpy);
-int						ft_export(char **key_value, t_hellmini *shell);
+// int		alpha_cmp(char *str1, char *str2);
+void		alpha_sort(char **mtrx);
+char		**export_aux(char **key_value, char **env_cpy);
+int			ft_export(char **key_value, t_hellmini *shell);
 
 // export2.c
-char	**insert_values_env(char **args, char **env);
+void		add_string_to_env(t_hellmini *shell, char *str, char **env);
+char		**insert_values_env(char **args, char **env);
 
 
 #endif

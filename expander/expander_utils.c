@@ -88,7 +88,7 @@ char	*exp_tkn(char *str, char **env)
 		return (NULL);
 	while (env[i] && !((ft_strncmp(str, env[i], ft_strlen(str))) == 0))
 		i++;
-	if (!env[i])
+	if (!env[i] || !ft_strchr(env[i], '='))
 		return (NULL);
 	while (env[i][j] != '=')
 		j++;

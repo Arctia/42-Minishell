@@ -8,7 +8,6 @@
 static void	write_old_path_in_env(t_command *cmd, char *path)
 {
 	char	*cpath;
-	char	*tmp;
 	int		i;
 
 	i = 0;
@@ -19,13 +18,8 @@ static void	write_old_path_in_env(t_command *cmd, char *path)
 		ft_free_ptr(path);
 		return ;
 	}
-	while (cmd->shell->env[i] && ft_strrncmp(cmd->shell->env[i], "OLDPWD", 6))
-		i++;
-	tmp = ft_strdup("OLDPWD=");
-	tmp = ft_strjoin_free("OLDPWD=", path, 0, 1);
-	if (cmd->shell->env[i])
-		free(cmd->shell->env[i]);
-	cmd->shell->env[i] = tmp;
+	add_string_to_env(cmd->shell
+			, ft_strjoin_free("OLDPWD=", path, 0, 1), cmd->shell->env);
 }
 
 static int	cd_prev_folder(t_command *cmd, char *arg, int *pfc)
