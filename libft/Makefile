@@ -42,7 +42,8 @@ ft_printf/printers/printers.c get_next_line/get_next_line.c \
 get_next_line/get_next_line_utils.c \
 ft_pow.c ft_sqrt.c ft_module.c ft_isspace.c ft_isnotspace.c \
 ft_isquote.c ft_filliarrayto_n.c ft_isredirection.c ft_free_ptr.c \
-ft_arrdup.c ft_print_matrix.c ft_cmtxlen.c
+ft_arrdup.c ft_print_matrix.c ft_cmtxlen.c \
+ft_move_cptr.c
 
 ################################################################################
 # - Rules

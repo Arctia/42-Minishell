@@ -109,4 +109,10 @@ char	**ft_arrdup(char **arr);
 void	ft_print_matrix(char **mtx);
 size_t	ft_cmtxlen(char **mtx);
 
+// String Ptr Manipulation
+char	**ft_reset_cptr(char **str, int status);
+void	ft_move_n_cptr(char **str, size_t n);
+void	ft_move_cptr(char **str);
+void	ft_init_cptr(char **str);
+
 #endif
