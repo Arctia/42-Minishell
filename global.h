@@ -168,6 +168,8 @@ void					alpha_sort(char **mtrx);
 char					**export_aux(char **key_value, char **env_cpy);
 int						ft_export(char **key_value, t_hellmini *shell);
 
+// export2.c
+char	**insert_values_env(char **args, char **env);
 
 
 #endif

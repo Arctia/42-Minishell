@@ -43,18 +43,17 @@ char	**export_aux(char **key_value, char **env_cpy)
 
 	j = 0;
 	k = 0;
-	i = 0;
+	i = 1;
 	while (key_value[i++])
 		;
 	while (env_cpy[k++])
 		;
 	big_buff = ft_calloc(sizeof(char *), i + k + 1);
-	big_buff = sort_export(key_value, env_cpy, big_buff);
-	write(1, "terminating\n", 13);
-	i = 0;
-	while (big_buff[i])
-		i++;
-	big_buff[i] = NULL;
+	k = 0;
+	while (env_cpy[k++])
+		big_buff[k - 1] = ft_strdup(env_cpy[k - 1]);
+	big_buff = insert_values_env(key_value, big_buff);
+	//ft_free_cmatrix(env_cpy);
 	env_cpy = big_buff;
 	return (env_cpy);
 }
@@ -67,14 +66,12 @@ int	ft_export(char **key_value, t_hellmini *shell)
 {
 	char	**env_cpy;
 	int		i;
-	int		k;
 
-	k = 0;
-	env_cpy = ft_arrdup(shell->env);
 	if (key_value && key_value[1])
 		env_cpy = export_aux(key_value, shell->env);
 	else
 	{
+		env_cpy = ft_arrdup(shell->env);
 		alpha_sort(env_cpy);
 		if (key_value[1] == NULL)
 		{

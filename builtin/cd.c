@@ -35,15 +35,17 @@ static int	cd_prev_folder(t_command *cmd, char *arg, int *pfc)
 	old_path = exp_tkn("OLDPWD", cmd->shell->env);
 	if (arg[0] == '-' && arg[1] == '\0')
 	{
-		if (old_path == NULL)
-		{
+		if (old_path == NULL && (*pfc)-- >= 0)
 			ft_printf("minishell: cd: OLDPWD not set\n");
-			*pfc = -1;
-		}
 		else
 		{
 			write_old_path_in_env(cmd, getcwd(NULL, 0));
-			chdir(old_path);
+			if (chdir(old_path) && (*pfc)-- >= 0)
+			{
+				ft_printf("minishell: cd: %s: not a directory\n", old_path);
+				ft_free_ptr(old_path);
+				return (1);
+			}
 			ft_printf("%s\n", old_path);
 			ft_free_ptr(old_path);
 			*pfc = 1;
