@@ -114,6 +114,26 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	free(path);
 }
 
+int	shift_arguments(t_command *cmd, int i)
+{
+	while (i < cmd->args_number)
+	{
+		if (cmd->arguments[i] && !cmd->arguments[i][0] 
+				&& cmd->arguments[i + 1] && cmd->arguments[i + 1][0])
+		{
+			cmd->arguments[i] = cmd->arguments[i + 1];
+			cmd->arguments[i + 1] = NULL;
+			shift_arguments(cmd, 0);
+		}
+		i++;
+	}
+	if (!cmd->arguments || !cmd->arguments[0] || (!cmd->arguments[0][0]))
+		return (1);
+	free(cmd->command);
+	cmd->command = ft_strdup(cmd->arguments[0]);
+	return (0);
+}
+
 /*
 	***********************************************************
 					FT_EXECUTOR					
@@ -140,7 +160,7 @@ void	ft_executor(t_command *cmd)
 		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE] 
 				|| cmd->spc[CASH] || cmd->spc[TILDE])
 			expander(cmd);
-		if (!cmd->command || cmd->command[0] == '\0')
+		if (cmd->command && cmd->command[0] == '\0' && shift_arguments(cmd, 0))
 			return ;
 		pfn("%3t -----------------------------------------------------------");
 		pfn("%t running command: %s", cmd->str);

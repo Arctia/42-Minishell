@@ -17,6 +17,7 @@ t_command	*init_command(t_hellmini *shell)
 	while (i < 11)
 		cmd->spc[i++] = 0;
 	cmd->arguments = NULL;
+	cmd->args_number = 0;
 	cmd->red_type = NULL;
 	cmd->command = NULL;
 	cmd->tokens = NULL;

@@ -78,6 +78,7 @@ typedef struct s_command
 
 	char				*command;
 	char				**arguments;
+	int					args_number;
 
 	int					*red_type;
 	char				**red;

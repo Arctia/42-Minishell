@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:56:48 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/19 19:14:24 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/21 14:52:48 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	expander(t_command *cmd)
 		free(tmp);
 		i++;
 	}
+	cmd->args_number = i;
 	i = 0;
 	while (cmd->red && cmd->red[i] && cmd->red[i][0])
 	{
