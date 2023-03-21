@@ -8,10 +8,18 @@
 ############################################################################*/
 static void	write_old_path_in_env(t_command *cmd, char *path)
 {
+	char	*cpath;
 	char	*tmp;
 	int		i;
 
 	i = 0;
+	cpath = getcwd(NULL, 0);
+	if (ft_strcmp(path, cpath))
+	{
+		ft_free_ptr(cpath);
+		ft_free_ptr(path);
+		return ;
+	}
 	while (cmd->shell->env[i] && ft_strrncmp(cmd->shell->env[i], "OLDPWD", 6))
 		i++;
 	tmp = ft_strdup("OLDPWD=");
@@ -74,7 +82,7 @@ static int	cd_execute(t_command *cmd)
 	if (error)
 	{
 		set_ecode(1);
-		ft_printf("bash: cd: %s: Not a directory\n");
+		ft_printf("bash: cd: %s: Not a directory\n", cmd->arguments[1]);
 		return (1);
 	}
 	write_old_path_in_env(cmd, old_path);
