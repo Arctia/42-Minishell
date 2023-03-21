@@ -53,7 +53,6 @@ char	**export_aux(char **key_value, char **env_cpy)
 	while (env_cpy[k++])
 		big_buff[k - 1] = ft_strdup(env_cpy[k - 1]);
 	big_buff = insert_values_env(key_value, big_buff);
-	//ft_free_cmatrix(env_cpy);
 	env_cpy = big_buff;
 	return (env_cpy);
 }
