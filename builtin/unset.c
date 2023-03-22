@@ -54,6 +54,8 @@ int	unset(t_command *com)
 	i = 0;
 	j = 0;
 	lenght = ft_cmtxlen(com->shell->env);
+	if (ft_cmtxlen(com->arguments) == 1)
+		return (0);
 	new_env = envcpy_len(lenght, new_env);
 	if (ft_cmtxlen(com->arguments) > 1)
 	{

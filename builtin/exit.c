@@ -58,6 +58,14 @@ long long	ft_atoll(const char *str)
 	return (res * sign);
 }
 
+void	exit_without_arguments(t_hellmini *shell, int ret)
+{
+	if (ret > 1)
+		return ;
+	free_shell(shell);
+	exit(0);
+}
+
 int	ms_exit(t_command *cmd)
 {
 	int	ret;
@@ -65,22 +73,24 @@ int	ms_exit(t_command *cmd)
 	ret = 0;
 	while (cmd->arguments[ret])
 		ret++;
-	if (ret > 2)
+	ft_printf("exit\n");
+	exit_without_arguments(cmd->shell, ret);
+	if (check_exit_argument(cmd->arguments[1]) != 0)
 	{
-		printf("exit\nexit: too many arguments\n");
+		ft_printf("minishell: exit: %s: numeric argument required\n",
+			cmd->arguments[1]);
 		ret = 255;
 	}
-	else if (ret == 2 && (check_exit_argument(cmd->arguments[1]) != 0))
+	if (ret > 2)
 	{
-		pfn("exit\nexit: %s: numeric argument required", cmd->arguments[1]);
-		ret = 255;
+		ft_printf("minishell: exit: too many arguments\n");
+		return (2);
 	}
 	else if (ret == 2)
 	{
 		ret = ft_atoll(cmd->arguments[1]);
 		ret %= 256 + 256 * (ret < 0);
 	}
-	printf("exit\n");
 	free_shell(cmd->shell);
 	exit (ret);
 }

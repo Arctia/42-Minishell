@@ -35,8 +35,6 @@ int	echo(t_command *cmd)
 
 	n_flag = 0;
 	n = skip_arguments(cmd, &n_flag);
-	//while (cmd->arguments[++n] && !ft_strncmp(cmd->arguments[n], "-n", 3))
-	//	n_flag = 1;
 	while (cmd->arguments[n])
 	{
 		if (cmd->arguments[n + 1])

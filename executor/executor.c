@@ -109,8 +109,8 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	signal(SIGINT, control_c_signal);
 	signal(SIGQUIT, control_c_signal);
 	waitpid(0, status, 0);
-	if (*status && get_ecode() != 130 && get_ecode() != 131)
-		set_ecode(WIFEXITED(*status));
+	if (*status && get_ecode() != 130 && get_ecode() != 131 && WIFEXITED(*status))
+		set_ecode(WEXITSTATUS(*status));
 	free(path);
 }
 
