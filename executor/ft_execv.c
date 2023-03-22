@@ -83,6 +83,8 @@ char	*ft_findpath(t_command *cmd, int i)
 	while (paths && paths[i++])
 	{
 		dir = opendir(paths[i - 1]);
+		if (dir == NULL)
+			continue ;
 		entry = readdir(dir);
 		while (entry)
 		{

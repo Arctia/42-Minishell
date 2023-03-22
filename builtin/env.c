@@ -6,15 +6,32 @@ void	ft_putendl_fd(char *s, int fd)
 	ft_putchar_fd('\n', fd);
 }
 
-int	env(t_command *cmd)
+static int  ft_strchr_len(char *str, char c)
 {
-	int	i;
+  int  i;
 
-	i = 0;
-	while (cmd->shell->env[i])
-	{
-		ft_putendl_fd(cmd->shell->env[i], 1);
-		i++;
-	}
-	return (0);
+  i = 0;
+  while (str[i])
+  {
+    if (str[i] == c)
+      break ;
+    i++;
+  }
+  if (i >= (int) ft_strlen(str))
+    return (-1);
+  return (i);
+}
+
+int  env(t_command *cmd)
+{
+  int  i;
+
+  i = 0;
+  while (cmd->shell->env[i])
+  {
+    if (!(ft_strchr_len(cmd->shell->env[i], '=') == -1))
+      ft_putendl_fd(cmd->shell->env[i], 1);
+    i++;
+  }
+  return (0);
 }
