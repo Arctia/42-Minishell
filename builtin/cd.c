@@ -40,8 +40,8 @@ static int	cd_prev_folder(t_command *cmd, char *arg, int *pfc)
 				return (1);
 			}
 			ft_printf("%s\n", old_path);
-			ft_free_ptr(old_path);
 			*pfc = 1;
+			ft_free_ptr(old_path);
 		}
 		return (1);
 	}
