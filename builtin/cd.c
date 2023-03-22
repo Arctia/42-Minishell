@@ -16,6 +16,7 @@ static void	write_old_path_in_env(t_command *cmd, char *path)
 		ft_free_ptr(path);
 		return ;
 	}
+	ft_free_ptr(cpath);
 	add_string_to_env(cmd->shell,
 		ft_strjoin_free("OLDPWD=", path, 0, 1), cmd->shell->env);
 }
@@ -66,7 +67,10 @@ static int	cd_execute(t_command *cmd)
 	if (cd_prev_folder(cmd, cmd->arguments[1], &pfc) == 1)
 	{
 		if (pfc == -1)
+		{
+			free(old_path);
 			return (1);
+		}
 		error = 0;
 	}
 	else
@@ -74,6 +78,7 @@ static int	cd_execute(t_command *cmd)
 	if (error)
 	{
 		set_ecode(1);
+		free(old_path);
 		ft_printf("minishell: cd: %s: Not a directory\n", cmd->arguments[1]);
 		return (1);
 	}

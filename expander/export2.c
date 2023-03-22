@@ -66,7 +66,7 @@ void	add_string_to_env(t_hellmini *shell, char *str, char **env)
 	}
 	if (i >= (int) ft_cmtxlen(new_env))
 		new_env[i] = ft_strdup(str);
-	free(shell->env);
+	ft_free_cmatrix(shell->env);
 	shell->env = new_env;
 }
 
