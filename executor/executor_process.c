@@ -105,5 +105,3 @@ void	execute_process(t_hellmini *shell, char *path, char **args)
 	free(path);
 	exit(errnoa);
 }
-
-	// sata alla line 98 if (path && ft_strchr(path, '/'))
