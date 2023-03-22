@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_things_aside.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/06 14:39:20 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/15 21:52:39 by vgavioli         ###   ########.fr       */
+/*   Created: 2023/03/22 23:06:06 by mbardett          #+#    #+#             */
+/*   Updated: 2023/03/22 23:06:09 by mbardett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_cmatrix.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/27 20:02:14 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/19 14:25:57 by vgavioli         ###   ########.fr       */
+/*   Created: 2023/03/22 23:08:43 by mbardett          #+#    #+#             */
+/*   Updated: 2023/03/22 23:08:45 by mbardett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
