@@ -55,14 +55,10 @@ static int	cd_prev_folder(t_command *cmd, char *arg, int *pfc)
 		 ° if '-' is the argument go to previous fd stored in OLDPWD
 		 ° if error print no directory at path
 ############################################################################*/
-static int	cd_execute(t_command *cmd)
+static int	cd_execute(t_command *cmd, int pfc, int error)
 {
 	char	*old_path;
-	int		error;
-	int		pfc;
 
-	pfc = 0;
-	error = -1;
 	old_path = getcwd(NULL, 0);
 	if (cd_prev_folder(cmd, cmd->arguments[1], &pfc) == 1)
 	{
@@ -126,5 +122,5 @@ int	cd(t_command *cmd)
 	else if (!(cmd->arguments[1]))
 		cd_replace_null(cmd, home);
 	ft_free_ptr(home);
-	return (cd_execute(cmd));
+	return (cd_execute(cmd, 0, -1));
 }
