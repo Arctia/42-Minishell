@@ -42,8 +42,8 @@ void	ft_wait(int i);
 					redir.c
 	***********************************************************
 */
-void	ft_redin(t_command *cmd, int *stdout_cpy);
-void	ft_redout(t_command *cmd, int *stdout_cpy);
+void	ft_redin(t_command *cmd, int *stdin_cpy, int *stdout_cpy);
+void	ft_redout(t_command *cmd, int *stdin_cpy, int *stdout_cpy);
 void	ft_redappend(t_command *cmd, int *stdout_cpy);
 void	ft_heredoc(t_command *cmd, int *stdin_cpy);
 /*

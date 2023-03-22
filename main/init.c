@@ -20,6 +20,7 @@ t_command	*init_command(t_hellmini *shell)
 	cmd->args_number = 0;
 	cmd->red_type = NULL;
 	cmd->command = NULL;
+	cmd->red_error = 0;
 	cmd->tokens = NULL;
 	cmd->shell = shell;
 	cmd->next = NULL;

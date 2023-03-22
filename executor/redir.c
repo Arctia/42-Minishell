@@ -7,23 +7,32 @@
 					ft_redin	//	<
 	***********************************************************
 */
-void	ft_redin(t_command *cmd, int *stdin_cpy)
+void	ft_redin(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 {
 	int	fd;
 
+	
 	dup2(*stdin_cpy, STDIN_FILENO);
 	fd = open(*cmd->red, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: infile: No such file or directory\n",
-			STDERR_FILENO);
+//		ft_putstr_fd("minishell: infile: No such file or directory\n",
+//			STDERR_FILENO);
 		if (cmd->spc[PIPE])
 			exit(1);
 		else
-			return ;
+		{
+//			//exit(0);
+//			return;
+			cmd->red_error = 1;
+			set_ecode(1);
+		}
+//			dup2(*stdout_cpy, STDOUT_FILENO);
+//			close(*stdin_cpy);
 	}
 	if (fd > 0 && dup2(fd, STDIN_FILENO) < 0)
 	{
+		pfn("peppe");
 		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
 	}
 	if (fd > 0)
@@ -35,11 +44,14 @@ void	ft_redin(t_command *cmd, int *stdin_cpy)
 	***********************************************************
 */
 
-void	ft_redout(t_command *cmd, int *stdout_cpy)
+void	ft_redout(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 {
 	int	fd;
 
 	dup2(*stdout_cpy, STDOUT_FILENO);
+	if (cmd->red_error == 1)
+		close(*stdin_cpy);
+//		dup2(*stdin_cpy, STDIN_FILENO);
 	fd = open(*cmd->red,
 			O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)

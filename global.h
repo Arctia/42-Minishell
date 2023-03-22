@@ -89,6 +89,7 @@ typedef struct s_command
 
 	int					*red_type;
 	char				**red;
+	int					red_error;
 
 	struct s_command	*next;
 	struct s_command	*prev;

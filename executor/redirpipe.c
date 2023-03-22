@@ -18,12 +18,16 @@ int	ft_redir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 		cmd->red++;
 		cmd->red_type++;
 	}
-	cmd->red = redreset;
-	cmd->red_type = typereset;
-	ft_execv(cmd, &cmd->shell->exit_status);
+	if (cmd->red_error != 1)
+		ft_execv(cmd, &cmd->shell->exit_status);
+	else
+		ft_putstr_fd("minishell: infile: No such file or directory\n",
+			STDERR_FILENO);
 	if (cmd->red_type[0] != REDIN)
 		dup2(*stdout_cpy, STDOUT_FILENO);
 	dup2(*stdin_cpy, STDIN_FILENO);
+	cmd->red = redreset;
+	cmd->red_type = typereset;
 	close(*stdin_cpy);
 	close(*stdout_cpy);
 	return (0);
@@ -61,9 +65,9 @@ void	ft_chooseredir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 	if (cmd->red_type[0] == HERDOC)
 		ft_heredoc(cmd, stdin_cpy);
 	else if (cmd->red_type[0] == REDIN)
-		ft_redin(cmd, stdin_cpy);
+		ft_redin(cmd, stdin_cpy, stdout_cpy);
 	else if (cmd->red_type[0] == REDOUT)
-		ft_redout(cmd, stdout_cpy);
+		ft_redout(cmd, stdin_cpy, stdout_cpy);
 	else if (cmd->red_type[0] == REDAPP)
 		ft_redappend(cmd, stdout_cpy);
 }

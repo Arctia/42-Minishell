@@ -3,7 +3,7 @@ NAME=minishell
 
 CC=gcc
 
-FLAGS= -g -Wall -Werror -Wextra
+FLAGS= -g #-Wall -Werror -Wextra
 
 INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h \
 		./glob.h
