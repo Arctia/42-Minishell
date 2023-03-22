@@ -7,7 +7,7 @@
 					ft_redin	//	<
 	***********************************************************
 */
-void	ft_redin(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
+void	ft_redin(t_command *cmd, int *stdin_cpy)
 {
 	int	fd;
 

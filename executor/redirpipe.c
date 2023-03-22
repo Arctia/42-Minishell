@@ -65,7 +65,7 @@ void	ft_chooseredir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 	if (cmd->red_type[0] == HERDOC)
 		ft_heredoc(cmd, stdin_cpy);
 	else if (cmd->red_type[0] == REDIN)
-		ft_redin(cmd, stdin_cpy, stdout_cpy);
+		ft_redin(cmd, stdin_cpy);
 	else if (cmd->red_type[0] == REDOUT)
 		ft_redout(cmd, stdin_cpy, stdout_cpy);
 	else if (cmd->red_type[0] == REDAPP)
