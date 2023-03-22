@@ -10,6 +10,8 @@ void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i)
 	if (!((*str)[0] == '~' && ((*str)[1] == '/' || !((*str)[1]))))
 		return ;
 	home = exp_tkn("HOME", sh->env);
+	if (!home)
+		home = ft_calloc(sizeof(char), 1);
 	c = 0;
 	while (home[c])
 	{

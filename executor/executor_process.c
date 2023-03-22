@@ -1,7 +1,10 @@
-
 #include "executor.h"
 #include "../glob.h"
-
+/*
+	***********************************************************
+					print_free_close
+	***********************************************************
+*/
 static void	print_free_close(char *str, int fd, DIR *dir, int err)
 {
 	set_ecode(err);
@@ -12,6 +15,11 @@ static void	print_free_close(char *str, int fd, DIR *dir, int err)
 		closedir(dir);
 	free(str);
 }
+/*
+	***********************************************************
+					advanced_join
+	***********************************************************
+*/
 
 static char	*advanced_join(char *str, char *path, char *cmd_name)
 {
@@ -23,6 +31,11 @@ static char	*advanced_join(char *str, char *path, char *cmd_name)
 	}
 	return (ft_strjoin_free(str, path, 1, 0));
 }
+/*
+	***********************************************************
+					pen_paths
+	***********************************************************
+*/
 
 static DIR	*open_paths(char *path, int *fd)
 {
@@ -37,10 +50,15 @@ static DIR	*open_paths(char *path, int *fd)
 	}
 	return (dir);
 }
+/*
+	***********************************************************
+					error_print
+	***********************************************************
+	maybe we need to store the string in fd, that way when using pipes
+	it can print in recursive since errors are printed in an abdnormal
+	way.
+ */
 
-/* maybe we need to store the string in fd, that way when using pipes
-// it can print in recursive since errors are printed in an abdnormal
-// way. */
 static int	error_print(char *path, char *cmd_name)
 {
 	char	*str;
@@ -67,6 +85,11 @@ static int	error_print(char *path, char *cmd_name)
 	print_free_close(str, fd, dir, err);
 	return (err);
 }
+/*
+	***********************************************************
+					execute_process
+	***********************************************************
+*/
 
 void	execute_process(t_hellmini *shell, char *path, char **args)
 {
@@ -82,3 +105,5 @@ void	execute_process(t_hellmini *shell, char *path, char **args)
 	free(path);
 	exit(errnoa);
 }
+
+	// sata alla line 98 if (path && ft_strchr(path, '/'))

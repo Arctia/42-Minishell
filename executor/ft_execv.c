@@ -1,39 +1,4 @@
 #include "executor.h"
-
-/*
-	***********************************************************
-					FT_LISTTOMATRIX
-	***********************************************************
-	working
-	arg is allocated remember to free
-	there is both t_command both t_hellmini perchè pe testa non 
-	know how to do
-*/
-
-char	**ft_listtomatrix(t_command *cmd)
-{
-	char	**arg;
-	int		i;
-	int		j;
-
-	arg = NULL;
-	i = 1;
-	j = 0;
-	if (cmd->arguments)
-		while (cmd->arguments[j++])
-			i++;
-	arg = ft_calloc(sizeof(char *), i + 1);
-	if (!arg)
-		return (NULL);
-	arg[0] = ft_strdup(cmd->command);
-	i = 1;
-	j = -1;
-	while (cmd->arguments[++j])
-		arg[i++] = ft_strdup(cmd->arguments[j]);
-	arg[i++] = NULL;
-	return (arg);
-}
-
 /*
 	***********************************************************
 					FT_APPEND
@@ -72,40 +37,6 @@ char	*ft_append(char *path, t_command *cmd)
 	path da freeare
 */
 
-char	**ft_getpath_old(t_command *cmd, int i)
-{
-	char	**ritemp;
-	char	**path;
-	char	*temp;
-	char	cwd[MAXPATHLEN];
-
-	ritemp = NULL;
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		;
-	else
-		perror("getcwd() error");
-	while (cmd->shell->env[i])
-	{
-		if (ft_strncmp("PATH", cmd->shell->env[i], 4) == 0)
-		{
-			temp = ft_strtrim(cmd->shell->env[i], "PATH=");
-			if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
-				ritemp = ft_split(temp, ':');
-			else
-				path = ft_split(temp, ':');
-			free(temp);
-			break ;
-		}
-		i++;
-	}
-	if (ritemp)
-	{
-		path = ft_addlinetomatrix(ritemp, cwd);
-		free(ritemp);
-	}
-	return (path);
-}
-
 char	**ft_getpath(t_command *cmd)
 {
 	char	**paths;
@@ -121,11 +52,8 @@ char	**ft_getpath(t_command *cmd)
 
 /*
 	***********************************************************
-					FT_FINDPATH
+					FT_PATH_TO_USE
 	***********************************************************
-	working
-	la i passata è una porcata ma su due piedi era la cosa piu''
-	facile per essere a norma e non avere leak
 */
 
 
@@ -137,6 +65,14 @@ static char	*path_to_use(char **paths, t_command *cmd, int id)
 	ft_free_cmatrix(paths);
 	return (path);
 }
+/*
+	***********************************************************
+					FT_FINDPATH
+	***********************************************************
+	working
+	la i passata è una porcata ma su due piedi era la cosa piu''
+	facile per essere a norma e non avere leak
+*/
 
 char	*ft_findpath(t_command *cmd, int i)
 {
@@ -165,39 +101,57 @@ char	*ft_findpath(t_command *cmd, int i)
 		ft_free_cmatrix(paths);
 	return (NULL);
 }
-
 /*
 	***********************************************************
-					FT_ADDLINETOMATRIX
+					FT_FIXCOMMAND
 	***********************************************************
-	working
+
 */
 
-char	**ft_addlinetomatrix(char **arr, char *line)
+void	ft_fixcommand(t_command *cmd)
 {
-	char	**rtn;
-	size_t	i;
+	char	*temp;
+	char	*tmp;
 
-	i = 0;
-	while (arr[i] != NULL)
-		i++;
-	rtn = ft_calloc(sizeof(char *), i + 1 + 1);
-	if (!rtn)
-		return (NULL);
-	i = 0;
-	while (arr[i] != NULL)
+	if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
 	{
-		rtn[i] = ft_strdup(arr[i]);
-		if (rtn[i] == NULL)
-		{
-			ft_free_cmatrix(rtn);
-			return (rtn);
-		}
-		i++;
+		tmp = cmd->arguments[0];
+		temp = ft_strtrim(cmd->arguments[0], "./");
+		cmd->arguments[0] = temp;
+		free(tmp);
 	}
-	rtn[i] = ft_strdup(line);
-	i++;
-	rtn[i] = NULL;
-	ft_free_cmatrix(arr);
-	return (rtn);
 }
+
+// char	**ft_getpath_old(t_command *cmd, int i)
+// {
+// 	char	**ritemp;
+// 	char	**path;
+// 	char	*temp;
+// 	char	cwd[MAXPATHLEN];
+
+// 	ritemp = NULL;
+// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
+// 		;
+// 	else
+// 		perror("getcwd() error");
+// 	while (cmd->shell->env[i])
+// 	{
+// 		if (ft_strncmp("PATH", cmd->shell->env[i], 4) == 0)
+// 		{
+// 			temp = ft_strtrim(cmd->shell->env[i], "PATH=");
+// 			if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
+// 				ritemp = ft_split(temp, ':');
+// 			else
+// 				path = ft_split(temp, ':');
+// 			free(temp);
+// 			break ;
+// 		}
+// 		i++;
+// 	}
+// 	if (ritemp)
+// 	{
+// 		path = ft_addlinetomatrix(ritemp, cwd);
+// 		free(ritemp);
+// 	}
+// 	return (path);
+// }
