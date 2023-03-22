@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isredirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 08:51:22 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/14 08:51:32 by vgavioli         ###   ########.fr       */
+/*   Created: 2023/03/22 23:09:47 by mbardett          #+#    #+#             */
+/*   Updated: 2023/03/22 23:09:49 by mbardett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
