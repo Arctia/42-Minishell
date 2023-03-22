@@ -12,7 +12,9 @@ static int	prompt_loop(t_hellmini *shell)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ft_sigs_handler);
-		shell->input = readline(our_prompt(shell, getcwd(NULL, 0)));
+		char *aux = our_prompt(shell, getcwd(NULL, 0));
+		shell->input = readline(aux);
+		free(aux);
 		if (!shell->input)
 		{
 			write(1, "\rexit\n", 7);
@@ -26,6 +28,7 @@ static int	prompt_loop(t_hellmini *shell)
 				ft_executor(shell->current_cmd);
 		}
 		free_commands(shell);
+		free(shell->input);
 	}
 	clear_history();
 	free_shell(shell);
