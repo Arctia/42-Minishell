@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_matrix.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 08:37:14 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/15 08:39:58 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/22 00:45:18 by mmariani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_print_matrix(char **mtx)
 	{
 		while (mtx[i])
 		{
-			pfn("element[%d]: %s", i, mtx[i]);
+			ft_printf("element[%d]: %s", i, mtx[i]);
+			// pfn("element[%d]: %s", i, mtx[i]);
 			i++;
 		}
 	}

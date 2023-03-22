@@ -22,6 +22,7 @@ SRCS =	./main/signals2_0.c \
 		./executor/executor.c \
 		./executor/ft_execv.c \
 		./executor/pipe.c \
+		./executor/redirpipe.c \
 		./executor/redir.c \
 		./executor/executor_process.c \
 		./expander/expander.c \
