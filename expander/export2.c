@@ -23,7 +23,7 @@ static int	compare_values(char *entry, char *arg)
 		return (0);
 	else
 	{
-		if (ft_strchr(arg, '=') && arg[ft_strlen_tochar(arg, '=') + 1] != '\0')
+		if (ft_strchr(arg, '='))
 			return (1);
 		else
 			return (2);

@@ -46,6 +46,8 @@ void	print_env_vars(char *env_cpy)
 			tmp[++k] = '\\';
 		tmp[++k] = env_cpy[i];
 	}
+	if (tmp[k] == '=' && !env_cpy[i] && not_func++ >= 0)
+		tmp[++k] = '"';
 	if (not_func)
 		tmp[++k] = '"';
 	tmp[++k] = '\n';
