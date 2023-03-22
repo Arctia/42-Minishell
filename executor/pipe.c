@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 23:22:12 by mbardett          #+#    #+#             */
-/*   Updated: 2023/03/22 23:22:13 by mbardett         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "executor.h"
 /*
 	***********************************************************
@@ -27,8 +15,8 @@ void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid, int i)
 	fd = malloc(sizeof(int *) * (cmd->shell->mc_pipes + 1));
 	while (++i < cmd->shell->mc_pipes + 1)
 		fd[i] = ft_calloc(sizeof(int), 2);
-	i = -1;
-	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]) && ++i >= -5)
+	i = 0;
+	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
 		expander(cmd);
 		pipe(fd[i]);
@@ -40,8 +28,9 @@ void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid, int i)
 		close(fd[i][1]);
 		free(fd[i]);
 		cmd = cmd->next;
+		i++;
 	}
-	ft_wait(i, std_cpy);
+	ft_wait(i, &std_cpy[0], &std_cpy[1]);
 	cmd = reset;
 	free(fd);
 }
@@ -76,14 +65,14 @@ void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2])
 	***********************************************************
 */
 
-void	ft_wait(int i, int std_cpy[2])
+void	ft_wait(int i, int *stdin_cpy, int *stdout_cpy)
 {
 	while (i > 0)
 	{
 		waitpid(-1, 0, 0);
 		i--;
 	}
-	dup2(std_cpy[0], STDIN_FILENO);
-	close(std_cpy[0]);
-	close(std_cpy[1]);
+	dup2(*stdin_cpy, STDIN_FILENO);
+	close(*stdin_cpy);
+	close(*stdout_cpy);
 }

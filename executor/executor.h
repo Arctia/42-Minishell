@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 23:22:05 by mbardett          #+#    #+#             */
-/*   Updated: 2023/03/22 23:22:06 by mbardett         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
@@ -48,7 +36,7 @@ char	*ft_findpath(t_command *cmd, int i);
 */
 void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid, int i);
 void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2]);
-void	ft_wait(int i, int std_cpy[2]);
+void	ft_wait(int i, int *stdin_cpy, int *stdout_cpy);
 /*
 	***********************************************************
 					redir.c
