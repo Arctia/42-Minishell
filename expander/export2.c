@@ -58,7 +58,7 @@ void	add_string_to_env(t_hellmini *shell, char *str, char **env)
 		if (exist == 1)
 		{
 			free(new_env[i]);
-			new_env[i] = ft_strdup(str);
+			new_env[i] = str;
 		}
 		if (exist)
 			break ;
