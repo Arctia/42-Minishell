@@ -15,10 +15,10 @@ void	ft_redin(t_command *cmd, int *stdin_cpy)
 	fd = open(*cmd->red, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: infile: No such fiale or directory\n",
+		ft_putstr_fd("minishell: infile: No such file or directory\n",
 			STDERR_FILENO);
 		if (cmd->spc[PIPE])
-			exit(0);
+			exit(1);
 		else
 			return ;
 	}
@@ -45,12 +45,12 @@ void	ft_redout(t_command *cmd, int *stdout_cpy)
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
-		//  (EXIT_FAILURE);
+		set_ecode(1);
 	}
 	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
 	{
-		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
-		//  (EXIT_FAILURE);
+		ft_putstr_fd("minishell: dup2 Error\n", STDERR_FILENO);
+		set_ecode(1);
 	}		
 	if (fd > 0)
 		close(fd);
@@ -71,12 +71,12 @@ void	ft_redappend(t_command *cmd, int *stdout_cpy)
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
-		//  (EXIT_FAILURE);
+		set_ecode(1);
 	}
 	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
 	{
-		ft_putstr_fd("minishell: pipe Error\n", STDERR_FILENO);
-		//  (EXIT_FAILURE);
+		ft_putstr_fd("minishell: dup2 Error\n", STDERR_FILENO);
+		set_ecode(1);
 	}		
 	if (fd > 0)
 		close(fd);
