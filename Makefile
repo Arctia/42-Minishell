@@ -12,6 +12,7 @@ SRCS =	./main/signals2_0.c \
 		./main/main.c \
 		./main/free_structs.c \
 		./main/init.c \
+		./main/prompt.c \
 		./lexer/lexer.c \
 		./lexer/lexer_splitter.c \
 		./lexer/lexer_syntax.c \

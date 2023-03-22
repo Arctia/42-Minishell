@@ -20,6 +20,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+#define CYEL "\e[0;33m"
+#define CGRN "\e[0;32m"
+#define CBRED "\e[1;31m"
+#define CBGRN "\e[1;32m"
+#define CBYEL "\e[1;33m"
+#define CWHITE "\e[0m"
+
 //per far girare sigaction
 //#define _POSIX_C_SOURCE 199309L
 # define _POSIX_C_SOURCE 200809L
@@ -48,7 +55,7 @@
 # define ERR_DIR 126
 # define ERR_UNK 127
 
-# define PROMPT "\033[1;31m@minisHELL\033[0m:"BGRN
+# define PROMPT "\033[1;31m@minisHELL\033[0m:"CBGRN
 
 //per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
@@ -174,5 +181,7 @@ int			ft_export(char **key_value, t_hellmini *shell);
 void		add_string_to_env(t_hellmini *shell, char *str, char **env);
 char		**insert_values_env(char **args, char **env);
 
+// main/prompt.c
+char		*our_prompt(t_hellmini *shell, char *str);
 
 #endif
