@@ -25,7 +25,6 @@ t_command	*init_command(t_hellmini *shell)
 	cmd->next = NULL;
 	cmd->prev = NULL;
 	cmd->red = NULL;
-	cmd->ret = 0;
 	return (cmd);
 }
 

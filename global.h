@@ -20,12 +20,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-#define CYEL "\e[0;33m"
-#define CGRN "\e[0;32m"
-#define CBRED "\e[1;31m"
-#define CBGRN "\e[1;32m"
-#define CBYEL "\e[1;33m"
-#define CWHITE "\e[0m"
+# define CYEL "\e[0;33m"
+# define CGRN "\e[0;32m"
+# define CBRED "\e[1;31m"
+# define CBGRN "\e[1;32m"
+# define CBYEL "\e[1;33m"
+# define CWHITE "\e[0m"
 
 //per far girare sigaction
 //#define _POSIX_C_SOURCE 199309L
@@ -55,7 +55,7 @@
 # define ERR_DIR 126
 # define ERR_UNK 127
 
-# define PROMPT "\033[1;31m@minisHELL\033[0m:"CBGRN
+# define PROMPT "\033[1;31m@minisHELL\033[0m:\e[1;32m"
 
 //per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);
@@ -65,10 +65,10 @@ extern void	rl_replace_line(const char *text, int clear_undo);
 // Struct declarations --> Every array/matrix should be null terminated
 typedef struct s_hellmini
 {
-	char 				**env;
+	char				**env;
 
 	char				*input;
-	struct s_command 	*current_cmd;
+	struct s_command	*current_cmd;
 
 	int					exit_status;
 	int					mc_pipes;
@@ -90,12 +90,10 @@ typedef struct s_command
 	int					*red_type;
 	char				**red;
 
-	int		ret;
+	struct s_command	*next;
+	struct s_command	*prev;
 
-	struct s_command 	*next;
-	struct s_command 	*prev;
-
-	t_hellmini 			*shell;
+	t_hellmini			*shell;
 }	t_command;
 
 // builtins
@@ -135,19 +133,6 @@ int			lexer_init(t_hellmini *shell);
 // lexer/lexer_splitter.c
 char		*split_operator(char *line, int *ff, int not_new);
 char		*split_line(char *line);
-
-//tokenizer.c
-int			tkn_nbr(char *str);
-int 		ft_strchr_len(char *str, char c);
-t_command	* count_pqwq(t_command *command, char *str);
-void		the_expanse(t_command *cmd);
-char		**rip_and_tear(t_command *command, char *str);
-
-//expander_utils.c
-int			mini_sort(char *str);
-int			expansion_explosion(char *str, char tmp[4095], int *index, char **env);
-char		*new_tkn_aux(char *str, t_command cmd, int i, int k);
-char		*new_tkn(char *ol_tkn, t_command *cmd);
 
 //expander.c
 void		free_arr(char **split_arr);

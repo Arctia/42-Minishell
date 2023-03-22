@@ -1,13 +1,13 @@
 #include "../global.h"
 #include "../glob.h"
 
-static char *remove_home(char *str, char *home)
+static char	*remove_home(char *str, char *home)
 {
-	char 	*new;
+	char	*new;
 	int		i;
 	int		j;
 
-	new = ft_calloc(sizeof(char), ft_strlen(str)  - ft_strlen(home) + 2);
+	new = ft_calloc(sizeof(char), ft_strlen(str) - ft_strlen(home) + 2);
 	if (!new)
 		return (NULL);
 	i = 0;
