@@ -36,7 +36,8 @@ void	write_word(char *cnt, t_command *cmd)
 		}
 		else
 			cnt[i++] = cmd->str++[0];
-		if (ft_isspace(cmd->str[0]) || ft_isredirection(cmd->str[0]))
+		if (ft_isspace(cmd->str[0]) || ft_isredirection(cmd->str[0])
+			|| cmd->str[0] == '|')
 			break ;
 	}
 	cnt[i] = '\0';
