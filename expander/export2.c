@@ -24,8 +24,6 @@ static char	**allocate_and_copy_env(char **env)
 	return (new_env);
 }
 
-// return 1 if exists and needs to be replaced, 
-//			2 if exists but shouldn't be replaced.
 int	export_compare_values(char *entry, char *arg)
 {
 	if (ft_strlen_tochar(entry, '=') != ft_strlen_tochar(arg, '='))
