@@ -90,8 +90,6 @@ void	ft_executor(t_command *cmd)
 			expander(cmd);
 		if (cmd->command && cmd->command[0] == '\0' && shift_arguments(cmd, 0))
 			return ;
-		pfn("%3t -----------------------------------------------------------");
-		pfn("%t running command: %s", cmd->str);
 		if (!cmd->spc[PIPE] && (cmd->spc[REDIN] || cmd->spc[REDOUT]
 				|| cmd->spc[REDAPP] || cmd->spc[HERDOC]))
 		{

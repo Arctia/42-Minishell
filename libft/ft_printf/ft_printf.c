@@ -27,7 +27,6 @@ int	ft_printf(const char *str, ...)
 
 int	pfn(const char *str, ...)
 {
-	return 0;
 	char		*start;
 	char		*seg;
 	va_list		valist;

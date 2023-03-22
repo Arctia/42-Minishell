@@ -48,21 +48,6 @@ void	lexer_default(t_hellmini *shell, t_command *cmd, int not_new, int i)
 	}
 }
 
-void	print_commands(t_command *cmd)
-{
-	t_command	*tmp;
-	int			i;
-
-	tmp = cmd;
-	i = 0;
-	while (tmp && tmp != NULL)
-	{
-		pfnd("%d. %s", i, tmp->str);
-		tmp = tmp->next;
-		i++;
-	}
-}
-
 int	ms_isoperator(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
@@ -91,6 +76,5 @@ int	lexer_init(t_hellmini *shell)
 	if (!(shell->current_cmd))
 		return (-1);
 	lexer_default(shell, shell->current_cmd, 0, 0);
-	print_commands(shell->current_cmd);
 	return (0);
 }
