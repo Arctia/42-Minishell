@@ -7,7 +7,7 @@ int	check_exit_argument(char *com)
 	i = ft_strlen(com);
 	if (i > 19)
 		return (-1);
-	while (i >= 0)
+	while (com[i])
 	{
 		i--;
 		if (!(ft_isdigit(com[i])) && i > 0)

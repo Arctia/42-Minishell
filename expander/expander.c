@@ -18,7 +18,7 @@ static void	expand_dollar(t_hellmini *s, char buff[4095], char *(*str), int *i)
 	char	*var_val;
 	int		c;
 
-	if (expand_question(s, buff, str, i) == TRUE)
+	if (expand_question(buff, str, i) == TRUE)
 		return ;
 	var_name = get_string_to_expand(str);
 	if (!var_name)

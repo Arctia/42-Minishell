@@ -46,7 +46,6 @@ char	*our_prompt(t_hellmini *shell, char *str)
 	char	*buff;
 	char	*home_path;
 	char	*new_path;
-	char	*user;
 
 	home_path = exp_tkn("HOME", shell->env);
 	if (!home_path)

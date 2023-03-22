@@ -8,7 +8,7 @@
 					executor.c
 	***********************************************************
 */
-void	ft_execv(t_command *cmd, pid_t pid, int *status);
+void	ft_execv(t_command *cmd, int *status);
 void	ft_executor(t_command *parser);
 
 /*

@@ -55,8 +55,6 @@ char	**ft_getpath(t_command *cmd)
 					FT_PATH_TO_USE
 	***********************************************************
 */
-
-
 static char	*path_to_use(char **paths, t_command *cmd, int id)
 {
 	char	*path;
@@ -65,6 +63,7 @@ static char	*path_to_use(char **paths, t_command *cmd, int id)
 	ft_free_cmatrix(paths);
 	return (path);
 }
+
 /*
 	***********************************************************
 					FT_FINDPATH
@@ -73,7 +72,6 @@ static char	*path_to_use(char **paths, t_command *cmd, int id)
 	la i passata è una porcata ma su due piedi era la cosa piu''
 	facile per essere a norma e non avere leak
 */
-
 char	*ft_findpath(t_command *cmd, int i)
 {
 	DIR				*dir;

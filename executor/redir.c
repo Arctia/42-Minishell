@@ -1,5 +1,5 @@
 #include "executor.h"
-# define HEREDOC_MSG	"\033[1;97m> \033[0m"
+#define HEREDOC_MSG	"\033[1;97m> \033[0m"
 // # define HEREDOC_MSG	"\033[1;37m> \033[0m"
 
 /*

@@ -22,7 +22,7 @@ void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i)
 	ft_free_ptr(home);
 }
 
-int	expand_question(t_hellmini *sh, char buff[4095], char *(*str), int *i)
+int	expand_question(char buff[4095], char *(*str), int *i)
 {
 	char	*value;
 	int		c;

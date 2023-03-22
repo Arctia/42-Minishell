@@ -8,9 +8,7 @@
 static void	write_old_path_in_env(t_command *cmd, char *path)
 {
 	char	*cpath;
-	int		i;
 
-	i = 0;
 	cpath = getcwd(NULL, 0);
 	if (ft_strcmp(path, cpath))
 	{

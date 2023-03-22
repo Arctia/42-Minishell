@@ -102,10 +102,10 @@ typedef struct s_command
 int			redirector(t_command *cmd);
 int			unset(t_command *cmd);
 int			cd(t_command *cmd);
-int			pwd(t_command *cmd);
 int			echo(t_command *cmd);
 int			env(t_command *cmd);
 int			ms_exit(t_command *cmd);
+int			pwd(void);
 
 // expander/expander.c
 void		expander(t_command *cmd);
@@ -154,9 +154,6 @@ void		free_arr(char **split_arr);
 char		**ft_arrdup(char **arr);
 char		*exp_tkn(char *str, char **env);
 
-//expander_utils.c
-char		*check_key_value(char *key_value);
-
 //signals.c
 //void	ft_suppress_output(void);
 void		ft_sigs_handler(int sig);
@@ -166,9 +163,6 @@ void		control_slash(int sig);
 char		**exp_(t_hellmini shell);
 
 //export_utils.c
-char		*full_key_value(char *key_value);
-char		*check_key_value(char *key_value);
-char		**sort_export(char **key_value, char ** env_cpy, char **big_buff);
 void		print_env_vars(char *env_cpy);
 int			ft_strcmp_better(const char *s1, const char *s2);
 

@@ -12,7 +12,7 @@ int	redirector(t_command *com)
 	else if (ft_strcmp(command, "echo"))
 		return (echo(com));
 	else if (ft_strcmp(command, "pwd"))
-		return (pwd(com));
+		return (pwd());
 	else if (ft_strcmp(command, "env"))
 		return (env(com));
 	else if (ft_strcmp(command, "exit"))

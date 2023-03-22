@@ -1,6 +1,6 @@
 #include "../global.h"
 
-int	pwd(t_command *cmd)
+int	pwd(void)
 {
 	char	*pos;
 

@@ -38,10 +38,8 @@ char	**export_aux(char **key_value, char **env_cpy)
 {
 	int		i;
 	int		k;
-	int		j;
 	char	**big_buff;
 
-	j = 0;
 	k = 0;
 	i = 1;
 	while (key_value[i++])

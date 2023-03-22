@@ -3,7 +3,7 @@ NAME=minishell
 
 CC=gcc
 
-FLAGS= -g #-Wall -Werror -Wextra
+FLAGS= -g -Wall -Werror -Wextra
 
 INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h \
 		./glob.h
@@ -39,7 +39,6 @@ SRCS =	./main/signals2_0.c \
 		./expander/export.c \
 		./expander/export2.c \
 		./expander/export3.c \
-		./expander/export_utils.c \
 		./expander/export_utils2.c
 
 READLINE_DIR = $(shell brew --prefix readline)

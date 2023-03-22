@@ -1,6 +1,12 @@
 #include "executor.h"
 #include "../glob.h"
 
+static void	set_signals(void)
+{
+	signal(SIGINT, control_c_signal);
+	signal(SIGQUIT, control_c_signal);
+}
+
 /*
 	***********************************************************
 					FT_EXECV
@@ -9,7 +15,8 @@
 	l'ultimo else mi è un po' oscuro 
 	we have to decide if do the fork in ft execve or in executor
 */
-void	ft_execv(t_command *cmd, pid_t pid, int *status)
+
+void	ft_execv(t_command *cmd, int *status)
 {
 	char	*path;
 	int		ecode;
@@ -30,10 +37,10 @@ void	ft_execv(t_command *cmd, pid_t pid, int *status)
 	if (!fork())
 		execute_process(cmd->shell, path, cmd->arguments);
 	set_ecode(0);
-	signal(SIGINT, control_c_signal);
-	signal(SIGQUIT, control_c_signal);
+	set_signals();
 	waitpid(0, status, 0);
-	if (*status && get_ecode() != 130 && get_ecode() != 131 && WIFEXITED(*status))
+	if (*status && get_ecode() != 130
+		&& get_ecode() != 131 && WIFEXITED(*status))
 		set_ecode(WEXITSTATUS(*status));
 	free(path);
 }
@@ -42,7 +49,7 @@ int	shift_arguments(t_command *cmd, int i)
 {
 	while (i < cmd->args_number)
 	{
-		if (cmd->arguments[i] && !cmd->arguments[i][0] 
+		if (cmd->arguments[i] && !cmd->arguments[i][0]
 				&& cmd->arguments[i + 1] && cmd->arguments[i + 1][0])
 		{
 			cmd->arguments[i] = cmd->arguments[i + 1];
@@ -75,14 +82,12 @@ int	shift_arguments(t_command *cmd, int i)
 
 void	ft_executor(t_command *cmd)
 {
-	pid_t	pid;
 	int		std_cpy[2];
 
 	std_cpy[0] = dup(STDIN_FILENO);
 	std_cpy[1] = dup(STDOUT_FILENO);
-	pid = 111;
 	if (cmd->spc[PIPE])
-		ft_pipe(cmd, std_cpy, pid);
+		ft_pipe(cmd, std_cpy, 118);
 	else if (cmd)
 	{
 		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE]
@@ -96,6 +101,6 @@ void	ft_executor(t_command *cmd)
 			ft_redir(cmd, &std_cpy[0], &std_cpy[1]);
 			return ;
 		}
-		ft_execv(cmd, pid, &(cmd->shell->exit_status));
+		ft_execv(cmd, &(cmd->shell->exit_status));
 	}
 }

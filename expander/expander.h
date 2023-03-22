@@ -7,7 +7,7 @@
 void	expander(t_command *cmd);
 
 // expander_utils.c
-int		expand_question(t_hellmini *sh, char buff[4095], char *(*str), int *i);
+int		expand_question(char buff[4095], char *(*str), int *i);
 void	expand_tilde(t_hellmini *sh, char buff[4095], char *(*str), int *i);
 void	to_next_single_quote(char *(*str), char buff[4095], int *i);
 char	*get_string_to_expand(char *(*str));

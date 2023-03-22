@@ -28,9 +28,6 @@ static char	**allocate_and_copy_env(char **env)
 //			2 if exists but shouldn't be replaced.
 int	export_compare_values(char *entry, char *arg)
 {
-	int	e_size;
-	int	a_size;
-
 	if (ft_strlen_tochar(entry, '=') != ft_strlen_tochar(arg, '='))
 		return (0);
 	if (ft_strncmp(entry, arg, ft_strlen_tochar(arg, '=')))
@@ -67,7 +64,7 @@ void	add_string_to_env(t_hellmini *shell, char *str, char **env)
 			break ;
 		i++;
 	}
-	if (i >= ft_cmtxlen(new_env))
+	if (i >= (int) ft_cmtxlen(new_env))
 		new_env[i] = ft_strdup(str);
 	free(shell->env);
 	shell->env = new_env;
@@ -92,7 +89,7 @@ char	**insert_values_env(char **args, char **env)
 				break ;
 			j++;
 		}
-		if (j >= ft_cmtxlen(env))
+		if (j >= (int) ft_cmtxlen(env))
 			env[j] = ft_strdup(args[i]);
 		i++;
 	}

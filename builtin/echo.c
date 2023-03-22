@@ -31,7 +31,6 @@ int	echo(t_command *cmd)
 {
 	int		n_flag;
 	int		n;
-	int		i;
 
 	n_flag = 0;
 	n = skip_arguments(cmd, &n_flag);

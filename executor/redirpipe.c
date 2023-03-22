@@ -7,15 +7,13 @@
 */
 int	ft_redir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 {
-	pid_t	pid;
-
 	while (*cmd->red && cmd->red_type)
 	{
 		ft_chooseredir(cmd, stdin_cpy, stdout_cpy);
 		cmd->red++;
 		cmd->red_type++;
 	}
-	ft_execv(cmd, pid, &cmd->shell->exit_status);
+	ft_execv(cmd, &cmd->shell->exit_status);
 	if (cmd->red_type[0] != REDIN)
 		dup2(*stdout_cpy, STDOUT_FILENO);
 	dup2(*stdin_cpy, STDIN_FILENO);
@@ -31,7 +29,6 @@ int	ft_redir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 
 void	ft_redirpipe(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 {
-	pid_t	pid;
 	char	**redreset;
 	int		*typereset;
 
