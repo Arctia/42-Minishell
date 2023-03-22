@@ -116,7 +116,9 @@ void	ft_heredoc(t_command *cmd, int *stdin_cpy)
 		free(line);
 		line = readline(HEREDOC_MSG);
 	}
+	free(line);
 	dup2(end[0], STDIN_FILENO);
 	close(end[0]);
 	close(end[1]);
+
 }
