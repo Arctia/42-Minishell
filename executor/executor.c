@@ -87,7 +87,7 @@ void	ft_executor(t_command *cmd)
 	std_cpy[0] = dup(STDIN_FILENO);
 	std_cpy[1] = dup(STDOUT_FILENO);
 	if (cmd->spc[PIPE])
-		ft_pipe(cmd, std_cpy, 118);
+		ft_pipe(cmd, std_cpy, 118, -1);
 	else if (cmd)
 	{
 		if (cmd->spc[DQUOTE] || cmd->spc[SQUOTE] || cmd->spc[MQUOTE]

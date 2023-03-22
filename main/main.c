@@ -6,15 +6,25 @@
 //I think it's quite an appropriate name for the process of splitting and
 //tokenizing the input. And it's quite some badass music.
 //If you don't agree, feel free to go and f##k off :)
+static char	*prompt_part_2(t_hellmini *shell)
+{
+	char	*prompt;
+
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ft_sigs_handler);
+	prompt = our_prompt(shell, getcwd(NULL, 0));
+	return (prompt);
+}
+
 static int	prompt_loop(t_hellmini *shell)
 {
+	char	*prompt;
+
 	while (TRUE)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, ft_sigs_handler);
-		char *aux = our_prompt(shell, getcwd(NULL, 0));
-		shell->input = readline(aux);
-		free(aux);
+		prompt = prompt_part_2(shell);
+		shell->input = readline(prompt);
+		free(prompt);
 		if (!shell->input)
 		{
 			write(1, "\rexit\n", 7);

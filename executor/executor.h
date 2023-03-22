@@ -34,9 +34,9 @@ char	*ft_findpath(t_command *cmd, int i);
 					pipe.c
 	***********************************************************
 */
-void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid);
+void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid, int i);
 void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2]);
-void	ft_wait(int i);
+void	ft_wait(int i, int std_cpy[2]);
 /*
 	***********************************************************
 					redir.c
