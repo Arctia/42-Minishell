@@ -20,7 +20,7 @@ void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid)
 	i = 0;
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
-		// expander(cmd);
+		expander(cmd);
 		pipe(fd[i]);
 		pid = fork();
 		if (!pid)
@@ -61,7 +61,6 @@ void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2])
 	if (cmd->red_type != NULL)
 		ft_redirpipe(cmd, &std_cpy[0], &std_cpy[1]);
 	ft_execv(cmd, &cmd->shell->exit_status);
-	// free_shell(cmd->shell);
 	exit(1);
 }
 /*
