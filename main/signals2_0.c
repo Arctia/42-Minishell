@@ -44,18 +44,13 @@ void	ft_sigs_handler(int sig)
 	}
 }
 
+// do not print the error since it will be printed for every subshell
 void	control_c_signal(int sig)
 {
 	if (sig == SIGINT)
-	{
-		ft_printf("^C\n");
 		set_ecode(130);
-	}
 	else if (sig == SIGQUIT)
-	{
-		ft_printf("Quit (core dumped)\n");
 		set_ecode(131);
-	}
 	return ;
 }
 
