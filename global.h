@@ -177,9 +177,12 @@ void		alpha_sort(char **mtrx);
 char		**export_aux(char **key_value, char **env_cpy);
 int			ft_export(char **key_value, t_hellmini *shell);
 
-// export2.c
+// export.c export2.c export3.c
 void		add_string_to_env(t_hellmini *shell, char *str, char **env);
+void		val_env_part_2(int *exist, char **str, char *arg);
+int			export_compare_values(char *entry, char *arg);
 char		**insert_values_env(char **args, char **env);
+int			export_check_argument(char *str);
 
 // main/prompt.c
 char		*our_prompt(t_hellmini *shell, char *str);

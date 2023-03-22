@@ -10,9 +10,23 @@ static int	ft_strlen_tochar(const char *str, char c)
 	return (i);
 }
 
+static char	**allocate_and_copy_env(char **env)
+{
+	char	**new_env;
+	int		i;
+
+	new_env = ft_calloc(sizeof(char *), ft_cmtxlen(env) + 2);
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (env[i++])
+		new_env[i - 1] = ft_strdup(env[i - 1]);
+	return (new_env);
+}
+
 // return 1 if exists and needs to be replaced, 
 //			2 if exists but shouldn't be replaced.
-static int	compare_values(char *entry, char *arg)
+int	export_compare_values(char *entry, char *arg)
 {
 	int	e_size;
 	int	a_size;
@@ -31,20 +45,6 @@ static int	compare_values(char *entry, char *arg)
 	return (0);
 }
 
-static char	**allocate_and_copy_env(char **env)
-{
-	char	**new_env;
-	int		i;
-
-	new_env = ft_calloc(sizeof(char *), ft_cmtxlen(env) + 2);
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	while (env[i++])
-		new_env[i - 1] = ft_strdup(env[i - 1]);
-	return (new_env);
-}
-
 void	add_string_to_env(t_hellmini *shell, char *str, char **env)
 {
 	char	**new_env;
@@ -57,7 +57,7 @@ void	add_string_to_env(t_hellmini *shell, char *str, char **env)
 	i = 0;
 	while (new_env[i])
 	{
-		exist = compare_values(new_env[i], str);
+		exist = export_compare_values(new_env[i], str);
 		if (exist == 1)
 		{
 			free(new_env[i]);
@@ -82,15 +82,12 @@ char	**insert_values_env(char **args, char **env)
 	i = 1;
 	while (args[i])
 	{
+		if (export_check_argument(args[i]) && i++ >= 0)
+			continue ;
 		j = 0;
 		while (env[j])
 		{
-			exist = compare_values(env[j], args[i]);
-			if (exist == 1)
-			{
-				free(env[j]);
-				env[j] = ft_strdup(args[i]);
-			}
+			val_env_part_2(&exist, &env[j], args[i]);
 			if (exist)
 				break ;
 			j++;
