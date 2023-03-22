@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_process.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 23:21:57 by mbardett          #+#    #+#             */
-/*   Updated: 2023/03/22 23:21:58 by mbardett         ###   ########.fr       */
+/*   Created: 2023/03/22 23:54:45 by mmariani          #+#    #+#             */
+/*   Updated: 2023/03/22 23:54:49 by mmariani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

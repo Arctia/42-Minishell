@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:22:09 by mbardett          #+#    #+#             */
-/*   Updated: 2023/03/22 23:22:10 by mbardett         ###   ########.fr       */
+/*   Updated: 2023/03/22 23:51:55 by mmariani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,7 @@ char	*ft_findpath(t_command *cmd, int i)
 		}
 		closedir(dir);
 	}
-	if (paths)
-		ft_free_cmatrix(paths);
+	ft_free_cmatrix(paths);
 	return (NULL);
 }
 /*
@@ -133,37 +132,3 @@ void	ft_fixcommand(t_command *cmd)
 		free(tmp);
 	}
 }
-
-// char	**ft_getpath_old(t_command *cmd, int i)
-// {
-// 	char	**ritemp;
-// 	char	**path;
-// 	char	*temp;
-// 	char	cwd[MAXPATHLEN];
-
-// 	ritemp = NULL;
-// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-// 		;
-// 	else
-// 		perror("getcwd() error");
-// 	while (cmd->shell->env[i])
-// 	{
-// 		if (ft_strncmp("PATH", cmd->shell->env[i], 4) == 0)
-// 		{
-// 			temp = ft_strtrim(cmd->shell->env[i], "PATH=");
-// 			if (ft_strncmp("./", cmd->arguments[0], 2) == 0)
-// 				ritemp = ft_split(temp, ':');
-// 			else
-// 				path = ft_split(temp, ':');
-// 			free(temp);
-// 			break ;
-// 		}
-// 		i++;
-// 	}
-// 	if (ritemp)
-// 	{
-// 		path = ft_addlinetomatrix(ritemp, cwd);
-// 		free(ritemp);
-// 	}
-// 	return (path);
-// }
