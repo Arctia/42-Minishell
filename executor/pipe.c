@@ -8,9 +8,11 @@
 
 void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid)
 {
-	int		**fd;
-	int		i;
+	int			**fd;
+	int			i;
+	t_command	*reset;
 
+	reset = cmd;
 	i = -1;
 	fd = malloc(sizeof(int *) * (cmd->shell->mc_pipes + 1));
 	while (++i < cmd->shell->mc_pipes + 1)
@@ -18,7 +20,7 @@ void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid)
 	i = 0;
 	while (cmd && (cmd->spc[PIPE] || cmd->prev->spc[PIPE]))
 	{
-		expander(cmd);
+		// expander(cmd);
 		pipe(fd[i]);
 		pid = fork();
 		if (!pid)
@@ -26,6 +28,7 @@ void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid)
 		dup2(fd[i][0], STDIN_FILENO);
 		close(fd[i][0]);
 		close(fd[i][1]);
+		free(fd[i]);
 		cmd = cmd->next;
 		i++;
 	}
@@ -33,6 +36,8 @@ void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid)
 	dup2(std_cpy[0], STDIN_FILENO);
 	close(std_cpy[0]);
 	close(std_cpy[1]);
+	cmd = reset;
+	free(fd);
 }
 /*
 	***********************************************************
@@ -56,6 +61,7 @@ void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2])
 	if (cmd->red_type != NULL)
 		ft_redirpipe(cmd, &std_cpy[0], &std_cpy[1]);
 	ft_execv(cmd, &cmd->shell->exit_status);
+	// free_shell(cmd->shell);
 	exit(1);
 }
 /*
