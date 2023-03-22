@@ -24,9 +24,9 @@ int	export_check_argument(char *str)
 void	val_env_part_2(int *exist, char **str, char *arg)
 {
 	*exist = export_compare_values(*str, arg);
-	if (*exist)
+	if (*exist == 1)
 	{
-		free(str);
+		free(*str);
 		(*str) = ft_strdup(arg);
 	}
 }
