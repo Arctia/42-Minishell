@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_duplicated_x_element.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 23:08:13 by mbardett          #+#    #+#             */
-/*   Updated: 2023/03/22 23:08:15 by mbardett         ###   ########.fr       */
+/*   Created: 2023/03/22 23:08:13 by vgavioli          #+#    #+#             */
+/*   Updated: 2023/03/23 11:10:20 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

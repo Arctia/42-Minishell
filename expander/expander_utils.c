@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 23:21:11 by mbardett          #+#    #+#             */
-/*   Updated: 2023/03/22 23:21:12 by mbardett         ###   ########.fr       */
+/*   Created: 2023/03/22 23:21:11 by vgavioli          #+#    #+#             */
+/*   Updated: 2023/03/23 11:10:35 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

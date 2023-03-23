@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <mbardett@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 23:06:34 by mbardett          #+#    #+#             */
-/*   Updated: 2023/03/22 23:06:36 by mbardett         ###   ########.fr       */
+/*   Created: 2023/03/22 23:06:34 by vgavioli          #+#    #+#             */
+/*   Updated: 2023/03/23 10:46:57 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
