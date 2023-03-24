@@ -53,21 +53,28 @@ static void	cycle_redirections(t_command *cmd, int *stdin, int *stdout)
 	}
 }
 
-void	exec_redir(t_command *cmd, int *stdin, int *stdout, int pipe)
+void	exec_redir(t_command *cmd, int *stdin, int *stdout)
 {
 	cycle_redirections(cmd, stdin, stdout);
-	if (pipe)
-	{
-		if (cmd->red_error == -1)
-			ft_execv(cmd, &cmd->shell->exit_status);
-		else
-			stamp_no_file_error(cmd->red[cmd->red_error]);
-	}
-	else if (cmd->red_error != -1)
+	if (cmd->red_error == -1)
+		ft_execv(cmd, &cmd->shell->exit_status);
+	else
 		stamp_no_file_error(cmd->red[cmd->red_error]);
 	if (last_redir(cmd, 1) > -1)
 		dup2(*stdout, STDOUT_FILENO);
 	dup2(*stdin, STDIN_FILENO);
 	close(*stdin);
 	close(*stdout);
+}
+
+void	exec_redir_pipe(t_command *cmd, int *stdin, int *stdout)
+{
+	cycle_redirections(cmd, stdin, stdout);
+	if (cmd->red_error != -1)
+		stamp_no_file_error(cmd->red[cmd->red_error]);
+	//if (last_redir(cmd, 1) > -1)
+		//dup2(*stdout, STDOUT_FILENO);
+	//dup2(*stdin, STDIN_FILENO);
+	//close(*stdin);
+	//close(*stdout);
 }

@@ -179,7 +179,8 @@ int			export_check_argument(char *str);
 
 // main/prompt.c
 char		*our_prompt(t_hellmini *shell, char *str);
-void		exec_redir(t_command *cmd, int *stdin, int *stdout, int pipe);
+void		exec_redir_pipe(t_command *cmd, int *stdin, int *stdout);
+void		exec_redir(t_command *cmd, int *stdin, int *stdout);
 
 void		ft_execv(t_command *cmd, int *status);
 void		stamp_no_file_error(char *file);

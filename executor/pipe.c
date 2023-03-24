@@ -66,14 +66,10 @@ void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2])
 		dup2(std_cpy[1], STDOUT_FILENO);
 		close(std_cpy[1]);
 	}
-	if (cmd->red_type != NULL)
-		exec_redir(cmd, &std_cpy[0], &std_cpy[1], 1);
-		//ft_redirpipe(cmd, &std_cpy[0], &std_cpy[1]);
-	// if error reading file give an error
-	if (cmd->red_error != -1)
+	if (cmd->red_type)
+		exec_redir_pipe(cmd, &fd[*i][0], &fd[*i][1]);
+	if (cmd->red_error == -1)
 		ft_execv(cmd, &cmd->shell->exit_status);
-	else
-		stamp_no_file_error(cmd->red[cmd->red_error]);
 	exit(1);
 }
 /*

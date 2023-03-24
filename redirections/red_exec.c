@@ -10,13 +10,8 @@ void	red_in(t_command *cmd, t_redir red, int *stdin)
 	fd = open(cmd->red[red.n], O_RDONLY);
 	if (fd < 0)
 	{
-		if (cmd->spc[PIPE])
-			exit(1);
-		else
-		{
-			cmd->red_error = red.n;
-			set_ecode(1);
-		}
+		cmd->red_error = red.n;
+		set_ecode(1);
 	}
 	if (fd > 0 && red.n == red.lin && dup2(fd, STDIN_FILENO) < 0)
 		ft_putstr_fd("minishell: dup2 Error\n", STDERR_FILENO);

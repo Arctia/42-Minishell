@@ -13,7 +13,8 @@ typedef struct s_redir
 }	t_redir;
 
 // redirection.c
-void	exec_redir(t_command *cmd, int *stdin, int *stdout, int pipe);
+void	exec_redir_pipe(t_command *cmd, int *stdin, int *stdout);
+void	exec_redir(t_command *cmd, int *stdin, int *stdout);
 
 // red_exec.c
 void	red_append(t_command *cmd, t_redir red, int *stdin, int *stdout);
