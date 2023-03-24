@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:49:35 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/23 10:46:23 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/24 07:20:16 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_pipe(t_command *cmd, int std_cpy[2], pid_t pid, int i)
 	}
 	ft_wait(i, &std_cpy[0], &std_cpy[1]);
 	cmd = reset;
-	free(fd);
+	ft_free_ptr(fd);
 }
 
 /*

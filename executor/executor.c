@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:55:29 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/23 10:46:18 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/24 07:48:17 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_execv(t_command *cmd, int *status)
 	if (*status && get_ecode() != 130
 		&& get_ecode() != 131 && WIFEXITED(*status))
 		set_ecode(WEXITSTATUS(*status));
-	free(path);
+	ft_free_ptr(path);
 }
 
 int	shift_arguments(t_command *cmd, int i)
@@ -74,6 +74,28 @@ int	shift_arguments(t_command *cmd, int i)
 		return (1);
 	free(cmd->command);
 	cmd->command = ft_strdup(cmd->arguments[0]);
+	return (0);
+}
+
+static int	command_not_found(t_command *cmd, int std_cpy[2])
+{
+	char	*path;
+
+	if (cmd->command && ft_strchr(cmd->command, '/'))
+		path = ft_strdup(cmd->command);
+	else if (cmd->command)
+		path = ft_findpath(cmd, 0);
+	else
+		path = NULL;
+	if (!path)
+	{
+		close(std_cpy[0]);
+		close(std_cpy[1]);
+		set_ecode(127);
+		pfn("bash: %s: command not found", cmd->command);
+		return (1);
+	}
+	ft_free_ptr(path);
 	return (0);
 }
 
@@ -106,6 +128,8 @@ void	ft_executor(t_command *cmd)
 			|| cmd->spc[CASH] || cmd->spc[TILDE])
 			expander(cmd);
 		if (cmd->command && cmd->command[0] == '\0' && shift_arguments(cmd, 0))
+			return ;
+		if (cmd->command && redirector(cmd) == -1 && command_not_found(cmd, std_cpy))
 			return ;
 		if (!cmd->spc[PIPE] && (cmd->spc[REDIN] || cmd->spc[REDOUT]
 				|| cmd->spc[REDAPP] || cmd->spc[HERDOC]))

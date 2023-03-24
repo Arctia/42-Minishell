@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:55:52 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/23 10:46:21 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/03/24 07:55:50 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	ft_redirpipe(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 
 void	ft_chooseredir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 {
+	// first cycle trough in and Here doc
 	if (cmd->red_type[0] == HERDOC)
 		ft_heredoc(cmd, stdin_cpy);
 	else if (cmd->red_type[0] == REDIN)
