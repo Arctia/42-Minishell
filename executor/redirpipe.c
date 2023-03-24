@@ -19,7 +19,7 @@
 */
 int	ft_redir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 {
-	char	**redreset;
+	/*char	**redreset;
 	int		*typereset;
 
 	redreset = cmd->red;
@@ -29,7 +29,7 @@ int	ft_redir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 		ft_chooseredir(cmd, stdin_cpy, stdout_cpy);
 		cmd->red++;
 		cmd->red_type++;
-	}
+	}*/
 	if (cmd->red_error != 1)
 		ft_execv(cmd, &cmd->shell->exit_status);
 	else
@@ -38,8 +38,8 @@ int	ft_redir(t_command *cmd, int *stdin_cpy, int *stdout_cpy)
 	if (cmd->red_type[0] != REDIN)
 		dup2(*stdout_cpy, STDOUT_FILENO);
 	dup2(*stdin_cpy, STDIN_FILENO);
-	cmd->red = redreset;
-	cmd->red_type = typereset;
+	//cmd->red = redreset;
+	//cmd->red_type = typereset;
 	close(*stdin_cpy);
 	close(*stdout_cpy);
 	return (0);

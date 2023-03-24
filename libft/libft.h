@@ -108,6 +108,7 @@ void	ft_free_ptr(void *ptr);
 char	**ft_arrdup(char **arr);
 void	ft_print_matrix(char **mtx);
 size_t	ft_cmtxlen(char **mtx);
+size_t	ft_arrlen(int *array);
 
 // String Ptr Manipulation
 char	**ft_reset_cptr(char **str, int status);

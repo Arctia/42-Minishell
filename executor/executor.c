@@ -135,7 +135,7 @@ void	ft_executor(t_command *cmd)
 		if (!cmd->spc[PIPE] && (cmd->spc[REDIN] || cmd->spc[REDOUT]
 				|| cmd->spc[REDAPP] || cmd->spc[HERDOC]))
 		{
-			ft_redir(cmd, &std_cpy[0], &std_cpy[1]);
+			exec_redir(cmd, &std_cpy[0], &std_cpy[1]);
 			return ;
 		}
 		ft_execv(cmd, &(cmd->shell->exit_status));

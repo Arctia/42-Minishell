@@ -6,7 +6,7 @@ CC=gcc
 FLAGS= -g -Wall -Werror -Wextra
 
 INCS = ./global.h ./executor/executor.h ./parser/parser.h ./lexer/lexer.h \
-		./glob.h
+		./glob.h ./redirections/redirection.h
 
 SRCS =	./main/signals2_0.c \
 		./main/main.c \
@@ -39,7 +39,9 @@ SRCS =	./main/signals2_0.c \
 		./expander/export.c \
 		./expander/export2.c \
 		./expander/export3.c \
-		./expander/export_utils2.c
+		./expander/export_utils2.c \
+		./redirections/red_exec.c \
+		./redirections/redirection.c
 
 READLINE_DIR = $(shell brew --prefix readline)
 
