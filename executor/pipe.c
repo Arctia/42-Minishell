@@ -69,7 +69,11 @@ void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2])
 	if (cmd->red_type != NULL)
 		exec_redir(cmd, &std_cpy[0], &std_cpy[1], 1);
 		//ft_redirpipe(cmd, &std_cpy[0], &std_cpy[1]);
-	ft_execv(cmd, &cmd->shell->exit_status);
+	// if error reading file give an error
+	if (cmd->red_error != -1)
+		ft_execv(cmd, &cmd->shell->exit_status);
+	else
+		stamp_no_file_error(cmd->red[cmd->red_error]);
 	exit(1);
 }
 /*

@@ -20,7 +20,7 @@ static int	last_redir(t_command *cmd, int type)
 	return (pos);
 }
 
-static void	stamp_no_file_error(char *file)
+void	stamp_no_file_error(char *file)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(file, STDERR_FILENO);
