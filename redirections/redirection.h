@@ -3,9 +3,9 @@
 
 # include "../global.h"
 
-#define HEREDOC_MSG	"\033[1;97m> \033[0m"
+# define HEREDOC_MSG	"\033[1;97m> \033[0m"
 
-typedef	struct s_redir
+typedef struct s_redir
 {
 	int	n;
 	int	lin;
@@ -13,7 +13,7 @@ typedef	struct s_redir
 }	t_redir;
 
 // redirection.c
-void	exec_redir(t_command *cmd, int *stdin, int *stdout);
+void	exec_redir(t_command *cmd, int *stdin, int *stdout, int pipe);
 
 // red_exec.c
 void	red_append(t_command *cmd, t_redir red, int *stdin, int *stdout);

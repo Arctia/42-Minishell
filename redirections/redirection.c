@@ -10,10 +10,11 @@ static int	last_redir(t_command *cmd, int type)
 	n = -1;
 	while (++n < (int) ft_arrlen(cmd->red_type))
 	{
-		if ((cmd->red_type[n] == REDIN || cmd->red_type[n] == HERDOC)
-			&& type == 0)
+		if (!type
+			&& (cmd->red_type[n] == REDIN || cmd->red_type[n] == HERDOC))
 			pos = n;
-		else
+		else if (type
+			&& (cmd->red_type[n] == REDOUT || cmd->red_type[n] == REDAPP))
 			pos = n;
 	}
 	return (pos);
@@ -39,7 +40,12 @@ static void	cycle_redirections(t_command *cmd, int *stdin, int *stdout)
 			red_in(cmd, red, stdin);
 		else if (cmd->red_type[red.n] == HERDOC)
 			red_here_doc(cmd, red, stdin);
-		else if (cmd->red_type[red.n] == REDOUT)
+		red.n += 1;
+	}
+	red.n = 0;
+	while (red.n < (int) ft_arrlen(cmd->red_type))
+	{
+		if (cmd->red_type[red.n] == REDOUT)
 			red_out(cmd, red, stdin, stdout);
 		else if (cmd->red_type[red.n] == REDAPP)
 			red_append(cmd, red, stdin, stdout);
@@ -47,15 +53,20 @@ static void	cycle_redirections(t_command *cmd, int *stdin, int *stdout)
 	}
 }
 
-void	exec_redir(t_command *cmd, int *stdin, int *stdout)
+void	exec_redir(t_command *cmd, int *stdin, int *stdout, int pipe)
 {
 	cycle_redirections(cmd, stdin, stdout);
-	if (!cmd->red_error)
-		ft_execv(cmd, &cmd->shell->exit_status);
-	else
+	if (pipe)
+	{
+		if (cmd->red_error == -1)
+			ft_execv(cmd, &cmd->shell->exit_status);
+		else
+			stamp_no_file_error(cmd->red[cmd->red_error]);
+	}
+	else if (cmd->red_error != -1)
 		stamp_no_file_error(cmd->red[cmd->red_error]);
-	//if (last_redir(cmd, 0) > -1)
-	//	dup2(*stdout, STDOUT_FILENO);
+	if (last_redir(cmd, 1) > -1)
+		dup2(*stdout, STDOUT_FILENO);
 	dup2(*stdin, STDIN_FILENO);
 	close(*stdin);
 	close(*stdout);

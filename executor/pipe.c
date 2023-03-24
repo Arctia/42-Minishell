@@ -67,7 +67,8 @@ void	ft_child(t_command *cmd, int **fd, int *i, int std_cpy[2])
 		close(std_cpy[1]);
 	}
 	if (cmd->red_type != NULL)
-		ft_redirpipe(cmd, &std_cpy[0], &std_cpy[1]);
+		exec_redir(cmd, &std_cpy[0], &std_cpy[1], 1);
+		//ft_redirpipe(cmd, &std_cpy[0], &std_cpy[1]);
 	ft_execv(cmd, &cmd->shell->exit_status);
 	exit(1);
 }
