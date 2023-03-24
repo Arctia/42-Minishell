@@ -16,25 +16,17 @@ int	check_exit_argument(char *com)
 {
 	unsigned int	i;
 
-	i = ft_strlen(com);
-	if (i > 19)
+	i = 0;
+	if (com[0] == '-' || com[0] == '+')
+		i = 1;
+	if (ft_strlen(com) - i > 19)
 		return (-1);
-	while (com[i])
+	while (ft_isdigit(com[i++]))
 	{
-		i--;
-		if (!(ft_isdigit(com[i])) && i > 0)
-			return (-1);
-		else if (i == 0)
-		{
-			if ((ft_isdigit(com[i])))
-				return (0);
-			else if (com[i] == '-')
-				return (0);
-			else
-				return (-1);
-		}
+		if (!com[i++])
+			return (0);
 	}
-	return (0);
+	return (-1);
 }
 
 int	exit_check_spaces(const char *s)
@@ -93,10 +85,10 @@ int	ms_exit(t_command *cmd)
 			cmd->arguments[1]);
 		ret = 255;
 	}
-	if (ret > 2)
+	else if (ret > 2)
 	{
 		ft_printf("minishell: exit: too many arguments\n");
-		return (2);
+		return (1);
 	}
 	else if (ret == 2)
 	{
@@ -104,5 +96,5 @@ int	ms_exit(t_command *cmd)
 		ret %= 256 + 256 * (ret < 0);
 	}
 	free_shell(cmd->shell);
-	exit (ret);
+	exit(ret);
 }

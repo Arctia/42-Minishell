@@ -110,12 +110,13 @@ typedef struct s_command
 }	t_command;
 
 // builtins
+int			is_builtin(t_command *cmd);
 int			redirector(t_command *cmd);
+int			ms_exit(t_command *cmd);
 int			unset(t_command *cmd);
-int			cd(t_command *cmd);
 int			echo(t_command *cmd);
 int			env(t_command *cmd);
-int			ms_exit(t_command *cmd);
+int			cd(t_command *cmd);
 int			pwd(void);
 
 // expander/expander.c

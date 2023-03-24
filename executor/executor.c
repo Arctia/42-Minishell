@@ -129,7 +129,8 @@ void	ft_executor(t_command *cmd)
 			expander(cmd);
 		if (cmd->command && cmd->command[0] == '\0' && shift_arguments(cmd, 0))
 			return ;
-		if (cmd->command && redirector(cmd) == -1 && command_not_found(cmd, std_cpy))
+		if (cmd->command && is_builtin(cmd) == -1
+			&& command_not_found(cmd, std_cpy))
 			return ;
 		if (!cmd->spc[PIPE] && (cmd->spc[REDIN] || cmd->spc[REDOUT]
 				|| cmd->spc[REDAPP] || cmd->spc[HERDOC]))
