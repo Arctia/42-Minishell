@@ -59,6 +59,8 @@ int	syntax_check_2(char *line)
 	while (line[0] && line[0] != '\n')
 	{
 		move_to_end_quote(&line);
+		if(!line[0])
+			break ;
 		if ((ft_isredirection(cc) && line[0] == '|')
 			|| (cc == '|' && line[0] == '|'))
 			return (lx_error(line[0]));

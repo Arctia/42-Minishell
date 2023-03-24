@@ -23,7 +23,7 @@ int	check_exit_argument(char *com)
 		return (-1);
 	while (ft_isdigit(com[i++]))
 	{
-		if (!com[i++])
+		if (!com[i])
 			return (0);
 	}
 	return (-1);

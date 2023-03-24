@@ -42,7 +42,7 @@ void	ft_sigs_handler(int sig)
 	if (sig == SIGINT)
 	{
 		(void)sig;
-		set_ecode(130);
+		set_ecode(1);
 		write(1, "\n", 1);
 		ft_suppress_output();
 		rl_replace_line("", 0);
@@ -60,7 +60,7 @@ void	ft_sigs_handler(int sig)
 void	control_c_signal(int sig)
 {
 	if (sig == SIGINT)
-		set_ecode(130);
+		set_ecode(1);
 	else if (sig == SIGQUIT)
 		set_ecode(131);
 	return ;
