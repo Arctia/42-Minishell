@@ -19,12 +19,32 @@ void	red_in(t_command *cmd, t_redir red, int *stdin)
 		close(fd);
 }
 
+int	here_doc_in_pipes(t_command *cmd)
+{
+	t_command	*c;
+
+	c = cmd;
+	if (!cmd->prev && !cmd->next)
+		return (0);
+	while (c)
+	{
+		if ((c->command && ft_strcmp(c->command, "cat")))
+			return (1);
+		if (!c->next)
+			break ;
+		c = c->next;
+	}
+	return (1);
+}
+
 void	red_here_doc(t_command *cmd, t_redir red, int *stdin)
 {
 	char	*line;
 	char	*delimiter;
 	int		end[2];
 
+	if (here_doc_in_pipes(cmd))
+		return ;
 	delimiter = cmd->red[red.n];
 	if (red.n == red.lin)
 		dup2(*stdin, STDIN_FILENO);
