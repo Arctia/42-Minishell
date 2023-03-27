@@ -78,8 +78,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-void	ft_lstadd_front(t_list **lst, t_list *new);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstadd_front(t_list **lst, t_list *new_element);
+void	ft_lstadd_back(t_list **lst, t_list *new_element);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
@@ -115,5 +115,15 @@ char	**ft_reset_cptr(char **str, int status);
 void	ft_move_n_cptr(char **str, size_t n);
 void	ft_move_cptr(char **str);
 void	ft_init_cptr(char **str);
+
+// Char Matrix Manipulation
+void	ft_cmtx_pop(char **mtx);
+void	ft_cmtx_shift(char **mtx);
+void	ft_cmtx_append(char **mtx, char *new_element);
+void	ft_cmtx_unshift(char **old_mtx, char *new_element);
+void	ft_cmtx_reverse(char **old_mtx);
+void	ft_cmtx_fill(char **mtx, char *value);
+int		ft_cmtx_includes(char **mtx, char *val);
+void	ft_cmtx_del_at(char **mtx, int id);
 
 #endif
