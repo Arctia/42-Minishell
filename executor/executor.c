@@ -92,7 +92,9 @@ static int	command_not_found(t_command *cmd, int std_cpy[2])
 		close(std_cpy[0]);
 		close(std_cpy[1]);
 		set_ecode(127);
-		pfn("bash: %s: command not found", cmd->command);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->command, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		return (1);
 	}
 	ft_free_ptr(path);

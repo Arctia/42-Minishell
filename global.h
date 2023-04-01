@@ -67,7 +67,7 @@
 # define ERR_DIR 126
 # define ERR_UNK 127
 
-# define PROMPT "\033[1;31m@minisHELL\033[0m:\e[1;32m"
+# define PROMPT "\033[1;31m@鳥居-Torii\033[0m:\e[1;32m"
 
 //per far funzionare rl_replace_line
 extern void	rl_replace_line(const char *text, int clear_undo);

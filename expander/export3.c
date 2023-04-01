@@ -12,23 +12,27 @@
 
 #include "../global.h"
 
+static int	stamp_error(char *str)
+{
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd("': not a valild identifier\n", STDERR_FILENO);
+	return (1);
+}
+
 int	export_check_argument(char *str)
 {
 	int	i;
 
 	i = 0;
 	if (str[0] == '=')
-		return (ft_printf("bash: export: `=': not a valid identifier\n"));
+		return (stamp_error("="));
 	while (str[i] && str[i] != '=')
 	{
 		if (ft_isalnum(str[i]) || str[i] == '_')
 			i++;
 		else
-		{
-			return (
-				ft_printf("bash: export: `%s': not a valild identifier\n",
-					str));
-		}
+			return (stamp_error(str));
 	}
 	return (0);
 }
