@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:17:55 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/23 11:10:40 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/04/01 12:38:58 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ static char	*our_prompt_2(t_hellmini *shell, char *buff)
 {
 	char	*user;
 
-	buff[0] = '[';
-	buff = ft_strjoin_free(buff, ft_itoa(get_ecode()), 1, 1);
-	buff = ft_strjoin_free(buff, "] "CBYEL, 1, 0);
+	buff[0] = '\0';
+	buff = ft_strjoin_free(buff, CBYEL, 1, 0);
 	user = exp_tkn("USER", shell->env);
 	if (!user)
 		user = ft_calloc(sizeof(char), 1);

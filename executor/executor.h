@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:49:39 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/23 10:46:19 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/04/01 12:24:13 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void	ft_heredoc(t_command *cmd, int *stdin_cpy);
 					redirpipe.c
 	***********************************************************
 */
-int		ft_redir(t_command *cmd, int *stdin_cpy, int *stdout_cpy);
 void	ft_redirpipe(t_command *cmd, int *stdin_cpy, int *stdout_cpy);
-void	ft_chooseredir(t_command *cmd, int *stdin_cpy, int *stdout_cpy);
 
 #endif

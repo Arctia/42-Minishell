@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/01 12:15:03 by vgavioli          #+#    #+#             */
+/*   Updated: 2023/04/01 12:17:16 by vgavioli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "redirection.h"
 
@@ -72,9 +83,4 @@ void	exec_redir_pipe(t_command *cmd, int *stdin, int *stdout)
 	cycle_redirections(cmd, stdin, stdout);
 	if (cmd->red_error != -1)
 		stamp_no_file_error(cmd->red[cmd->red_error]);
-	//if (last_redir(cmd, 1) > -1)
-		//dup2(*stdout, STDOUT_FILENO);
-	//dup2(*stdin, STDIN_FILENO);
-	//close(*stdin);
-	//close(*stdout);
 }

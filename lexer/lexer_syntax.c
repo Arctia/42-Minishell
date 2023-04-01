@@ -6,7 +6,7 @@
 /*   By: vgavioli <vgavioli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:20:46 by vgavioli          #+#    #+#             */
-/*   Updated: 2023/03/23 11:10:42 by vgavioli         ###   ########.fr       */
+/*   Updated: 2023/04/01 12:25:05 by vgavioli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	syntax_check_2(char *line)
 	while (line[0] && line[0] != '\n')
 	{
 		move_to_end_quote(&line);
-		if(!line[0])
+		if (!line[0])
 			break ;
 		if ((ft_isredirection(cc) && line[0] == '|')
 			|| (cc == '|' && line[0] == '|'))
